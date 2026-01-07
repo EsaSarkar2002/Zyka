@@ -1,0 +1,113 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="admin-content">
+        <div class="mb-4">
+            <h1 class="text-dark-green">Booking History</h1>
+            <p class="text-muted">View past bookings by date</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Calendar -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <!-- Calendar Header -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <button class="btn btn-link text-dark-green" id="prevMonth">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <h2 class="text-dark-green mb-0" id="monthYear">December 2024</h2>
+                            <button class="btn btn-link text-dark-green" id="nextMonth">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Calendar Grid -->
+                        <div class="calendar-grid mb-2">
+                            <div class="text-center py-2 fw-bold text-muted">Sun</div>
+                            <div class="text-center py-2 fw-bold text-muted">Mon</div>
+                            <div class="text-center py-2 fw-bold text-muted">Tue</div>
+                            <div class="text-center py-2 fw-bold text-muted">Wed</div>
+                            <div class="text-center py-2 fw-bold text-muted">Thu</div>
+                            <div class="text-center py-2 fw-bold text-muted">Fri</div>
+                            <div class="text-center py-2 fw-bold text-muted">Sat</div>
+                        </div>
+                        <div class="calendar-grid" id="calendarDays"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookings List -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm" style="max-height: 700px; overflow-y: auto;">
+                    <div class="card-body">
+                        <h3 class="text-dark-green mb-4" id="selectedDateTitle">Select a date</h3>
+                        <div id="bookingsList">
+                            <p class="text-muted text-center py-5">
+                                Click on a date in the calendar to view bookings
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    @section Scripts {
+    <script src="~/js/admin.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            initBookings(
+                @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.Bookings))
+            );
+
+            
+            let currentDate = new Date();
+
+            // Initial calendar render
+            renderCalendar(
+                currentDate,
+                "calendarDays",
+                "monthYear",
+                onDateSelected
+            );
+
+            // Month navigation
+            document.getElementById("prevMonth").addEventListener("click", function () {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar(
+                    currentDate,
+                    "calendarDays",
+                    "monthYear",
+                    onDateSelected
+                );
+            });
+
+            document.getElementById("nextMonth").addEventListener("click", function () {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar(
+                    currentDate,
+                    "calendarDays",
+                    "monthYear",
+                    onDateSelected
+                );
+            });
+
+            // 5Date click handler
+            function onDateSelected(dateStr) {
+                const bookings = getBookingsByDate(dateStr);
+
+                document.getElementById("selectedDateTitle").innerText =
+                    "Bookings for " + formatDateForTitle(dateStr);
+
+                renderBookingCards(bookings, "bookingsList");
+            }
+        });
+    </script>
+}

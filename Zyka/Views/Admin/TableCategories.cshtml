@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<string>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="admin-content">
+        <h1 class="text-dark-green mb-4">Table Categories</h1>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <a class="card category-card text-decoration-none" asp-action="TableList" asp-controller="Admin" asp-route-category="Date">
+                    <h3>Date Tables</h3>
+                    <p>Romantic tables for two</p>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a class="card category-card text-decoration-none" asp-action="TableList" asp-controller="Admin" asp-route-category="Family">
+                    <h3>Family Tables</h3>
+                    <p>4–6 seating arrangements</p>
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a class="card category-card text-decoration-none" asp-action="TableList" asp-controller="Admin" asp-route-category="Meeting">
+                    <h3>Meeting Tables</h3>
+                    <p>Business & meetings</p>
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a class="card category-card text-decoration-none" asp-action="TableList" asp-controller="Admin" asp-route-category="Celebration">
+                    <h3>Celebration Tables</h3>
+                    <p>Events & parties</p>
+                </a>
+            </div>
+        </div>
+    </div>

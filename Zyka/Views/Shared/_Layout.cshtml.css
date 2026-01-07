@@ -1,0 +1,54 @@
+﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+:root {
+    --zyka-bg-overlay: rgba(0, 0, 0, 0.55);
+    --zyka-accent: #ffb33b;
+    --zyka-accent-hover: #ff9a00;
+    --zyka-text-light: #fdfdfd;
+    --zyka-text-muted: #d6d6d6;
+    --zyka-card-bg: #15151f;
+    --zyka-font-display: "Playfair Display", "Times New Roman", serif;
+    --zyka-font-body: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/** {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: var(--zyka-font-body);
+    background: radial-gradient(circle at top, #151526, #050709);
+    color: var(--zyka-text-light);
+}*/
+
+/* NAVBAR */
+.navbar {
+    background: rgba(5, 7, 9, 0.92);
+    backdrop-filter: blur(12px);
+    font-family: var(--zyka-font-body);
+}
+
+.navbar-brand {
+    font-family: var(--zyka-font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-link {
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link:focus,
+.navbar-nav .nav-link:hover {
+    color: var(--zyka-accent) !important;
+}

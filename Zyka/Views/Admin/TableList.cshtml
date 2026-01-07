@@ -1,0 +1,88 @@
+﻿@model Dictionary<string,string>
+
+    @{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+
+    <div class="admin-content">
+
+
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h1 class="text-dark-green">
+                @ViewBag.Category Tables
+            </h1>
+
+            <a asp-action="TableCategories" asp-controller="Admin" class="btn btn-outline-secondary">
+                ← Back
+            </a>
+        </div>
+
+
+        <div class="row g-4">
+
+            @if (Model != null && Model.Any())
+            {
+            foreach (var table in Model)
+            {
+            <div class="col-md-6 col-lg-4">
+                <div class="card table-card p-3 shadow">
+
+                    <i class="bi bi-grid-3x3-gap-fill fs-4 text-success"></i>
+                    <div class="d-flex justify-content-evenly mb-3">
+                        <div>
+                            <small>Table Number</small>
+                            <h5 class="mb-0">@table.Key</h5>
+                        </div>
+                        <div class="vr"></div>
+                        <div>
+                            <small>Status</small>
+                            <div>
+                                @if(table.Value=="Available")
+                                {
+                                <h5 class="mb-0 status-btn bg-success text-white">@table.Value</h5>
+                                }
+                                else if(table.Value=="Booked")
+                                {
+                                <h5 class="mb-0 status-btn bg-danger text-white">@table.Value</h5>
+                                }
+                                else if(table.Value=="Maintenance")
+                                {
+                                <h5 class="mb-0 status-btn bg-warning">@table.Value</h5>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                        @if(table.Value=="Available")
+                        {
+
+                        <div class="buttons">
+                            <button>Mark for Maintenance</button>
+                        <button>Reserve this table</button>
+                            </div>
+                        }
+                        else if(table.Value=="Maintenance")
+                        {
+                            <div class="buttons">
+                            <button>Mark as Available</button>
+                        <button>Reserve this table</button>
+                            </div>
+                        }
+
+
+
+                </div>
+            </div>
+            }
+            }
+            else
+            {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No tables found for this category.
+                </div>
+            </div>
+            }
+
+        </div>
+    </div>

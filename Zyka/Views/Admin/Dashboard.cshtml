@@ -1,0 +1,71 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="admin-content">
+        <div class="mb-4">
+            <h1 class="text-dark-green">Dashboard Overview</h1>
+            <p class="text-muted">Welcome back! Here's your restaurant summary.</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="stat-icon bg-warning bg-opacity-10">
+                        <i class="bi bi-grid-3x3 text-warning"></i>
+                    </div>
+                    <h6 class="text-muted mt-3">Total Tables</h6>
+                    <p class="stat-value text-warning" id="totalTables">20</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="stat-icon" style="background-color: rgba(27, 67, 50, 0.1);">
+                        <i class="bi bi-calendar-check text-dark-green"></i>
+                    </div>
+                    <h6 class="text-muted mt-3">Today's Bookings</h6>
+                    <p class="stat-value text-dark-green" id="todayBookings">3</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="stat-icon bg-primary bg-opacity-10">
+                        <i class="bi bi-clock text-primary"></i>
+                    </div>
+                    <h6 class="text-muted mt-3">Upcoming Bookings</h6>
+                    <p class="stat-value text-primary" id="upcomingBookings">2</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card stat-card">
+                    <div class="stat-icon bg-danger bg-opacity-10">
+                        <i class="bi bi-wrench text-danger"></i>
+                    </div>
+                    <h6 class="text-muted mt-3">Tables Under Maintenance</h6>
+                    <p class="stat-value text-danger" id="maintenanceTables">2</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card" style="background: linear-gradient(135deg, var(--beige) 0%, var(--cream) 100%); border: 1px solid rgba(212, 175, 55, 0.2);">
+            <div class="card-body">
+                <h3 class="text-dark-green mb-4">Quick Actions</h3>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <a href="TableCategories"
+						   class="btn btn-light w-100 py-3">View All Tables</a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="Bookings" class="btn btn-light w-100 py-3">Check Bookings</a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="History" class="btn btn-light w-100 py-3">View History</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,40 @@
+﻿/* Calendar */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .calendar-day:hover:not(.disabled) {
+        background-color: #f8f9fa;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .calendar-day.active {
+        background-color: var(--dark-green);
+        color: white;
+        box-shadow: 0 4px 12px rgba(27, 67, 50, 0.3);
+    }
+
+    .calendar-day.today {
+        background-color: rgba(212, 175, 55, 0.2);
+        border-color: var(--gold);
+        border-width: 2px;
+    }
+
+    .calendar-day.has-bookings {
+        background-color: var(--beige);
+    }
