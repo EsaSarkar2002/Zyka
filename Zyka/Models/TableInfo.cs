@@ -16,7 +16,7 @@ namespace Zyka.Models
 
         [Required]
 
-        public string Status { get; set; } = string.Empty; //Availabe, Reserved, maintainance
+        public string Status { get; set; } //Availabe, Reserved, maintainance
 
     }
 }

@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Support page";
+    Layout = "~/Views/Shared/_StaffLayout.cshtml";
+}
+ 
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@ViewData["Title"] - Staff Portal</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<link rel="stylesheet" href="~/css/StaffSupport.css">
+ 
+</head>
+ 
+ 
+ 
+<div class="container-fluid p-0">
+<div class="row g-0" style="height: calc(100vh - 65px); overflow: hidden;">
+<div class="col-md-4 col-lg-3 border-end bg-white d-flex flex-column">
+<div class="p-3 border-bottom bg-light">
+<h5 class="fw-bold mb-0">Customer Queries</h5>
+</div>
+<div class="list-group list-group-flush overflow-auto flex-grow-1" id="customerList">
+<a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 active border-0" 
+                   onclick="loadChat('John Doe', 'Table #12', 'Payment failed...')">
+<div class="d-flex w-100 justify-content-between align-items-center">
+<h6 class="mb-1 fw-bold">John Doe</h6>
+<small class="badge bg-danger">High</small>
+</div>
+<p class="mb-1 small text-truncate">Table #12: Payment failed...</p>
+</a>
+ 
+                <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 border-0" 
+                   onclick="loadChat('Sarah Smith', 'Table #05', 'Need allergy info...')">
+<div class="d-flex w-100 justify-content-between align-items-center">
+<h6 class="mb-1 fw-bold">Sarah Smith</h6>
+<small class="badge bg-warning text-dark">Medium</small>
+</div>
+<p class="mb-1 small text-truncate">Table #05: Need allergy info...</p>
+</a>
+</div>
+</div>
+ 
+        <div class="col-md-8 col-lg-9 d-flex flex-column bg-light">
+<div class="p-3 bg-white border-bottom d-flex justify-content-between align-items-center shadow-sm">
+<div class="d-flex align-items-center">
+<div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+<i class="bi bi-person-fill"></i>
+</div>
+<div class="ms-3">
+<h6 class="mb-0 fw-bold" id="activeChatName">John Doe</h6>
+<small class="text-success" id="activeChatTable">Table #12</small>
+</div>
+</div>
+<button class="btn btn-sm btn-outline-success rounded-pill px-3" onclick="resolveTicket()">Mark Resolved</button>
+</div>
+ 
+            <div class="flex-grow-1 p-4 overflow-auto" id="chatContainer">
+<div id="messageHistory">
+<div class="d-flex mb-4">
+<div class="bg-white p-3 rounded-3 shadow-sm border" style="max-width: 70%;">
+<p class="mb-0" id="initialCustomerMsg">Payment failed at checkout. Please help!</p>
+</div>
+</div>
+</div>
+</div>
+ 
+            <div class="p-3 bg-white border-top">
+<div class="input-group">
+<input type="text" id="replyInput" class="form-control border-0 bg-light py-2" placeholder="Write a reply...">
+<button class="btn btn-primary px-4" onclick="sendMessage()">
+<i class="bi bi-send-fill"></i>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>

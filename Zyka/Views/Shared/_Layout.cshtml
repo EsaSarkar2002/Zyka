@@ -1,119 +1,118 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>@ViewData["Title"] - Zyka</title>
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-<link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
-<link rel="stylesheet" href="~/Zyka.styles.css" asp-append-version="true" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Zyka</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Zyka.styles.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
-<header>
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top" aria-label="Primary navigation">
-<div class="container-fluid px-3 px-md-4">
- 
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top" aria-label="Primary navigation">
+            <div class="container-fluid px-3 px-md-4">
+
                 <!-- Logo -->
-<a class="navbar-brand" href="index.html" aria-label="Home">
-<img src="~/NewFolder1/zyka logo.png" alt="Site Logo" class="logo-img">
-</a>
- 
+                <a class="navbar-brand" href="/" aria-label="Home">
+                    <img src="~/images/ZYKA_logo_transparent.png" alt="Site Logo" class="logo-img">
+                </a>
+
                 <!-- Mobile Toggle Button -->
-<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#zykaNavbar"
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#zykaNavbar"
+                    aria-controls="zykaNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                        aria-controls="zykaNavbar" aria-expanded="false" aria-label="Toggle navigation">
-<span class="navbar-toggler-icon"></span>
-</button>
- 
                 <!-- Navigation Links -->
-<div class="collapse navbar-collapse justify-content-end" id="zykaNavbar">
-<ul class="navbar-nav align-items-center mb-2 mb-lg-0">
- 
-                        <li class="nav-item">
-<a class="nav-link " href="index.html" aria-current="page">
+                <div class="collapse navbar-collapse justify-content-end" id="zykaNavbar">
+                    <ul class="navbar-nav align-items-center mb-2 mb-lg-0">
 
+                        <li class="nav-item">
+                            <a class="nav-link " href="/" aria-current="page">
                                 Home
-</a>
-</li>
- 
-                        <li class="nav-item">
-<a class="nav-link s" href="/booking.html">
+                            </a>
+                        </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link s" href="/booking.html">
                                 Reservations
-</a>
-</li>
- 
+                            </a>
+                        </li>
+
                         <li class="nav-item">
-<a class="nav-link " href="#feed">
-
+                            <a class="nav-link " href="#feed">
                                 About Us
-</a>
-</li>
- 
+                            </a>
+                        </li>
+
                         <!-- Profile Dropdown -->
-<li class="nav-item dropdown">
-<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown"
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="~/images/profile.png" alt="Profile" class="profile-img me-2">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="profileDropdown">
+                                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            </ul>
+                        </li>
 
-                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
-<img src="~/NewFolder1/profile.png" alt="Profile" class="profile-img me-2">
-</a>
-<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-<li><a class="dropdown-item" href="/profile.html">My Account</a></li>
-<li><a class="dropdown-item" href="/settings.html">Settings</a></li>
-<li><hr class="dropdown-divider"></li>
-<li><a class="dropdown-item" href="/logout">Logout</a></li>
-</ul>
-</li>
- 
                     </ul>
-</div>
- 
- 
+                </div>
+
+
             </div>
-</nav>
-</header>
- 
+        </nav>
+    </header>
+
     <div class="container">
-<main role="main" class="pb-3">
-
+        <main role="main" class="pb-3">
             @RenderBody()
-</main>
-</div>
- 
-    <footer class="bg-dark text-white mt-auto py-4">
-<div class="container text-center">
-<p>&copy; 2025 Zyka. All rights reserved.</p>
-<ul class="list-inline">
-<li class="list-inline-item"><a href="#" class="text-white">Privacy</a></li>
-<li class="list-inline-item"><a href="#" class="text-white">Terms</a></li>
-<li class="list-inline-item"><a href="#" class="text-white">Support</a></li>
-</ul>
-<!-- Social Media Links -->
-<div class="mt-3">
-<a href="https://facebook.com/zyka" target="_blank" class="btn btn-outline-light btn-social facebook mx-1">
-<i class="fab fa-facebook-f"></i>
-</a>
-<a href="https://twitter.com/zyka" target="_blank" class="btn btn-outline-light btn-social twitter mx-1">
-<i class="fab fa-twitter"></i>
-</a>
-<a href="https://instagram.com/zyka" target="_blank" class="btn btn-outline-light btn-social instagram mx-1">
-<i class="fab fa-instagram"></i>
-</a>
-<a href="https://linkedin.com/company/zyka" target="_blank" class="btn btn-outline-light btn-social linkedin mx-1">
-<i class="fab fa-linkedin-in"></i>
-</a>
-<a href="https://youtube.com/zyka" target="_blank" class="btn btn-outline-light btn-social youtube mx-1">
-<i class="fab fa-youtube"></i>
-</a>
-</div>
-</div>
-</footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
+        </main>
+    </div>
 
+    <footer class="bg-dark text-white mt-auto py-4">
+        <div class="container text-center">
+            <p>&copy; 2025 Zyka. All rights reserved.</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#" class="text-white">Privacy</a></li>
+                <li class="list-inline-item"><a href="#" class="text-white">Terms</a></li>
+                <li class="list-inline-item"><a href="#" class="text-white">Support</a></li>
+            </ul>
+            <!-- Social Media Links -->
+            <div class="mt-3">
+                <a href="https://facebook.com/zyka" target="_blank"
+                    class="btn btn-outline-light btn-social facebook mx-1">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://twitter.com/zyka" target="_blank"
+                    class="btn btn-outline-light btn-social twitter mx-1">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://instagram.com/zyka" target="_blank"
+                    class="btn btn-outline-light btn-social instagram mx-1">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://linkedin.com/company/zyka" target="_blank"
+                    class="btn btn-outline-light btn-social linkedin mx-1">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://youtube.com/zyka" target="_blank"
+                    class="btn btn-outline-light btn-social youtube mx-1">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
- 

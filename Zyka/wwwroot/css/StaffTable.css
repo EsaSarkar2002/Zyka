@@ -1,0 +1,95 @@
+﻿/* Container for the whole grid area */
+.content-section {
+    background-color: var(--gray-light); /* Assuming your layout uses a light background */
+    min-height: calc(100vh - 80px);
+}
+
+/* Card Container */
+.table-card {
+    background: #fff;
+    border-radius: 16px; /* Matches your KPI cards */
+    padding: 30px 40px; /* Increased top/bottom padding for better spacing */
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.05); /* Softer border */
+    box-shadow: var(--shadow); /* Using your global shadow variable */
+    transition: all 0.3s ease;
+    height: 100%; /* Ensures all cards in a row have the same height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+    .table-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    /* Highlight for Occupied border as per screenshot */
+    .table-card.status-occupied {
+        border: 1.5px solid #ffdae0;
+    }
+
+/* Header Styling - Icons and Table Names */
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 8px;
+}
+
+    .table-header i {
+        font-size: 1.2rem;
+        color: var(--gray-medium);
+    }
+
+/* Seats text spacing */
+.seats-info {
+    font-size: 0.85rem;
+    color: var(--gray-medium);
+    margin-bottom: 25px; /* Space between seats info and the status badge */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Badge Styling */
+.status-badge {
+    padding: 12px 15px; /* Thicker badges */
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: 90%; /* Keeps badge centered with nice side margins */
+    justify-content: center;
+}
+
+    /* Color Palette */
+    .status-badge.available {
+        background-color: #f1f8f1;
+        color: #4a8c4a;
+    }
+
+    .status-badge.reserved {
+        background-color: #fff9eb;
+        color: #d4a017;
+    }
+
+    .status-badge.occupied {
+        background-color: #fff1f3;
+        color: #d63384;
+    }
+
+/* Timestamp text at bottom */
+.timestamp {
+    font-size: 0.75rem;
+    color: var(--gray-medium);
+    margin-top: 15px;
+    font-weight: 500;
+}

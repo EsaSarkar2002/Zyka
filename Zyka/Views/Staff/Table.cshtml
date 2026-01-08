@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Table page";
+    Layout = "~/Views/Shared/_StaffLayout.cshtml";
+}
+ 
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@ViewData["Title"] - Staff Portal</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<link rel="stylesheet" href="~/css/StaffLayout.css">
+<link rel="stylesheet" href="~/css/StaffDashboard.css">
+<link rel="stylesheet" href="~/css/StaffBooking.css">
+<link rel="stylesheet" href="~/css/StaffTable.css">
+</head>
+ 
+<main class="main-content">
+<div class="top-bar">
+<div class="page-title">
+<h2 id="pageTitle">Table</h2>
+<p id="pageSubtitle">Welcome back! Here's your overview</p>
+</div>
+ 
+        <div class="top-bar-right">
+<div class="datetime-display">
+<p class="time" id="currentTime">13:56:44</p>
+<p class="date" id="currentDate">Tuesday, January 6, 2026</p>
+</div>
+ 
+            <div class="staff-info">
+<div class="staff-avatar" id="staffAvatar">S</div>
+<div>
+<p class="staff-name" id="staffName">Staff Member</p>
+<p class="staff-role">Staff</p>
+</div>
+</div>
+</div>
+</div>
+ 
+    <div class="content-section active p-4">
+<div class="container-fluid">
+<div class="row g-4 mt-2" id="tablesGrid"> 
+<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+<div class="table-card status-available">
+<div class="table-header">
+<i class="bi bi-grid-3x3-gap"></i>
+<h4 class="mb-0">Table 1</h4>
+</div>
+<p class="seats-info text-muted"><i class="bi bi-people"></i> 2-Seater</p>
+<div class="status-badge available">
+<i class="bi bi-check-circle"></i> Available
+</div>
+</div>
+</div>
+ 
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+<div class="table-card status-reserved">
+<div class="table-header">
+<i class="bi bi-grid-3x3-gap"></i>
+<h4 class="mb-0">Table 2</h4>
+</div>
+<p class="seats-info text-muted"><i class="bi bi-people"></i> 2-Seater</p>
+<div class="status-badge reserved">
+<i class="bi bi-clock-fill"></i> Reserved
+</div>
+<p class="timestamp">Reserved at 2:00 PM</p>
+</div>
+</div>
+ 
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+<div class="table-card status-occupied">
+<div class="table-header text-danger">
+<i class="bi bi-grid-3x3-gap"></i>
+<h4 class="mb-0">Table 3</h4>
+</div>
+<p class="seats-info text-muted"><i class="bi bi-people"></i> 4-Seater</p>
+<div class="status-badge occupied">
+<i class="bi bi-person-fill"></i> Occupied
+</div>
+<p class="timestamp">Occupied since 1:30 PM</p>
+</div>
+</div>
+ 
+            </div> </div> </div> </main>
+</html>

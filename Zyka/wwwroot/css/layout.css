@@ -43,34 +43,10 @@ body {
 
 
 
-/** {
-
-    box-sizing: border-box;
-
-}
-
-html {
-
-    scroll-behavior: smooth;
-
-}
-
-body {
-
-    margin: 0;
-
-    font-family: var(--zyka-font-body);
-
-    background: radial-gradient(circle at top, #151526, #050709);
-
-    color: var(--zyka-text-light);
-
-}*/
-
 /* NAVBAR */
 
 .navbar {
-    background: rgba(5, 7, 9, 0.92);
+    background: #15151f;
     backdrop-filter: blur(12px);
     font-family: var(--zyka-font-body);
 }
@@ -121,21 +97,13 @@ body {
 .logo-img {
     height: 60px; /* Adjust size as needed */
 
-    width: 60px; /* Same as height for circle */
-
-    border-radius: 50%; /* Makes it perfectly circular */
+    width: 100%; /* Same as height for circle */
+    /* Makes it perfectly circular */
 
     object-fit: cover;
 }
 
-/* Profile Image */
 
-/*-toggle::after {
-
-    display: none;
-
-}
- 
 /* Profile icon styling */
 
 .profile-img {

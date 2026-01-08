@@ -1,0 +1,258 @@
+﻿
+/* =========================================
+   StaffBooking.css
+   Scope: Booking page table + pagination
+   Depends on: global tokens (:root) in base CSS
+   ========================================= */
+
+/* ---------- Wrapper (optional hook if needed) ---------- */
+/* If your view uses a section wrapper, you can add a class like .booking-view to the parent.
+   Not mandatory for these styles to work. */
+
+/* ---------- Bookings Table Container ---------- */
+.bookings-table-wrapper {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    /* spacing around the component if needed */
+    margin-top: 1rem;
+}
+
+/* ---------- Table ---------- */
+.bookings-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed; /* consistent column widths */
+}
+
+    /* Table Head */
+    .bookings-table thead {
+        background: var(--gray-light);
+    }
+
+    .bookings-table th {
+        padding: 1rem 1.5rem;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--dark-green);
+        border-bottom: 2px solid #dee2e6;
+        white-space: nowrap;
+    }
+
+        /* Suggested column widths (tweak if needed) */
+        .bookings-table th:nth-child(1),
+        .bookings-table td:nth-child(1) { /* Customer */
+            width: 28%;
+        }
+
+        .bookings-table th:nth-child(2),
+        .bookings-table td:nth-child(2) { /* Table Number */
+            width: 12%;
+        }
+
+        .bookings-table th:nth-child(3),
+        .bookings-table td:nth-child(3) { /* Booking Time */
+            width: 20%;
+        }
+
+        .bookings-table th:nth-child(4),
+        .bookings-table td:nth-child(4) { /* Guests */
+            width: 10%;
+            text-align: center;
+        }
+
+        .bookings-table th:nth-child(5),
+        .bookings-table td:nth-child(5) { /* Status */
+            width: 14%;
+        }
+
+        .bookings-table th:nth-child(6),
+        .bookings-table td:nth-child(6) { /* Action */
+            width: 16%;
+            text-align: right;
+        }
+
+    /* Table Body */
+    .bookings-table td {
+        padding: 1rem 1.5rem;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--gray-light);
+        color: var(--gray-dark);
+    }
+
+    /* Row hover */
+    .bookings-table tbody tr {
+        transition: background 0.2s ease;
+    }
+
+        .bookings-table tbody tr:hover {
+            background: var(--gray-light);
+        }
+
+    /* Customer cell formatting (strong + small) */
+    .bookings-table td strong {
+        color: var(--dark-green);
+        font-weight: 600;
+    }
+
+    .bookings-table td small {
+        color: var(--gray-medium);
+        font-size: 0.8rem;
+    }
+
+    /* Guests icon + count alignment */
+    .bookings-table td i.bi-people {
+        margin-right: 0.375rem;
+        color: var(--gray-medium);
+        font-size: 1rem;
+        vertical-align: middle;
+    }
+
+/* ---------- Status Badges ---------- */
+.status-badge {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+    .status-badge.upcoming {
+        background: rgba(13, 110, 253, 0.1);
+        color: #0D6EFD;
+    }
+
+    .status-badge.ongoing {
+        background: rgba(151, 188, 98, 0.2);
+        color: var(--dark-green);
+    }
+
+    .status-badge.completed {
+        background: rgba(108, 117, 125, 0.1);
+        color: var(--gray-medium);
+    }
+
+    .status-badge.cancelled {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+
+/* ---------- Action Buttons ---------- */
+.btn-primary-custom {
+    background: var(--dark-green);
+    color: var(--white);
+    border: none;
+    padding: 0.625rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+    .btn-primary-custom:hover {
+        background: #234a24;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+    }
+
+.btn-sm-custom {
+    padding: 0.375rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 6px;
+}
+
+/* Specific hook for Mark Complete button */
+.mark-complete-btn i {
+    font-size: 1rem;
+}
+
+/* Disabled state (matches your pagination disabled feel) */
+.btn-primary-custom:disabled,
+.btn-primary-custom[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ---------- Pagination ---------- */
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background: var(--white);
+    border-top: 1px solid var(--gray-light);
+}
+
+.pagination-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #dee2e6;
+    background: var(--white);
+    color: var(--dark-green);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+}
+
+    .pagination-btn:hover:not(:disabled) {
+        background: var(--dark-green);
+        color: var(--white);
+        border-color: var(--dark-green);
+    }
+
+    .pagination-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .pagination-btn.active {
+        background: var(--dark-green);
+        color: var(--white);
+        border-color: var(--dark-green);
+    }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 992px) {
+    /* Stack action to next line on smaller screens for readability */
+    .bookings-table th:nth-child(6),
+    .bookings-table td:nth-child(6) {
+        text-align: left;
+    }
+
+    .btn-sm-custom {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Allow wrapping of long content */
+    .bookings-table {
+        table-layout: auto;
+    }
+
+        .bookings-table th,
+        .bookings-table td {
+            padding: 0.75rem 1rem;
+        }
+
+            .bookings-table th:nth-child(1),
+            .bookings-table td:nth-child(1),
+            .bookings-table th:nth-child(3),
+            .bookings-table td:nth-child(3) {
+                width: auto;
+            }
+}
