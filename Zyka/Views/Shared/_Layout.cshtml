@@ -7,7 +7,11 @@
     <title>@ViewData["Title"] - Zyka</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/aboutUs.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/gallery.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/customerBooking.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/reservation.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Zyka.styles.css" asp-append-version="true" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -24,8 +28,7 @@
                 </a>
 
                 <!-- Mobile Toggle Button -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#zykaNavbar"
-                    aria-controls="zykaNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#zykaNavbar" aria-controls="zykaNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -34,19 +37,25 @@
                     <ul class="navbar-nav align-items-center mb-2 mb-lg-0">
 
                         <li class="nav-item">
-                            <a class="nav-link " href="/" aria-current="page">
+                            <a class="nav-link" href="/" aria-current="page">
                                 Home
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link s" href="/booking.html">
+                            <a class="nav-link" asp-controller="Customer" asp-action="Reservation">
                                 Reservations
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link " href="#feed">
+                            <a class="nav-link" asp-controller="Customer" asp-action="Gallery">
+                                Gallery
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Customer" asp-action="AboutUs">
                                 About Us
                             </a>
                         </li>
@@ -57,15 +66,12 @@
                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="~/images/profile.png" alt="Profile" class="profile-img me-2">
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="profileDropdown">
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
                             </ul>
                         </li>
-
                     </ul>
                 </div>
-
-
             </div>
         </nav>
     </header>

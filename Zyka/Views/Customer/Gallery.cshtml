@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = "Gallery";
+    Layout = "_Layout";
+}
+
+<main class="about-page">
+    <section class="about-hero text-center">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="display-6 fw-bold text-white">Our Gallery</h1>
+                <p class="lead text-white">A glimpse into the atmosphere and flavors of ZYKA.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="row g-3">
+            <section class="container py-4 border-top">
+                <div class="row align-items-center">
+                    <div class="col-md-5 mb-4 mb-md-0">
+                        <h2 class="fw-bold text-white display-6">Our House Specials</h2>
+                        <p class="text-muted mt-3">
+                            Carefully curated by our executive chef, these dishes represent the heart of ZYKA’s culinary philosophy.
+                        </p>
+                        <ul class="list-unstyled mt-4">
+                            <li class="mb-2 p-2 bg-dark rounded shadow-sm"><strong>✨ Tandoori Platter:</strong> Sizzling fresh</li>
+                            <li class="mb-2 p-2 bg-dark rounded shadow-sm"><strong>✨ Saffron Infused Briyani:</strong> Luxuriously Spiced </li>
+                        </ul>
+
+                    </div>
+
+                    <div class="col-md-7">
+                        <div id="specialsCarousel" class="carousel slide shadow-lg rounded overflow-hidden" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#specialsCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                                <button type="button" data-bs-target="#specialsCarousel" data-bs-slide-to="1"></button>
+                            </div>
+
+                            <div class="carousel-inner">
+                                <div class="carousel-item active" data-bs-interval="3000">
+                                    <img src="~/images/Tandoori Platter.jpg" class="carousel-img" alt="Special 1">
+                                    <div class="carousel-caption d-none d-md-block bg-dark-overlay rounded">
+                                        <h5>Tandoori Platter</h5>
+                                        <p>Authentic spices and tender meats.</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item" data-bs-interval="3000">
+                                    <img src="~/images/Briyani.jpg" class="d-block w-100 carousel-img" alt="Special 2">
+                                    <div class="carousel-caption d-none d-md-block bg-dark-overlay rounded">
+                                        <h5>Saffron infused Briyani</h5>
+                                        <p>Freshly baked in our traditional clay oven.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="carousel-control-prev" type="button" data-bs-target="#specialsCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#specialsCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="container my-5">
+                <div class="row justify-content-center">
+
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card shadow border-0">
+                            <img src="~/images/Chef Photo.jpg" class="custom-gallery-img" alt="Chef Cooking">
+                            <div class="card-body text-center">
+                                <h5 class=" text-dark fw-bold">The Master Chef</h5>
+                                <p class="text-black medium ">Crafting culinary excellence with every single plate.</p>
+                                <a href="#" class="btn btn-outline-dark btn-sm">View Profile</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card shadow border-0">
+                            <img src="~/images/Desserts.jpg" class="custom-gallery-img" alt="Desserts">
+                            <div class="card-body text-center">
+                                <h5 class="text-dark fw-bold">Signature Sweets</h5>
+                                <p class="text-black medium">Indulge in our world-class pastry and dessert selection.</p>
+                                <a href="#" class="btn btn-outline-dark btn-sm">See Menu</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card shadow border-0">
+                            <img src="~/images/Outdoor Restaurant.jpg" class="custom-gallery-img" alt="Outdoor Seating">
+                            <div class="card-body text-center">
+                                <h5 class="text-dark fw-bold">Garden Lounge</h5>
+                                <p class="text-black medium">Experience fine dining in our serene outdoor atmosphere.</p>
+                                <a asp-controller="Home" asp-action="Booking" class="btn btn-outline-dark btn-sm">
+                                    Book a Table
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <section class="container pb-5">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="img-hover-zoom  shadow">
+                    <img src="~/images/Restaurant interior.jpg" alt="Our Dining Area" height="450px" width="450px"
+                         onerror="this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'">
+                </div>
+            </div>
+            <div class="col-lg-6 ps-lg-5">
+                <h2 class="fw-bold mb-4">Our Culinary Journey</h2>
+                <p class="text-muted">
+                    At ZYKA, we believe that dining is more than just a meal—it’s an art form.
+                    Founded in 2015, we set out to create a space where modern techniques meet
+                    traditional flavors.
+                </p>
+                <div class="mt-4">
+                    <a asp-controller="Customer" asp-action="Booking" class="btn btn-dark px-4 py-2 shadow-sm">Reserve Your Table</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.custom-gallery-img').forEach(image => {
+            image.onclick = () => {
+                // Get the src and handle the ASP.NET '~' if present
+                let modalSrc = image.getAttribute('src');
+                if (modalSrc.startsWith('~')) {
+                    modalSrc = modalSrc.substring(1);
+                }
+                document.getElementById('modalImage').src = modalSrc;
+                var myModal = new bootstrap.Modal(document.getElementById('galleryModal'));
+                myModal.show();
+            };
+        });
+    </script>
+}

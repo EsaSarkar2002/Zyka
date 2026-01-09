@@ -1,0 +1,72 @@
+﻿@{
+	ViewData["Title"] = "Reservation";
+	Layout = "_Layout";
+}
+
+<body>
+	<div class="bg-layer"></div>
+	<div class="overlay">
+		<div class="container">
+
+			<div class="top-header">
+				<h3 class="text-white">Zyka Restaurant</h3>
+				<p class="text-white">Your Booking History</p>
+			</div>
+
+			<div class="filter-btns text-center mb-3">
+				<button class="btn btn-outline-light filter" data-filter="all">All</button>
+				<button class="btn btn-outline-light filter" data-filter="date">❤️ Date</button>
+				<button class="btn btn-outline-light filter" data-filter="family">👨‍👩‍👧 Family</button>
+				<button class="btn btn-outline-light filter" data-filter="meeting">💼 Meeting</button>
+				<button class="btn btn-outline-light filter" data-filter="celebrate">🎉 Celebrate</button>
+			</div>
+
+			<div class="booking-card" data-category="date">
+				<p class="text-white"><b>Customer ID:</b> CUST101</p>
+				<p class="text-white"><b>Name:</b> Rahul Kumar</p>
+				<p class="text-white"><b>Booking ID:</b> ZYK5001</p>
+				<p class="text-white">2 Members | Date Table</p>
+				<span class="status completed">Completed</span>
+			</div>
+
+			<div class="booking-card" data-category="family">
+				<p class="text-white"><b>Customer ID:</b> CUST102</p>
+				<p class="text-white"><b>Name:</b> Sneha Reddy</p>
+				<p class="text-white"><b>Booking ID:</b> ZYK5002</p>
+				<p class="text-white">4 Members | Family Table</p>
+				<span class="status upcoming">Upcoming</span>
+			</div>
+
+			<div class="booking-card" data-category="meeting">
+				<p class="text-white"><b>Customer ID:</b> CUST103</p>
+				<p class="text-white"><b>Name:</b> Mahesh Rao</p>
+				<p class="text-white"><b>Booking ID:</b> ZYK5003</p>
+				<p class="text-white">3 Members | Meeting Table</p>
+				<span class="status cancelled">Cancelled</span>
+			</div>
+
+			<div class="booking-card" data-category="celebrate">
+				<p class="text-white"><b>Customer ID:</b> CUST104</p>
+				<p class="text-white"><b>Name:</b> Anjali Sharma</p>
+				<p class="text-white"><b>Booking ID:</b> ZYK5004</p>
+				<p class="text-white">6 Members | Celebrate Table</p>
+				<span class="status completed">Completed</span>
+			</div>
+
+		</div>
+	</div>
+	@section Scripts{
+		
+
+		<script>
+		document.querySelectorAll('.filter').forEach(btn=>{
+		btn.addEventListener('click',function(){
+		const f=this.getAttribute('data-filter');
+		document.querySelectorAll('.booking-card').forEach(card=>{
+		card.style.display=(f=="all"||card.getAttribute('data-category')==f)?"block":"none";
+		});
+		});
+		});
+		</script>
+	}
+</body>

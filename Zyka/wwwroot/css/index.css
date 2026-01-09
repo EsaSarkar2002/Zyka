@@ -21,8 +21,8 @@ html {
 
 body {
     margin: 0;
+    background-color:black;
     font-family: var(--zyka-font-body);
-    background: radial-gradient(circle at top, #151526, #050709);
     color: var(--zyka-text-light);
 }
 

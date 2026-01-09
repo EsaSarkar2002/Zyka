@@ -21,7 +21,6 @@ header {
 
 footer {
     position: relative; /* default flow */
-
     bottom: auto;
     left: auto;
     width: 100%;
@@ -33,8 +32,6 @@ footer {
 body {
     margin: 0;
     padding-top: 80px; /* keep for fixed header height */
-    /* padding-bottom: 80px;  REMOVE THIS */
-
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* full viewport height */
