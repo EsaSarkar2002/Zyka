@@ -1,5 +1,50 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
+    ViewData["Title"] = "Confirmation";
+    // Layout = "_Layout"; // Agar header/footer chahiye to ise rakhein
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 text-center">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="bi bi-check-lg text-success" style="font-size: 3rem;"></i>
+                        </div>
+                    </div>
+
+                    <h2 class="fw-bold mb-3" style="color: #1a4731;">Booking Confirmed!</h2>
+                    <p class="text-muted mb-4">Your table has been reserved. A confirmation message is on its way to your WhatsApp.</p>
+
+                    <div class="rounded-3 p-4 mb-4 text-start" style="background-color: #f8f9fa; border: 1px solid #eee;">
+                        <h6 class="fw-bold mb-3" style="color: #1a4731; border-bottom: 1px solid #dee2e6; pb-2">Reservation Summary</h6>
+
+                        <div class="row g-2">
+                            <div class="col-6 text-muted small">Booking ID</div>
+                            <div class="col-6 fw-bold small text-end" id="bookingId">--</div>
+
+                            <div class="col-6 text-muted small">Date & Time</div>
+                            <div class="col-6 fw-bold small text-end"><span id="bookingDate">--</span> | <span id="bookingTime">--</span></div>
+
+                            <div class="col-6 text-muted small">Guests</div>
+                            <div class="col-6 fw-bold small text-end" id="bookingGuests">--</div>
+
+                            <div class="col-6 text-muted small">Type</div>
+                            <div class="col-6 fw-bold small text-end text-capitalize" id="bookingType">--</div>
+                        </div>
+                    </div>
+
+                    <a href="/" class="btn btn-lg w-100 text-white shadow-sm" style="background: #1a4731; border-radius: 10px; font-size: 1rem;">
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Confirmation.js"></script>
 }

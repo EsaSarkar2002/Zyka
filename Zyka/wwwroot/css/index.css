@@ -21,74 +21,32 @@ html {
 
 body {
     margin: 0;
-    background-color:black;
     font-family: var(--zyka-font-body);
+    background: radial-gradient(circle at top, #151526, #050709);
     color: var(--zyka-text-light);
 }
 
-/* NAVBAR */
-.navbar {
-    background: rgba(5, 7, 9, 0.92);
-    backdrop-filter: blur(12px);
-    font-family: var(--zyka-font-body);
-}
-
-.navbar-brand {
-    font-family: var(--zyka-font-display);
-    font-size: 1.4rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.navbar-nav .nav-link {
-    font-size: 0.95rem;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-}
-
-    .navbar-nav .nav-link.active,
-    .navbar-nav .nav-link:focus,
-    .navbar-nav .nav-link:hover {
-        color: var(--zyka-accent) !important;
-    }
 
 /* HERO SECTION */
+/* ================= HERO SECTION ================= */
+
 .hero-section {
     position: relative;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: var(--zyka-text-light);
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), var(--zyka-bg-overlay)), url("../images/food123.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    width: 100%;
+    overflow: hidden;
 }
 
-    .hero-section::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at top, rgba(0, 0, 0, 0.65), transparent 55%);
-        pointer-events: none;
-    }
+/* BACKGROUND IMAGE */
 
-.hero-inner {
-    position: relative;
-    z-index: 1;
-    padding: 4rem 1.5rem 3rem;
-    max-width: 720px;
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+.hero-bg-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
 }
-
-    .hero-inner.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
 
 .hero-brand {
     font-family: var(--zyka-font-display);
@@ -115,6 +73,34 @@ body {
     margin-bottom: 1rem;
 }
 
+
+/* DARK OVERLAY */
+
+.hero-overlay {
+    position:fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+/* HERO CONTENT */
+
+.hero-inner {
+    position: relative;
+    z-index: 2; /* 🔥 THIS IS CRITICAL */
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    
+}
+
+/*booking btn*/
+
 .btn-cta {
     padding: 0.85rem 2.6rem;
     border-radius: 999px;
@@ -127,7 +113,6 @@ body {
     color: #1d1205;
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.65);
 }
-
     .btn-cta:hover,
     .btn-cta:focus-visible {
         background: var(--zyka-accent-hover);
@@ -172,42 +157,7 @@ body {
         outline-offset: 4px;
     }
 
-@keyframes arrow-bounce {
 
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-
-    40% {
-        transform: translateY(6px);
-    }
-
-    60% {
-        transform: translateY(3px);
-    }
-}
-
-.scroll-arrow-icon {
-    animation: arrow-bounce 1.6s infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    * {
-        scroll-behavior: auto !important;
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-    }
-
-    .hero-inner {
-        opacity: 1 !important;
-        transform: none !important;
-    }
-
-    .scroll-arrow-icon {
-        animation: none !important;
-    }
-}
 
 /* =======================
       FEED LAYOUT BELOW HERO
@@ -549,4 +499,3 @@ footer {
         width: 100%;
     }
 }
-
