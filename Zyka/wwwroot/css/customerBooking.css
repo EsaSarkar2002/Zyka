@@ -12,26 +12,53 @@ div[style*="background"] {
 
 /* 2. Form Container Polish */
 #bookingForm {
-    background: rgba(255, 255, 255, 0.95); /* Slight transparency */
-    padding: 30px;
+     /* Slight transparency */
+    padding: 15px;
     border-radius: 15px;
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
+.head-class {
+    background: transparent;
+    /* Adds a modern blur effect to the background image behind the header */
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #000;
+    margin-top: 60px 0px 30px 0px;
+    text-align: center;
+    border-radius: 16px
+    margin: 30px 0px 30px 50px;
+    /* Adds a subtle border to define the shape against the background */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
 
 /* 3. Booking Type Cards (The Grid) */
 /* Force 4 columns on desktop, 2 on tablet, 1 on mobile */
-.row.g-3 {
+.row.g-5 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.card {
+    background: transparent;
+    /* Adds a modern blur effect to the background image behind the header */
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #0
+    00;
+    max-width: 950px; /* Limits width to keep it tall */
+    margin: 0 auto; /* Centers cards in their columns */
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
 }
 
 .booking-type-card {
     background: #fff;
     border: 2px solid #f0f0f0;
     border-radius: 12px;
-    padding: 15px;
+    padding: 15px 10px 10px 0px;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     cursor: pointer;
     height: 100%;
@@ -73,12 +100,12 @@ div[style*="background"] {
 
 /* Container for the cards */
 /* Ensure the row centers cards if they don't fill the whole width */
-.row.g-3 {
+.row.g-5 {
     justify-content: center;
 }
 
 .booking-type-card {
-    background: #ffffff;
+    background: #817e7e;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     padding: 15px;
