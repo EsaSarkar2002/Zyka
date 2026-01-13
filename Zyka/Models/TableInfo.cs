@@ -1,22 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Zyka.Models.Enums;
 
 namespace Zyka.Models
 {
+    
     public class TableInfo
     {
 
         [Key]
         public int TableId { get; set; }
 
-        [Required]
-        public int TableNumber { get; set; }
+        [Required,StringLength(10)]
+        public string TableNumber { get; set; }
 
         [Required]
-        public int Capacity { get; set; }
+        public TableStatus Status { get; set; }
 
         [Required]
+        public TableCategory Category { get; set; }
 
-        public string Status { get; set; } //Availabe, Reserved, maintainance
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? LastUpdatedAt { get; set; } 
 
     }
 }
