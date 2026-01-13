@@ -1,5 +1,142 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Payment";
+}
+
+<style>
+    .text-dark-green {
+        color: #1a4d2e;
+    }
+
+    .bg-beige {
+        background-color: #f5f5dc;
+    }
+
+    .payment-method {
+        border: 2px solid #eee;
+        border-radius: 12px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+        .payment-method.active {
+            border-color: #1a4d2e;
+            background-color: rgba(26, 77, 46, 0.05);
+        }
+
+    .payment-icon {
+        font-size: 2rem;
+        color: #1a4d2e;
+        margin-bottom: 10px;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(45deg, #1a4d2e, #4f6f52);
+        color: white;
+        border: none;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="mb-4">
+        <a href="/Customer/Booking" class="btn btn-link text-dark-green p-0 mb-3 text-decoration-none">
+            <i class="bi bi-arrow-left"></i> Back to Booking
+        </a>
+        <h1 class="text-dark-green">Complete Your Payment</h1>
+        <p class="text-muted">Review your booking and select payment method</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 20px; border-radius: 15px;">
+                <div class="card-body">
+                    <h3 class="text-dark-green mb-4">Booking Summary</h3>
+
+                    <div class="border-bottom pb-2 mb-2">
+                        <small class="text-muted">Booking Type</small>
+                        <p class="mb-0 fw-bold text-capitalize" id="summaryType">-</p>
+                    </div>
+                    <div class="border-bottom pb-2 mb-2">
+                        <small class="text-muted">Guests</small>
+                        <p class="mb-0 fw-bold" id="summaryGuests">-</p>
+                    </div>
+                    <div class="border-bottom pb-2 mb-2">
+                        <small class="text-muted">Date</small>
+                        <p class="mb-0 fw-bold" id="summaryDate">-</p>
+                    </div>
+                    <div class="border-bottom pb-2 mb-2">
+                        <small class="text-muted">Time</small>
+                        <p class="mb-0 fw-bold" id="summaryTime">-</p>
+                    </div>
+                    <div class="border-bottom pb-2 mb-2">
+                        <small class="text-muted">Name</small>
+                        <p class="mb-0 fw-bold" id="summaryName">-</p>
+                    </div>
+
+                    <div class="bg-beige rounded p-3 mt-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Base Amount</span>
+                            <span id="baseAmount">₹0</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 pb-3 border-bottom text-muted" style="font-size: 0.8rem;">
+                            <span>Adjustable with final bill</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <strong>Total Amount</strong>
+                            <strong class="text-success fs-4" id="totalAmount">₹0</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card shadow-sm" style="border-radius: 15px;">
+                <div class="card-body">
+                    <h3 class="text-dark-green mb-4">Select Payment Method</h3>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="payment-method" data-method="upi">
+                                <i class="bi bi-phone payment-icon"></i>
+                                <p class="fw-bold text-dark-green mb-1">UPI</p>
+                                <small class="text-muted">GPay, PhonePe, Paytm</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="payment-method" data-method="card">
+                                <i class="bi bi-credit-card payment-icon"></i>
+                                <p class="fw-bold text-dark-green mb-1">Card</p>
+                                <small class="text-muted">Debit / Credit Card</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="paymentForms" class="mb-4">
+                        <div id="upiForm" style="display: none;">
+                            <label class="form-label">Enter UPI ID</label>
+                            <input type="text" class="form-control mb-3" placeholder="username@upi">
+                        </div>
+                        <div id="cardForm" style="display: none;">
+                            <input type="text" class="form-control mb-2" placeholder="Card Number">
+                            <div class="row g-2">
+                                <div class="col-6"><input type="text" class="form-control" placeholder="MM/YY"></div>
+                                <div class="col-6"><input type="password" class="form-control" placeholder="CVV"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="payBtn" class="btn btn-gradient w-100 py-3" style="display: none;">
+                        <span id="payBtnText">Pay Now</span>
+                        <div id="payBtnSpinner" class="spinner-border spinner-border-sm ms-2" style="display: none;"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Payment.js"></script>
 }

@@ -118,7 +118,6 @@ body {
     color: #1d1205;
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.65);
 }
-
     .btn-cta:hover,
     .btn-cta:focus-visible {
         background: var(--zyka-accent-hover);

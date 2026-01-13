@@ -24,6 +24,18 @@ namespace Zyka.Controllers
             return View();
         }
 
+        public IActionResult Confirmation()
+        {
+            return View();
+        }
+
+        public IActionResult Payment()
+        {
+            return View();
+        }
+
+
+
 
     }
 

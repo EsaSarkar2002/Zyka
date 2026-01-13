@@ -1,0 +1,123 @@
+﻿/* 1. Global Background & Layout */
+body, .booking-bg-container {
+    margin: 0;
+    padding: 0;
+}
+
+/* This targets your main wrapper div */
+div[style*="background"] {
+    background-attachment: fixed !important; /* Parallax effect for desktop */
+    padding-bottom: 50px;
+}
+
+/* 2. Form Container Polish */
+#bookingForm {
+    background: rgba(255, 255, 255, 0.95); /* Slight transparency */
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* 3. Booking Type Cards (The Grid) */
+/* Force 4 columns on desktop, 2 on tablet, 1 on mobile */
+.row.g-3 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.booking-type-card {
+    background: #fff;
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 15px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+    height: 100%;
+    text-align: center;
+}
+
+    .booking-type-card:hover {
+        border-color: #ffc107;
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+/* Image scaling for desktop */
+.booking-icon img {
+    width: 100%;
+    height: 120px; /* Fixed height for uniformity */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* 4. Time Slot Buttons */
+.time-slot {
+    border: 1px solid #dee2e6;
+    background: #fff;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: 0.2s;
+    font-size: 0.9rem;
+    min-width: 160px; /* Ensures buttons look uniform */
+}
+
+    .time-slot:hover, .time-slot.active {
+        background: #1a4d2e;
+        color: white !important;
+        border-color:
+    }
+
+/* Container for the cards */
+/* Ensure the row centers cards if they don't fill the whole width */
+.row.g-3 {
+    justify-content: center;
+}
+
+.booking-type-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px;
+    height: 100%; /* Keeps all cards the same height */
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+/* DESKTOP SPECIFIC POLISH */
+@media (min-width: 992px) {
+    .booking-type-card {
+        max-width: 220px; /* Prevents cards from becoming too wide on huge monitors */
+        margin: 0 auto;
+    }
+
+    .booking-icon img {
+        height: 150px; /* Taller images look better on desktop */
+        width: 100%;
+        object-fit: cover; /* Prevents image stretching */
+        border-radius: 8px;
+    }
+}
+
+/* MOBILE SPECIFIC ADJUSTMENTS */
+@media (max-width: 767px) {
+    .booking-icon img {
+        height: 100px; /* Shorter images save space on phones */
+    }
+
+    .type-label {
+        font-size: 0.9rem;
+    }
+}
+
+/* The Hover Effect for Desktop users */
+.booking-type-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-color: #1a4d2e;
+}
