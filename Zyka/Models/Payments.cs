@@ -1,34 +1,33 @@
-﻿//using System;
-//using System.ComponentModel.DataAnnotations;
-//using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Zyka.Models.Enums;
 
-//namespace Zyka.Models
-//{
-//    public class Payment
-//    {
-//        [Key]
-//        public int PaymentId { get; set; }  // PK
+namespace Zyka.Models
+{
+    public class Payment
+    {
+        [Key]
+        public int PaymentId { get; set; }
 
-//        [Required]
-//        [ForeignKey("Reservation")]
-//        public int ReservationId { get; set; }  // FK to Reservation table
+        [Required]
+        public int ReservationId { get; set; }
+        public Reservation Reservation { get; set; }
 
-//        [Required]
-//        [Column(TypeName = "decimal(10,2)")]
-//        public decimal Amount { get; set; }  // Payment Amount
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal Amount { get; set; }
 
-//        [Required]
-//        [StringLength(20)]
-//        public string PaymentMode { get; set; }  // CARD / UPI / CASH / NET BANKING
+        [Required]
+        public PaymentMethod PaymentMethod { get; set; }
 
-//        [Required]
-//        [StringLength(20)]
-//        public string PaymentStatus { get; set; }  // Success / Failed
+        [Required]
+        public PaymentStatus PaymentStatus { get; set; }
 
-//        [Required]
-//        public DateTime PaymentDate { get; set; }  // Transaction Date
+        [StringLength(100)]
+        public string? TransactionReference { get; set; }
 
-//        // Navigation Property2
-//        public Reservation Reservation { get; set; }
-//    }
-//}
+        public DateTime? PaidAt { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    }
+}

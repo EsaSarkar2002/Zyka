@@ -1,0 +1,55 @@
+﻿<div id="loginOverlay" class="login-overlay">
+    <div class="login-popup">
+
+        <!-- LEFT IMAGE PANEL -->
+        <div class="login-popup-left">
+            <img src="~/images/popupimage.jpg" alt="Welcome" class="login-left-image">
+            <div class="login-left-overlay"></div>
+
+            <div class="login-left-content">
+                <h3>Welcome Back</h3>
+                <p>
+                    Please login using your personal information<br />
+                    to stay connected with Zyka.
+                </p>
+            </div>
+        </div>
+
+        <!-- RIGHT FORM PANEL -->
+        <div class="login-popup-right">
+
+            <!-- CLOSE BUTTON -->
+            <span class="login-popup-close" onclick="closeLoginPopup()">&times;</span>
+
+            <!-- LOGO -->
+            <div class="login-logo">
+                <img src="~/images/ZYKA_logo_transparent.png" alt="Zyka Logo">
+            </div>
+
+            <!-- LOGIN FORM (UI ONLY) -->
+            <form class="login-form" onsubmit="return false;">
+                <div class="input-group-custom">
+                    <input type="email" placeholder="Email address" required />
+                </div>
+
+                <div class="input-group-custom">
+                    <input type="password" placeholder="Password" required />
+                </div>
+
+                <div class="text-end mb-3">
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+
+                <button type="button" class="login-btn">
+                    Log In
+                </button>
+
+                <p class="signup-text">
+                    Don’t have an account?
+                    <span>Signup</span>
+                </p>
+            </form>
+
+        </div>
+    </div>
+</div>
