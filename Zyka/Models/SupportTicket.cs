@@ -17,10 +17,11 @@ namespace Zyka.Models
 
         [Required]
         [StringLength(50)]
-        public string BookingReference { get; set; }   // booking id
+        public int? ReservationId { get; set; }   // booking id
+        public Reservation? Reservation { get; set; }
 
         [Required]
-        [StringLength(15)]
+        [StringLength(15),Phone]
         public string PhoneNumber { get; set; }
 
         [Required]

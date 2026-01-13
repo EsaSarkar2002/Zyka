@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using Zyka.Models.Enums;
 
 namespace Zyka.Models
 {
-    
+    [Index(nameof(TableNumber),IsUnique=true)]
     public class TableInfo
     {
 
@@ -20,7 +21,8 @@ namespace Zyka.Models
         public TableCategory Category { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? LastUpdatedAt { get; set; } 
+        public DateTime? LastUpdatedAt { get; set; }
 
+        public bool IsActive { get; set; } = true;
     }
 }

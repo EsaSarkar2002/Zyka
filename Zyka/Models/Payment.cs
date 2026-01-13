@@ -11,6 +11,7 @@ namespace Zyka.Models
 
         [Required]
         public int ReservationId { get; set; }
+        [Required]
         public Reservation Reservation { get; set; }
 
         [Required]
@@ -23,7 +24,7 @@ namespace Zyka.Models
         [Required]
         public PaymentStatus PaymentStatus { get; set; }
 
-        [StringLength(100)]
+        [StringLength(255)]
         public string? TransactionReference { get; set; }
 
         public DateTime? PaidAt { get; set; }

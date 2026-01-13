@@ -1,25 +1,23 @@
-﻿/* ===== OVERLAY ===== */
+﻿
 .login-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(2px);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 9999;
 }
 
-    /* ACTIVE */
     .login-overlay.active {
         display: flex;
     }
 
-/* ===== POPUP CARD ===== */
 .login-popup {
     width: 760px;
     max-width: 95%;
-    height: 420px;
+    height: fit-content;
     background: #ffffff;
     border-radius: 18px;
     display: flex;
@@ -27,11 +25,11 @@
     overflow: hidden;
 }
 
-/* ===== LEFT PANEL ===== */
 .login-popup-left {
     width: 45%;
     position: relative;
     color: #fff;
+
 }
 
 .login-left-image {
@@ -46,23 +44,25 @@
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .login-left-content {
     position: relative;
     z-index: 2;
+    
     text-align: center;
     padding: 40px 20px;
 }
-
-/* ===== RIGHT PANEL ===== */
 .login-popup-right {
     width: 55%;
     padding: 35px 40px;
     position: relative;
 }
 
-/* CLOSE */
 .login-popup-close {
     position: absolute;
     top: 16px;
@@ -71,7 +71,6 @@
     cursor: pointer;
 }
 
-/* LOGO */
 .login-logo {
     text-align: center;
     margin-bottom: 30px;
@@ -81,7 +80,6 @@
         height: 56px;
     }
 
-/* FORM */
 .input-group-custom {
     margin-bottom: 18px;
 }
@@ -107,5 +105,7 @@
 
 .signup-text {
     text-align: center;
+    font-size: 0.85rem;
+    color: #555;
     margin-top: 20px;
 }

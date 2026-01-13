@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using Zyka.Models.Enums;
 
 namespace Zyka.Models
 {
+    [Index(nameof(TableId), nameof(ReservationDate), nameof(TimeSlotId), IsUnique = true)]
     public class Reservation
     {
         [Key]
@@ -11,19 +14,22 @@ namespace Zyka.Models
         //User/Customer table foreign key
         [Required]
         public int CustomerId { get; set; }
+        [Required]
         public User Customer { get; set; }
 
         //TableInfo table foreign key
         [Required]
         public int TableId { get; set; }
+        [Required]
         public TableInfo Table { get; set; }
 
         //Date and TimeSlot for reservation
-        [Required]
+        [Required,Column(TypeName ="date")]
         public DateTime ReservationDate { get; set; }
 
         [Required]
         public int TimeSlotId { get; set; }
+        [Required]
         public TimeSlot TimeSlot { get; set; }
 
         //Reservation details
@@ -37,7 +43,7 @@ namespace Zyka.Models
         [Required, StringLength(100)]
         public string FullName { get; set; }
 
-        [Required, StringLength(15)]
+        [Required,Phone, StringLength(15)]
         public string MobileNumber { get; set; }
 
         [StringLength(15)]

@@ -1,10 +1,10 @@
 ﻿<div id="loginOverlay" class="login-overlay">
     <div class="login-popup">
 
-        <!-- LEFT IMAGE PANEL -->
+        
         <div class="login-popup-left">
-            <img src="~/images/popupimage.jpg" alt="Welcome" class="login-left-image">
-            <div class="login-left-overlay"></div>
+            <img src="~/images/Restaurant interior.jpg" alt="Welchihihihiome" class="login-left-image">
+            <div class="login-left-overlay">
 
             <div class="login-left-content">
                 <h3>Welcome Back</h3>
@@ -13,42 +13,68 @@
                     to stay connected with Zyka.
                 </p>
             </div>
+            </div>
         </div>
 
-        <!-- RIGHT FORM PANEL -->
-        <div class="login-popup-right">
-
-            <!-- CLOSE BUTTON -->
-            <span class="login-popup-close" onclick="closeLoginPopup()">&times;</span>
-
-            <!-- LOGO -->
+        <div class="login-popup-right">          
+            <span class="login-popup-close text-black" onclick="closeLoginPopup()">&times;</span>
+     
             <div class="login-logo">
                 <img src="~/images/ZYKA_logo_transparent.png" alt="Zyka Logo">
             </div>
 
-            <!-- LOGIN FORM (UI ONLY) -->
-            <form class="login-form" onsubmit="return false;">
-                <div class="input-group-custom">
-                    <input type="email" placeholder="Email address" required />
-                </div>
+            
+            @* LOGIN FORM *@
+<form id="loginForm" class="login-form">
+    <div class="input-group-custom">
+        <input type="email" placeholder="Email address" required />
+    </div>
 
-                <div class="input-group-custom">
-                    <input type="password" placeholder="Password" required />
-                </div>
+    <div class="input-group-custom">
+        <input type="password" placeholder="Password" required />
+    </div>
 
-                <div class="text-end mb-3">
-                    <a href="#" class="forgot-link">Forgot password?</a>
-                </div>
+    <div class="text-end mb-3">
+        <a href="#" class="forgot-link">Forgot password?</a>
+    </div>
 
-                <button type="button" class="login-btn">
-                    Log In
-                </button>
+    <button type="button" class="login-btn">
+        Log In
+    </button>
 
-                <p class="signup-text">
-                    Don’t have an account?
-                    <span>Signup</span>
-                </p>
-            </form>
+    <p class="signup-text">
+        Don’t have an account?
+        <a href="#" onclick="showSignup()">Signup</a>
+    </p>
+</form>
+
+@* SIGNUP FORM  *@
+<form id="signupForm" class="login-form" style="display:none;">
+    <div class="input-group-custom">
+        <input type="text" placeholder="Full name" required />
+    </div>
+
+    <div class="input-group-custom">
+        <input type="email" placeholder="Email address" required />
+    </div>
+
+    <div class="input-group-custom">
+        <input type="password" placeholder="Password" required />
+    </div>
+
+    <div class="input-group-custom">
+        <input type="password" placeholder="Confirm password" required />
+    </div>
+
+    <button type="button" class="login-btn">
+        Sign Up
+    </button>
+
+    <p class="signup-text">
+        Already have an account?
+        <a  href="#" onclick="showLogin()">Login</a>
+    </p>
+</form>
 
         </div>
     </div>

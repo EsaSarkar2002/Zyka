@@ -1,8 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using Zyka.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddDbContext<ZykaDbContext>(options=>options.UseSqlServer("Server=.;Database=ZykaDB;Trusted_Connection=True;MultipleActiveResultSets=true"));))
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

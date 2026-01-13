@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Zyka.Models.Enums;
 
-public class TimeSlot
+namespace Zyka.Models
+{
+    public class TimeSlot
 {
     [Key]
     public int TimeSlotId { get; set; }
@@ -20,4 +22,4 @@ public class TimeSlot
     public string DisplayText { get; set; }
 
     public bool IsActive { get; set; } = true;
-}
+}}
