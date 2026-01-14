@@ -19,7 +19,7 @@ namespace Zyka.Models
         public Reservation? Reservation { get; set; }
 
         [Required]
-        [StringLength(15),Phone]
+        [StringLength(15), Phone]
         public string PhoneNumber { get; set; }
 
         [Required]

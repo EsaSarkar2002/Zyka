@@ -1,150 +1,256 @@
-﻿/* 1. Global Background & Layout */
-body, .booking-bg-container {
-    margin: 0;
-    padding: 0;
+﻿:root {
+    --zyka-gold: #D4AF37;
+    --zyka-dark-green: #1B4332;
+    --zyka-bg-overlay: rgba(255, 255, 255, 0.85);
+    --zyka-card-bg: #ffffff;
+    --zyka-border: #dee2e6;
 }
 
-/* This targets your main wrapper div */
-div[style*="background"] {
-    background-attachment: fixed !important; /* Parallax effect for desktop */
-    padding-bottom: 50px;
+/* --- 1. Layout & Background --- */
+.zyka-booking-page {
+    background:url('../images/image background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
 }
 
-/* 2. Form Container Polish */
-#bookingForm {
-     /* Slight transparency */
-    padding: 15px;
-    border-radius: 15px;
+.zyka-booking-header {
+    background: var(--zyka-bg-overlay);
     backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-.head-class {
-    background: transparent;
-    /* Adds a modern blur effect to the background image behind the header */
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #000;
-    margin-top: 60px 0px 30px 0px;
-    text-align: center;
-    border-radius: 16px
-    margin: 30px 0px 30px 50px;
-    /* Adds a subtle border to define the shape against the background */
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid rgba(0,0,0,0.05);
+    max-width: 900px;
+    margin: 40px auto;
 }
 
-/* 3. Booking Type Cards (The Grid) */
-/* Force 4 columns on desktop, 2 on tablet, 1 on mobile */
-.row.g-5 {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+/* --- 2. Cards & Components --- */
+.zyka-form {
+    max-width: 900px;
 }
 
-.card {
-    background: transparent;
-    /* Adds a modern blur effect to the background image behind the header */
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #0
-    00;
-    max-width: 950px; /* Limits width to keep it tall */
-    margin: 0 auto; /* Centers cards in their columns */
-    border-radius: 15px;
+.zyka-booking-card {
+    border: none;
+    max-width:900px;
+    border-radius: 1.25rem;
     overflow: hidden;
     transition: transform 0.3s ease;
 }
 
-.booking-type-card {
-    background: #fff;
-    border: 2px solid #f0f0f0;
-    border-radius: 12px;
-    padding: 15px 10px 10px 0px;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    cursor: pointer;
-    height: 100%;
-    text-align: center;
+.zyka-section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-    .booking-type-card:hover {
-        border-color: #ffc107;
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    .zyka-section-title i {
+        color: var(--zyka-gold);
+        font-size: 1.5rem;
     }
 
-/* Image scaling for desktop */
-.booking-icon img {
+    .zyka-section-title h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--zyka-dark-green);
+    }
+
+/* --- 3. Booking Type Selection --- */
+.zyka-type-card {
+    background: #361509;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    height: 100%;
+}
+
+    .zyka-type-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--zyka-gold);
+    }
+
+    .zyka-type-card.active {
+        background: white;
+        border-color: var(--zyka-dark-green);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+
+.zyka-type-img img {
     width: 100%;
-    height: 120px; /* Fixed height for uniformity */
+    height: 120px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;
 }
 
-/* 4. Time Slot Buttons */
-.time-slot {
-    border: 1px solid #dee2e6;
-    background: #fff;
-    color: #333;
+/* --- 4. Inputs & Buttons --- */
+.zyka-input {
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid var(--zyka-border);
+}
+
+    .zyka-input:focus {
+        border-color: var(--zyka-dark-green);
+        box-shadow: 0 0 0 0.25rem rgba(27, 67, 50, 0.1);
+    }
+
+.zyka-time-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #666;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.zyka-time-btn {
+    background: white;
+    border: 1px solid var(--zyka-border);
     padding: 10px 15px;
     border-radius: 8px;
     transition: 0.2s;
     font-size: 0.9rem;
-    min-width: 160px; /* Ensures buttons look uniform */
+    flex-grow: 1;
 }
 
-    .time-slot:hover, .time-slot.active {
-        background: #1a4d2e;
-        color: white !important;
-        border-color:
+    .zyka-time-btn:hover, .zyka-time-btn.active {
+        background: var(--zyka-dark-green);
+        color: white;
+        border-color: var(--zyka-dark-green);
     }
 
-/* Container for the cards */
-/* Ensure the row centers cards if they don't fill the whole width */
-.row.g-5 {
-    justify-content: center;
-}
-
-.booking-type-card {
-    background: #817e7e;
-    border: 1px solid #e0e0e0;
+.zyka-btn-submit {
+    background: linear-gradient(45deg, var(--zyka-dark-green), #2d6a4f);
+    color: white;
+    border: none;
     border-radius: 12px;
-    padding: 15px;
-    height: 100%; /* Keeps all cards the same height */
-    transition: all 0.3s ease-in-out;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 20px rgba(27, 67, 50, 0.3);
+}
+
+    .zyka-btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px rgba(27, 67, 50, 0.4);
+        color: white;
+    }
+
+/* --- 5. Responsive --- */
+@media (max-width: 768px) {
+    .zyka-type-img img {
+        height: 90px;
+    }
+
+    .zyka-booking-header {
+        margin: 20px;
+        padding: 20px;
+    }
+}
+/* --- 7. Confirmation & History Page Specifics --- */
+.bg-beige {
+    background-color: var(--beige) !important;
+    border-radius: 1rem;
+}
+
+.text-dark-green {
+    color: var(--dark-green) !important;
+}
+
+.confirm-circle {
+    width: 100px;
+    height: 100px;
+    background-color: rgba(25, 135, 84, 0.1) !important;
+    border: 4px solid var(--success-green);
+    border-radius: 50%;
     display: flex;
-    flex-direction: column;
-    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
 }
 
-/* DESKTOP SPECIFIC POLISH */
-@media (min-width: 992px) {
-    .booking-type-card {
-        max-width: 220px; /* Prevents cards from becoming too wide on huge monitors */
-        margin: 0 auto;
-    }
-
-    .booking-icon img {
-        height: 150px; /* Taller images look better on desktop */
-        width: 100%;
-        object-fit: cover; /* Prevents image stretching */
-        border-radius: 8px;
-    }
+/* --- 8. History Table & Badges --- */
+.history-container {
+    padding: 2rem 0;
 }
 
-/* MOBILE SPECIFIC ADJUSTMENTS */
-@media (max-width: 767px) {
-    .booking-icon img {
-        height: 100px; /* Shorter images save space on phones */
-    }
-
-    .type-label {
-        font-size: 0.9rem;
-    }
+.history-card {
+    background: white;
+    border-radius: 1rem;
+    border: 1px solid #e9ecef;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
 }
 
-/* The Hover Effect for Desktop users */
-.booking-type-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    border-color: #1a4d2e;
+.table-history {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
+
+    .table-history thead {
+        background-color: var(--dark-green);
+        color: white;
+    }
+
+.badge-status {
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-upcoming {
+    background: rgba(45, 106, 79, 0.1);
+    color: var(--dark-green);
+}
+
+.status-completed {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.status-cancelled {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+/* --- 9. Buttons & Actions --- */
+.btn-gradient {
+    background: linear-gradient(90deg, var(--gold) 0%, var(--dark-green) 100%);
+    border: none;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s;
+    border-radius: 0.75rem;
+}
+
+.btn-gradient-green {
+    background: linear-gradient(135deg, #198754 0%, #146c43 100%);
+    color: white;
+    border: none;
+    transition: 0.3s;
+}
+
+    .btn-gradient:hover, .btn-gradient-green:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        color: white;
+    }
+
+/* --- 10. Custom Scrollbar --- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 4px;
+}
+
+

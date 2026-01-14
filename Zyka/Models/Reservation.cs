@@ -24,7 +24,7 @@ namespace Zyka.Models
         public TableInfo Table { get; set; }
 
         //Date and TimeSlot for reservation
-        [Required,Column(TypeName ="date")]
+        [Required, Column(TypeName = "date")]
         public DateTime ReservationDate { get; set; }
 
         [Required]
@@ -45,7 +45,7 @@ namespace Zyka.Models
         [Required, StringLength(100)]
         public string FullName { get; set; }
 
-        [Required,Phone, StringLength(15)]
+        [Required, Phone, StringLength(15)]
         public string MobileNumber { get; set; }
 
         [StringLength(15)]

@@ -4,7 +4,7 @@ using Zyka.Models.Enums;
 
 namespace Zyka.Models
 {
-    [Index(nameof(EmailAddress),IsUnique =true)]
+    [Index(nameof(EmailAddress), IsUnique = true)]
     public class User
     {
         [Key]

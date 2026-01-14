@@ -4,14 +4,14 @@ using Zyka.Models.Enums;
 
 namespace Zyka.Models
 {
-    [Index(nameof(TableNumber),IsUnique=true)]
+    [Index(nameof(TableNumber), IsUnique = true)]
     public class TableInfo
     {
 
         [Key]
         public int TableId { get; set; }
 
-        [Required,StringLength(10)]
+        [Required, StringLength(10)]
         public string TableNumber { get; set; }
 
         [Required]

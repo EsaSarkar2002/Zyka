@@ -5,7 +5,7 @@ namespace Zyka.Controllers
 {
     public class CustomerController : Controller
     {
-        public IActionResult AboutUs()
+        public IActionResult Reservation()
         {
             return View();
         }
