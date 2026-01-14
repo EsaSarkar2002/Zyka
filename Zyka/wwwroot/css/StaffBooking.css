@@ -1,34 +1,274 @@
-﻿
-/* =========================================
-   StaffBooking.css
-   Scope: Booking page table + pagination
-   Depends on: global tokens (:root) in base CSS
-   ========================================= */
+﻿/* ============================================================
+   STAFF PORTAL CONSOLIDATED STYLES
+   ============================================================ */
 
-/* ---------- Wrapper (optional hook if needed) ---------- */
-/* If your view uses a section wrapper, you can add a class like .booking-view to the parent.
-   Not mandatory for these styles to work. */
+/* ---------- 1. DESIGN TOKENS (GLOBAL VARIABLES) ---------- */
+:root {
+    --gold: #D4AF37;
+    --dark-green: #2C5F2D;
+    --light-green: #97BC62;
+    --beige: #F5F5DC;
+    --cream: #FAF8F3;
+    --white: #FFFFFF;
+    --gray-light: #F8F9FA;
+    --gray-medium: #6C757D;
+    --gray-dark: #495057;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
 
-/* ---------- Bookings Table Container ---------- */
+/* ---------- 2. GLOBAL RESET & LAYOUT ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--cream);
+    color: var(--gray-dark);
+    overflow-x: hidden;
+}
+
+main[role="main"] {
+    margin-left: 260px; /* Space for fixed sidebar */
+    min-height: 100vh;
+    padding: 2rem;
+    background: transparent;
+    transition: margin-left 0.25s ease;
+}
+
+/* ---------- 3. SIDEBAR & NAVIGATION ---------- */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 260px;
+    background: linear-gradient(180deg, var(--dark-green) 0%, #234a24 100%);
+    padding: 2rem 0;
+    z-index: 1000;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-brand {
+    padding: 0 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 2rem;
+}
+
+    .sidebar-brand h4 {
+        color: var(--white);
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    .sidebar-brand p {
+        color: var(--gold);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+.nav-menu {
+    list-style: none;
+}
+
+.nav-item {
+    margin-bottom: 0.5rem;
+}
+
+.nav-link-custom {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: all 0.25s ease;
+    border-left: 4px solid transparent;
+}
+
+    .nav-link-custom:hover {
+        color: var(--white);
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-link-custom.active,
+    .nav-link-custom[aria-current="page"] {
+        color: var(--white);
+        background-color: rgba(212, 175, 55, 0.18);
+        border-left-color: var(--gold);
+    }
+
+#logoutBtn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+
+    #logoutBtn:hover {
+        background-color: rgba(220, 53, 69, 0.18);
+        color: #ff4d4d;
+        border-radius: 8px;
+        padding-left: 10px;
+    }
+
+/* ---------- 4. TOP BAR & DASHBOARD COMPONENTS ---------- */
+.top-bar {
+    background: var(--white);
+    padding: 1.25rem 2rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.page-title h2 {
+    color: var(--dark-green);
+    font-size: 1.75rem;
+    margin: 0;
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.datetime-display .time {
+    font-size: 1.125rem;
+    color: var(--dark-green);
+}
+
+.datetime-display .date {
+    font-size: 0.875rem;
+    color: var(--gray-medium);
+}
+
+.staff-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: var(--gray-light);
+    border-radius: 50px;
+}
+
+.staff-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--dark-green));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+}
+
+.content-section {
+    display: none;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+}
+
+    .content-section.active {
+        display: block;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* KPI Cards */
+.kpi-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(44, 95, 45, 0.05);
+    height: 100%;
+}
+
+    .kpi-card:hover {
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-2px);
+    }
+
+    .kpi-card .icon-wrapper {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .kpi-card.primary .icon-wrapper {
+        background: rgba(44, 95, 45, 0.1);
+        color: var(--dark-green);
+    }
+
+    .kpi-card.success .icon-wrapper {
+        background: rgba(151, 188, 98, 0.2);
+        color: var(--light-green);
+    }
+
+    .kpi-card.warning .icon-wrapper {
+        background: rgba(212, 175, 55, 0.2);
+        color: var(--gold);
+    }
+
+    .kpi-card.info .icon-wrapper {
+        background: rgba(13, 110, 253, 0.1);
+        color: #0D6EFD;
+    }
+
+    .kpi-card .value {
+        font-size: 2rem;
+        color: var(--dark-green);
+    }
+
+/* ---------- 5. TABLES & BOOKINGS ---------- */
 .bookings-table-wrapper {
     background: var(--white);
     border-radius: 16px;
     box-shadow: var(--shadow);
     overflow: hidden;
-    /* spacing around the component if needed */
     margin-top: 1rem;
 }
 
-/* ---------- Table ---------- */
 .bookings-table {
     width: 100%;
-    margin: 0;
     border-collapse: separate;
-    border-spacing: 0;
-    table-layout: fixed; /* consistent column widths */
+    table-layout: fixed;
 }
 
-    /* Table Head */
     .bookings-table thead {
         background: var(--gray-light);
     }
@@ -37,90 +277,52 @@
         padding: 1rem 1.5rem;
         font-size: 0.875rem;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
         color: var(--dark-green);
         border-bottom: 2px solid #dee2e6;
-        white-space: nowrap;
     }
 
-        /* Suggested column widths (tweak if needed) */
-        .bookings-table th:nth-child(1),
-        .bookings-table td:nth-child(1) { /* Customer */
+        /* Column Widths */
+        .bookings-table th:nth-child(1) {
             width: 28%;
         }
-
-        .bookings-table th:nth-child(2),
-        .bookings-table td:nth-child(2) { /* Table Number */
+        /* Customer */
+        .bookings-table th:nth-child(2) {
             width: 12%;
         }
-
-        .bookings-table th:nth-child(3),
-        .bookings-table td:nth-child(3) { /* Booking Time */
+        /* Table No */
+        .bookings-table th:nth-child(3) {
             width: 20%;
         }
-
-        .bookings-table th:nth-child(4),
-        .bookings-table td:nth-child(4) { /* Guests */
-            width: 10%;
-            text-align: center;
-        }
-
-        .bookings-table th:nth-child(5),
-        .bookings-table td:nth-child(5) { /* Status */
+        /* Time */
+        .bookings-table th:nth-child(5) {
             width: 14%;
         }
-
-        .bookings-table th:nth-child(6),
-        .bookings-table td:nth-child(6) { /* Action */
+        /* Status */
+        .bookings-table th:nth-child(6) {
             width: 16%;
             text-align: right;
         }
+    /* Action */
 
-    /* Table Body */
     .bookings-table td {
         padding: 1rem 1.5rem;
-        vertical-align: middle;
         border-bottom: 1px solid var(--gray-light);
         color: var(--gray-dark);
     }
 
-    /* Row hover */
-    .bookings-table tbody tr {
-        transition: background 0.2s ease;
+    .bookings-table tbody tr:hover {
+        background: var(--gray-light);
     }
 
-        .bookings-table tbody tr:hover {
-            background: var(--gray-light);
-        }
-
-    /* Customer cell formatting (strong + small) */
-    .bookings-table td strong {
-        color: var(--dark-green);
-        font-weight: 600;
-    }
-
-    .bookings-table td small {
-        color: var(--gray-medium);
-        font-size: 0.8rem;
-    }
-
-    /* Guests icon + count alignment */
-    .bookings-table td i.bi-people {
-        margin-right: 0.375rem;
-        color: var(--gray-medium);
-        font-size: 1rem;
-        vertical-align: middle;
-    }
-
-/* ---------- Status Badges ---------- */
+/* Status Badges */
 .status-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 0.375rem 0.875rem;
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
-    line-height: 1;
-    white-space: nowrap;
 }
 
     .status-badge.upcoming {
@@ -128,7 +330,7 @@
         color: #0D6EFD;
     }
 
-    .status-badge.ongoing {
+    .status-badge.ongoing, .status-badge.available {
         background: rgba(151, 188, 98, 0.2);
         color: var(--dark-green);
     }
@@ -143,7 +345,51 @@
         color: #dc3545;
     }
 
-/* ---------- Action Buttons ---------- */
+    .status-badge.reserved {
+        background-color: #fff9eb;
+        color: #d4a017;
+    }
+
+    .status-badge.occupied {
+        background-color: #fff1f3;
+        color: #d63384;
+    }
+
+/* ---------- 6. GRID TABLES VIEW ---------- */
+.table-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px 40px;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .table-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
+
+.table-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--dark-green);
+    margin-bottom: 8px;
+}
+
+.table-card.status-occupied {
+    border: 1.5px solid #ffdae0;
+}
+
+/* ---------- 7. BUTTONS & PAGINATION ---------- */
 .btn-primary-custom {
     background: var(--dark-green);
     color: var(--white);
@@ -163,31 +409,9 @@
         box-shadow: var(--shadow);
     }
 
-.btn-sm-custom {
-    padding: 0.375rem 1rem;
-    font-size: 0.875rem;
-    border-radius: 6px;
-}
-
-/* Specific hook for Mark Complete button */
-.mark-complete-btn i {
-    font-size: 1rem;
-}
-
-/* Disabled state (matches your pagination disabled feel) */
-.btn-primary-custom:disabled,
-.btn-primary-custom[disabled] {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* ---------- Pagination ---------- */
 .pagination-wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
     gap: 0.5rem;
     padding: 1.5rem;
     background: var(--white);
@@ -201,58 +425,53 @@
     color: var(--dark-green);
     border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     min-width: 40px;
 }
 
-    .pagination-btn:hover:not(:disabled) {
+    .pagination-btn.active, .pagination-btn:hover:not(:disabled) {
         background: var(--dark-green);
         color: var(--white);
-        border-color: var(--dark-green);
     }
 
-    .pagination-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .pagination-btn.active {
-        background: var(--dark-green);
-        color: var(--white);
-        border-color: var(--dark-green);
-    }
-
-/* ---------- Responsive ---------- */
+/* ---------- 8. RESPONSIVE ---------- */
 @media (max-width: 992px) {
-    /* Stack action to next line on smaller screens for readability */
-    .bookings-table th:nth-child(6),
-    .bookings-table td:nth-child(6) {
-        text-align: left;
+    main[role="main"] {
+        margin-left: 240px;
+        padding: 1.5rem;
     }
 
-    .btn-sm-custom {
-        width: 100%;
+    .sidebar {
+        width: 240px;
+    }
+
+    .bookings-table th:nth-child(6), .bookings-table td:nth-child(6) {
+        text-align: left;
     }
 }
 
 @media (max-width: 768px) {
-    /* Allow wrapping of long content */
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        width: 220px;
+    }
+
+        .sidebar.sidebar-open {
+            transform: translateX(0);
+        }
+
+    main[role="main"] {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
     .bookings-table {
         table-layout: auto;
     }
-
-        .bookings-table th,
-        .bookings-table td {
-            padding: 0.75rem 1rem;
-        }
-
-            .bookings-table th:nth-child(1),
-            .bookings-table td:nth-child(1),
-            .bookings-table th:nth-child(3),
-            .bookings-table td:nth-child(3) {
-                width: auto;
-            }
 }

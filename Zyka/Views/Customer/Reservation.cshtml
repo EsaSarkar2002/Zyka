@@ -1,68 +1,103 @@
 ﻿@{
-	ViewData["Title"] = "Reservation";
-	Layout = "_Layout";
+    ViewData["Title"] = "My Reservations";
+    Layout = "_Layout";
 }
 
-<body>
-	<div class="bg-layer"></div>
-	<div class="overlay">
-		<div class="container">
+<link rel="stylesheet" href="~/css/reservation.css" />
 
-			<div class="top-header">
-				<h3 class="text-white">Zyka Restaurant</h3>
-				<p class="text-white">Your Booking History</p>
-			</div>
+<div class="zyka-reservation-page">
+    <div class="zyka-bg-layer"></div>
 
-			<div class="filter-btns text-center mb-3">
-				<button class="btn btn-outline-light filter" data-filter="all">All</button>
-				<button class="btn btn-outline-light filter" data-filter="date">❤️ Date</button>
-				<button class="btn btn-outline-light filter" data-filter="family">👨‍👩‍👧 Family</button>
-				<button class="btn btn-outline-light filter" data-filter="meeting">💼 Meeting</button>
-				<button class="btn btn-outline-light filter" data-filter="celebrate">🎉 Celebrate</button>
-			</div>
+    <div class="zyka-overlay">
+        <div class="container">
 
-			<div class="booking-card" data-category="date">
-				<p class="text-white"><b>Name:</b> Rahul Kumar</p>
-				<p class="text-white"><b>Booking ID:</b> ZYK5001</p>
-				<p class="text-white">2 Members | Date Table</p>
-				<span class="status completed">Completed</span>
-			</div>
+            <div class="zyka-header text-center">
+                <p class="text-white h3">Your Personal Booking History</p>
+            </div>
 
-			<div class="booking-card" data-category="family">
-				<p class="text-white"><b>Name:</b> Rahul Kumar</p>
-				<p class="text-white"><b>Booking ID:</b> ZYK5002</p>
-				<p class="text-white">4 Members | Family Table</p>
-				<span class="status upcoming">Upcoming</span>
-			</div>
+            <nav class="zyka-filter-nav d-flex justify-content-center flex-wrap gap-2 mb-5">
+                <button class="btn zyka-filter-btn active" data-filter="all">All Bookings</button>
+                <button class="btn zyka-filter-btn" data-filter="date">❤️ Date</button>
+                <button class="btn zyka-filter-btn" data-filter="family">👨‍👩‍👧 Family</button>
+                <button class="btn zyka-filter-btn" data-filter="meeting">💼 Meeting</button>
+                <button class="btn zyka-filter-btn" data-filter="celebrate">🎉 Celebrate</button>
+            </nav>
 
-			<div class="booking-card" data-category="meeting">
-				<p class="text-white"><b>Name:</b> Rahul Kumar</p>
-				<p class="text-white"><b>Booking ID:</b> ZYK5003</p>
-				<p class="text-white">3 Members | Meeting Table</p>
-				<span class="status cancelled">Cancelled</span>
-			</div>
+            <div class="zyka-booking-list">
+                <article class="zyka-card" data-category="date">
+                    <div class="zyka-card-content">
+                        <h5 class="zyka-card-name">Rahul Kumar</h5>
+                        <p class="zyka-card-id">ID: <span>ZYK5001</span></p>
+                        <p class="zyka-card-info">2 Members | Date Table</p>
+                    </div>
+                    <div class="zyka-card-status">
+                        <span class="zyka-badge status-completed">Completed</span>
+                    </div>
+                </article>
 
-			<div class="booking-card" data-category="celebrate">
-				<p class="text-white"><b>Name:</b> Rahul Kumar</p>
-				<p class="text-white"><b>Booking ID:</b> ZYK5004</p>
-				<p class="text-white">6 Members | Celebrate Table</p>
-				<span class="status completed">Completed</span>
-			</div>
+                <article class="zyka-card" data-category="family">
+                    <div class="zyka-card-content">
+                        <h5 class="zyka-card-name">Rahul Kumar</h5>
+                        <p class="zyka-card-id">ID: <span>ZYK5002</span></p>
+                        <p class="zyka-card-info">4 Members | Family Table</p>
+                    </div>
+                    <div class="zyka-card-status">
+                        <span class="zyka-badge status-upcoming">Upcoming</span>
+                    </div>
+                </article>
 
-		</div>
-	</div>
-	@section Scripts{
-		
+                <article class="zyka-card" data-category="meeting">
+                    <div class="zyka-card-content">
+                        <h5 class="zyka-card-name">Rahul Kumar</h5>
+                        <p class="zyka-card-id">ID: <span>ZYK5003</span></p>
+                        <p class="zyka-card-info">3 Members | Meeting Table</p>
+                    </div>
+                    <div class="zyka-card-status">
+                        <span class="zyka-badge status-cancelled">Cancelled</span>
+                    </div>
+                </article>
 
-		<script>
-		document.querySelectorAll('.filter').forEach(btn=>{
-		btn.addEventListener('click',function(){
-		const f=this.getAttribute('data-filter');
-		document.querySelectorAll('.booking-card').forEach(card=>{
-		card.style.display=(f=="all"||card.getAttribute('data-category')==f)?"block":"none";
-		});
-		});
-		});
-		</script>
-	}
-</body>
+                <article class="zyka-card" data-category="celebrate">
+                    <div class="zyka-card-content">
+                        <h5 class="zyka-card-name">Rahul Kumar</h5>
+                        <p class="zyka-card-id">ID: <span>ZYK5004</span></p>
+                        <p class="zyka-card-info">6 Members | Celebrate Table</p>
+                    </div>
+                    <div class="zyka-card-status">
+                        <span class="zyka-badge status-completed">Completed</span>
+                    </div>
+                </article>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filters = document.querySelectorAll('.zyka-filter-btn');
+            const cards = document.querySelectorAll('.zyka-card');
+
+            filters.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update Active Button State
+                    filters.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Filter Logic
+                    const category = this.getAttribute('data-filter');
+
+                    cards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+                        if (category === "all" || cardCategory === category) {
+                            card.style.display = "flex"; // Using flex to match card layout
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

@@ -1,41 +1,70 @@
 ﻿@{
-    ViewData["Title"] = "AboutUs";
+    ViewData["Title"] = "About Us";
     Layout = "_Layout";
 }
 
-<div class="zyka-about-page">
-    <section class="zyka-section bg-black zyka-hero">
-        <div class="zyka-container">
-            <h1 class="zyka-title-large text-white">About Us</h1>
-        </div>
-    </section>
+<div class="zyka-about-hero">
+    <div class="container text-center text-white">
+        <span class="text-uppercase tracking-widest fw-bold zyka-gold-text">Est. 1998</span>
+        <h1 class="display-2 fw-bold">A Symphony of Spices</h1>
+        <p class="lead italic">Defining the fine art of modern Indian dining</p>
+    </div>
+</div>
 
-    <section class="zyka-section zyka-content-white">
-        <div class="zyka-container">
-            <h2 class="zyka-heading">Get Ready for the Next Level at Zyka!</h2>
-            <div class="zyka-description">
-                <p class="text-white">Craving an unforgettable culinary experience with your gang? Since our inception, <strong>Zyka</strong> has been delighting food lovers with our one-of-a-kind dining adventure. With a menu boasting over 150+ signature dishes, including authentic tandoors and interactive live counters, we’re the perfect venue for any celebration — be it an office outing, a birthday bash, an anniversary, or a long-awaited reunion with friends.</p>
-
-                <p class="text-white">Our team is here to ensure your special occasion is nothing short of magical! Whether you're a vegetarian, a meat lover, or looking for gluten-free options, our diverse menu features a global array of flavors with a focus on Indian, Pan-Asian, and Mediterranean cuisines.</p>
-
-                <p class="text-white">Stay tuned—something new and exciting is on the horizon at Zyka. We can't wait to share it with you!</p>
+<div class="container py-5">
+    <div class="row align-items-center mb-5 pb-lg-5">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+            <h2 class="zyka-title-gold">The Zyka Philosophy</h2>
+            <h3 class="zyka-text-dark mb-4">Beyond Food. <br />An Awakening of Senses.</h3>
+            <p class="zyka-prose">
+                At Zyka, we believe that a meal is more than just sustenance; it is a ritual.
+                Born from the ancient kitchens of the royal courts and refined by modern culinary
+                techniques, our menu is a love letter to the heritage of India.
+            </p>
+            <p class="zyka-prose">
+                We don't just source ingredients; we hunt for stories. From the saffron fields of
+                Kashmir to the pepper plantations of Kerala, every element on your plate has been
+                selected for its purity and soul.
+            </p>
+            <div class="mt-4">
+                <a href="/Menu" class="btn zyka-btn-gold">Explore Our Menu</a>
             </div>
         </div>
-    </section>
-
-    <section class="zyka-section zyka-live-counters">
-        <div class="zyka-container">
-            <h2 class="zyka-heading-light">Live Counters: Customized Delights</h2>
-            <p class="zyka-description-light">
-                Experience the magic of Zyka’s live counters—our specialty that brings global dishes to life with a personal twist! At our live counters, choose your ingredients and watch as our skilled chefs prepare and deliver your customized dish, right to your table.
-            </p>
-
-            <div class="zyka-video-wrapper">
-                <iframe src="https://www.youtube.com/embed/IMHndOv12W4?controls=0&rel=0&autoplay=1&mute=1&loop=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="col-lg-6">
+            <div class="zyka-image-stack">
+                <img src="~/images/interior-luxury.jpg" alt="Zyka Ambience" class="img-main rounded-4 shadow-lg">
+                <img src="~/images/spice-close-up.jpg" alt="Fresh Spices" class="img-accent rounded-4 shadow-md d-none d-md-block">
             </div>
-
-            <p class="zyka-description-light" style="margin-top: 20px;">
-                Craving pasta with extra garlic? Prefer your stir-fry with a specific spice level? You choose, and we’ll cook it exactly how you like it. Enjoy a personalized culinary experience like no other!
-            </p>
         </div>
+    </div>
+
+    <div class="zyka-glass-container p-5 rounded-5 mb-5 text-white">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Our Three Pillars</h2>
+            <div class="gold-divider mx-auto"></div>
+        </div>
+        <div class="row text-center g-4">
+            <div class="col-md-4">
+                <div class="zyka-pillar-card">
+                    <div class="pillar-icon-box">01</div>
+                    <h4>Heritage</h4>
+                    <p>Preserving the 5,000-year-old secrets of the 'Vedas' through traditional slow-cooking methods.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="zyka-pillar-card">
+                    <div class="pillar-icon-box">02</div>
+                    <h4>Innovation</h4>
+                    <p>Reimagining classic profiles with avant-garde textures and breathtaking presentation.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="zyka-pillar-card">
+                    <div class="pillar-icon-box">03</div>
+                    <h4>Purity</h4>
+                    <p>Zero artificial colors. Zero compromise. Only cold-pressed oils and farm-to-table produce.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

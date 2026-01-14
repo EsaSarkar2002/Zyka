@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using Zyka.Models.Enums;
 
 namespace Zyka.Models
 {
+    [Index(nameof(EmailAddress), IsUnique = true)]
     public class User
     {
         [Key]
@@ -19,13 +21,15 @@ namespace Zyka.Models
 
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Email Address")] //Validation for email format
-        [StringLength(40)]
-        public string EmailAdress { get; set; }
+        [StringLength(150)]
+        public string EmailAddress { get; set; }
 
         [Required]
-        public UserRole Role { get; set; }
+        public UserRole Role { get; set; } = UserRole.Customer;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? LastUpdatedAt { get; set; }
+
+        public bool IsActive { get; set; } = true;
     }
 }

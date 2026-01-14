@@ -4,7 +4,7 @@ namespace Zyka.Controllers
 {
     public class CustomerController : Controller
     {
-        public IActionResult AboutUs()
+        public IActionResult Reservation()
         {
             return View();
         }
@@ -14,7 +14,7 @@ namespace Zyka.Controllers
             return View();
         }
 
-        public IActionResult Reservation()
+        public IActionResult AboutUs()
         {
             return View();
         }

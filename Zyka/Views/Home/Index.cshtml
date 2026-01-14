@@ -1,30 +1,29 @@
 ﻿@{
     ViewData["Title"] = "Zyka | Restaurant table Booking";
 }
-
 <main>
     <section class="hero-section">
         <img src="~/images/food123.jpg" alt="Zyka food background" class="hero-bg-image">
         <div class="hero-overlay"></div>
         <div class="hero-inner" id="hero-content">
-            <h1 class="hero-brand">ZYKA</h1>
-            <p class="hero-tagline">Food made with love</p>
-            <p class="hero-sub">Craving something?</p>
-            <a href="/Customer/Booking" class="btn btn-cta">
+            <h1 class="hero-brand" id="hero-title">ZYKA</h1>
+            <p class="hero-tagline">Food made with love</p>           
+               <p class="hero-sub">Craving something?</p>
+               <a href="/Customer/Booking" class="btn btn-cta">
 
                 Book Now
-            </a>
-            <div class="scroll-hint mt-4">
-                <span>Scroll for more</span>
-                <a href="#feed" class="scroll-arrow">
-                    <span class="scroll-arrow-icon">&darr;</span>
-                </a>
-            </div>
+               </a>
+               <div class="scroll-hint mt-4">
+                   <span>Scroll for more</span>
+                   <a href="#feed" class="scroll-arrow">
+                       <span class="scroll-arrow-icon">&darr;</span>
+                   </a>
+               </div>
         </div>
     </section>
 
     <!-- FEED SECTION (DATE, FAMILY, CELEBRITY, PROFESSIONAL, etc.) -->
-    <section id="feed" class="feed-wrapper container bg-black">
+    <section id="feed" class="feed-wrapper container">
         <div class="feed-header">
             <h2>Moments at Zyka</h2>
             <p>From first dates to big wins at work, explore how Zyka becomes part of every story.</p>
@@ -37,7 +36,7 @@
                 </div>
                 <div class="col-md-7">
                     <div class="feed-body">
-                        <div class="feed-label">Date Night</div>
+                        <div class="feed-label text-white pt-5 h3">Date Night</div>
                         <h3 class="feed-title h5">Cozy corners made for two</h3>
                         <p class="feed-text">
                             Reserve intimate seating with soft music, warm lighting, and a curated menu
@@ -47,19 +46,13 @@
                 </div>
             </div>
         </article>
-        <!-- Text row -->
-        <section class="feed-text-row">
-            <p>
-                Whether it’s your first visit or your fiftieth, Zyka keeps your table ready,
-                your stories flowing, and your plates full of comfort.
-            </p>
-        </section>
+       
         <!-- Family image right -->
         <article class="feed-item">
             <div class="row g-0 align-items-stretch">
                 <div class="col-md-7 order-2 order-md-1">
                     <div class="feed-body">
-                        <div class="feed-label">Family Time</div>
+                        <div class="feed-label text-white pt-5 h3">Family Time</div>
                         <h3 class="feed-title h5">Room for every laugh</h3>
                         <p class="feed-text">
                             Big tables, sharable platters, and kid-friendly favorites make sure
@@ -81,7 +74,7 @@
                 </div>
                 <div class="col-md-7">
                     <div class="feed-body">
-                        <div class="feed-label">Celebrity Visits</div>
+                        <div class="feed-label text-white pt-5 h3">Celebrity Visits</div>
                         <h3 class="feed-title h5">Where stars feel at home</h3>
                         <p class="feed-text">
                             Artists, creators, and public figures choose Zyka for its balance of
@@ -96,7 +89,7 @@
             <div class="row g-0 align-items-stretch">
                 <div class="col-md-7">
                     <div class="feed-body">
-                        <div class="feed-label">Professional Meets</div>
+                        <div class="feed-label text-white pt-5 h3">Professional Meets</div>
                         <h3 class="feed-title h5">Host your next big idea</h3>
                         <p class="feed-text">
                             Private seating, reliable service, and custom menus make Zyka a natural
@@ -119,7 +112,7 @@
                 </div>
                 <div class="col-md-7">
                     <div class="feed-body">
-                        <div class="feed-label">Events</div>
+                        <div class="feed-label text-white pt-5 h3">Events</div>
                         <h3 class="feed-title h5">Celebrate every milestone</h3>
                         <p class="feed-text">
                             Birthdays, anniversaries, and special occasions become effortless with
@@ -135,7 +128,7 @@
                 <!-- Text Left -->
                 <div class="col-md-7">
                     <div class="feed-body">
-                        <div class="feed-label">Signature Dishes</div>
+                        <div class="feed-label text-white pt-5 h3">Signature Dishes</div>
                         <h3 class="feed-title h5">Plates you’ll remember</h3>
                         <p class="feed-text">
                             From slow-cooked curries to sizzling grills, each dish is created with fresh
