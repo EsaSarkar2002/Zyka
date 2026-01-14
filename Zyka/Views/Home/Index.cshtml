@@ -1,4 +1,6 @@
-﻿@{
+﻿
+using Zyka.Models;
+@{
     ViewData["Title"] = "Zyka | Restaurant table Booking";
 }
 
@@ -10,7 +12,7 @@
             <h1 class="hero-brand">ZYKA</h1>
             <p class="hero-tagline">Food made with love</p>
             <p class="hero-sub">Craving something?</p>
-            <a href="/Customer/Booking" class="btn btn-cta">
+            <a class="btn btn-cta" id="bookNowBtn" asp-controller="Reservation" asp-action="Index">
 
                 Book Now
             </a>
@@ -229,3 +231,27 @@
   
 
 </main>
+@section Scripts
+{
+    <script src="~/js/loginPopup.js" asp-append-version="true"></script>
+        <script>
+    const isAuthenticated = @(User.Identity.IsAuthenticated.ToString().ToLower());
+
+    if(!isAuthenticated && !sessionStorage.getItem("loginPopupShown"))
+    {
+        openLoginPopup();
+        sessionStorage.getItem("loginPopupShown","true");
+    }
+
+    document.getElementById("bookNowBtn")?.addEventListener("click", function (e) {
+        e.preventDefault(); // stop default navigation if any
+        console.log(isAuthenticated);
+        if (isAuthenticated) {
+            window.location.href = "/Reservation";
+        } 
+        else {
+            openLoginPopup();
+        }
+    });
+</script>
+}

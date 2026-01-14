@@ -15,8 +15,6 @@ namespace Zyka.Models
         [StringLength(100)]
         public string CustomerName { get; set; }
 
-        [Required]
-        [StringLength(50)]
         public int? ReservationId { get; set; }   // booking id
         public Reservation? Reservation { get; set; }
 

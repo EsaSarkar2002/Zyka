@@ -1,81 +1,83 @@
-﻿<div id="loginOverlay" class="login-overlay">
-    <div class="login-popup">
+﻿using Zyka.Models;
 
-        
-        <div class="login-popup-left">
-            <img src="~/images/Restaurant interior.jpg" alt="Welchihihihiome" class="login-left-image">
-            <div class="login-left-overlay">
+@if (User?.Identity?.IsAuthenticated == false)
+{
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-popup">
 
-            <div class="login-left-content">
-                <h3>Welcome Back</h3>
-                <p>
-                    Please login using your personal information<br />
-                    to stay connected with Zyka.
-                </p>
+            <div class="login-popup-left">
+                <img src="~/images/Restaurant interior.jpg" alt="Welchihihihiome" class="login-left-image">
+                <div class="login-left-overlay">
+
+                    <div class="login-left-content">
+                        <h3>Welcome Back</h3>
+                        <p>
+                            Please login using your personal information<br />
+                            to stay connected with Zyka.
+                        </p>
+                    </div>
+                </div>
             </div>
+
+            <div class="login-popup-right">
+                <span class="login-popup-close text-black" onclick="closeLoginPopup()">&times;</span>
+
+                <div class="login-logo">
+                    <img src="~/images/ZYKA_logo_transparent.png" alt="Zyka Logo">
+                </div>
+
+                @* LOGIN FORM *@
+                <form id="loginForm" class="login-form" method="post" action="Account/Login">
+                    <div class="input-group-custom">
+                        <input type="email" placeholder="Email address" name="Email" required />
+                    </div>
+
+                    <div class="input-group-custom">
+                        <input type="password" placeholder="Password" name="Password" required />
+                    </div>
+
+                    <div class="text-end mb-3">
+                        <a href="#" class="forgot-link">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="login-btn">
+                        Log In
+                    </button>
+
+                    <p class="signup-text">
+                        Don’t have an account?
+                        <a href="#" onclick="showSignup()">Signup</a>
+                    </p>
+                </form>
+
+                @* SIGNUP FORM *@
+                <form method="post" action="/Account/Register" id="signupForm" class="login-form" style="display:none;">
+                    <div class="input-group-custom">
+                        <input type="text" name="UserName" placeholder="Full name" required />
+                    </div>
+
+                    <div class="input-group-custom">
+                        <input type="email" name="Email" placeholder="Email address" required />
+                    </div>
+
+                    <div class="input-group-custom">
+                        <input type="password" name="Password" placeholder="Password" required />
+                    </div>
+
+                    <div class="input-group-custom">
+                        <input type="password" name="ConfirmPassword" placeholder="Confirm password" required />
+                    </div>
+
+                    <button type="submit" class="login-btn">
+                        Sign Up
+                    </button>
+                    <p class="signup-text">
+                        Already have an account?
+                        <a href="#" onclick="showLogin()">Login</a>
+                    </p>
+                </form>
+
             </div>
         </div>
-
-        <div class="login-popup-right">          
-            <span class="login-popup-close text-black" onclick="closeLoginPopup()">&times;</span>
-     
-            <div class="login-logo">
-                <img src="~/images/ZYKA_logo_transparent.png" alt="Zyka Logo">
-            </div>
-
-            
-            @* LOGIN FORM *@
-<form id="loginForm" class="login-form">
-    <div class="input-group-custom">
-        <input type="email" placeholder="Email address" required />
     </div>
-
-    <div class="input-group-custom">
-        <input type="password" placeholder="Password" required />
-    </div>
-
-    <div class="text-end mb-3">
-        <a href="#" class="forgot-link">Forgot password?</a>
-    </div>
-
-    <button type="button" class="login-btn">
-        Log In
-    </button>
-
-    <p class="signup-text">
-        Don’t have an account?
-        <a href="#" onclick="showSignup()">Signup</a>
-    </p>
-</form>
-
-@* SIGNUP FORM  *@
-<form id="signupForm" class="login-form" style="display:none;">
-    <div class="input-group-custom">
-        <input type="text" placeholder="Full name" required />
-    </div>
-
-    <div class="input-group-custom">
-        <input type="email" placeholder="Email address" required />
-    </div>
-
-    <div class="input-group-custom">
-        <input type="password" placeholder="Password" required />
-    </div>
-
-    <div class="input-group-custom">
-        <input type="password" placeholder="Confirm password" required />
-    </div>
-
-    <button type="button" class="login-btn">
-        Sign Up
-    </button>
-
-    <p class="signup-text">
-        Already have an account?
-        <a  href="#" onclick="showLogin()">Login</a>
-    </p>
-</form>
-
-        </div>
-    </div>
-</div>
+}

@@ -36,6 +36,8 @@ namespace Zyka.Models
         [Required]
         public ReservationStatus Status { get; set; }
 
+        public Payment Payment { get; set; }
+
         [Required,Range(1,20)]
         public int NumberOfGuests { get; set; }
 

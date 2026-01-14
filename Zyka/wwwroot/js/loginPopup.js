@@ -1,14 +1,26 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
-    openLoginPopup();
-});
+﻿//document.addEventListener('DOMContentLoaded', function () {
+//    let authValue = false;
+//    const body = document.body;
+//    if (body && body.dataset && typeof body.dataset.authenticated !== 'undefined') {
+//        const val = body.dataset.authenticated;
+//        authValue = val === 'true';
+//    }
+//    if (!authValue) {
+//        openLoginPopup();
+//    }
+//});
 
 function openLoginPopup() {
-    document.getElementById("loginOverlay").classList.add("active");
+    const overlay = document.getElementById("loginOverlay");
+    if (!overlay) return;
+    overlay.classList.add("active");
 }
 
 function closeLoginPopup() {
-    document.getElementById("loginOverlay")
-        .classList.remove("active");
+    const overlay = document.getElementById("loginOverlay");
+    if (!overlay) return;
+    overlay.classList.remove("active");
+    //overlay.style.display = "none";
 }
 
 function showSignup() {

@@ -5,8 +5,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ZykaDbContext>(options=>options.UseSqlServer("Server=.;Database=ZykaDB;Trusted_Connection=True;MultipleActiveResultSets=true"));))
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ZykaDbContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddAuthentication("ZykaCookie")
+    .AddCookie("ZykaCookie", options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
+
 var app = builder.Build();
+
+using(var scope=app.Services.CreateScope())
+{
+    var dbContext=scope.ServiceProvider.GetRequiredService<ZykaDbContext>();
+    DbSeeder.Seed(dbContext);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -21,6 +37,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

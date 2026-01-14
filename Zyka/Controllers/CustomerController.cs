@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Zyka.Controllers
 {
@@ -14,28 +15,10 @@ namespace Zyka.Controllers
             return View();
         }
 
-        public IActionResult Reservation()
-        {
-            return View();
-        }
-
-        public IActionResult Booking()
-        {
-            return View();
-        }
-
-        public IActionResult Confirmation()
-        {
-            return View();
-        }
-
-        public IActionResult Payment()
-        {
-            return View();
-        }
-
-
-
+        //public IActionResult Reservation()
+        //{
+        //    return View();
+        //}
 
     }
 

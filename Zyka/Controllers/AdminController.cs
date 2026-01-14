@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zyka.Models.DTOs;
 using Zyka.Models.Enums;
@@ -6,32 +7,28 @@ namespace Zyka.Controllers
 {
     public class AdminController : Controller
     {
+        [Authorize(Roles ="Admin")]
         public IActionResult Dashboard()
         {
-            ViewData["ActiveMenu"] = "Dashboard";
             return View(); // by view() ASP.NET will find a view whose name is same as the action name(i.e, Dashboard here). Like it'll search for Dashboard.cshtml
         }
         public IActionResult Bookings()
         {
-            ViewData["ActiveMenu"] = "Bookings";
             ViewBag.Bookings = GetBookings();
             return View();
         }
         public IActionResult History()
         {
-            ViewData["ActiveMenu"] = "History";
             ViewBag.Bookings = GetBookings();
             return View();
         }
 
         public IActionResult TableCategories()
         {
-            ViewData["ActiveMenu"] = "Tables";
             return View();
         }
         public IActionResult TableList(TableCategory category)
         {
-            ViewData["ActiveMenu"] = "Tables";
             ViewBag.Category = category;
 
             // dummy data for now

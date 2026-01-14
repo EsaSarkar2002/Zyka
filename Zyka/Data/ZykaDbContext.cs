@@ -25,6 +25,7 @@ namespace Zyka.Data
             modelBuilder.Entity<User>().HasIndex(u => u.EmailAddress).IsUnique();
             modelBuilder.Entity<TableInfo>().HasIndex(t => t.TableNumber).IsUnique();
             modelBuilder.Entity<Reservation>().HasIndex(r=>new {r.TableId,r.ReservationDate,r.TimeSlotId}).IsUnique();
+            modelBuilder.Entity<Payment>().HasOne(p => p.Reservation).WithOne(r => r.Payment).HasForeignKey<Payment>(p => p.ReservationId);
         }
     }
 }
