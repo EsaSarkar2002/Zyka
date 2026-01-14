@@ -1,7 +1,7 @@
 ﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-:root {
+/*:root {
     --zyka-bg-overlay: rgba(0, 0, 0, 0.55);
     --zyka-accent: #ffb33b;
     --zyka-accent-hover: #ff9a00;
@@ -10,7 +10,7 @@ for details on configuring this project to bundle and minify static web assets. 
     --zyka-card-bg: #15151f;
     --zyka-font-display: "Playfair Display", "Times New Roman", serif;
     --zyka-font-body: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
+}*/
 
 /** {
     box-sizing: border-box;
@@ -28,7 +28,7 @@ body {
 }*/
 
 /* NAVBAR */
-.navbar {
+/*.navbar {
     background: rgba(5, 7, 9, 0.92);
     backdrop-filter: blur(12px);
     font-family: var(--zyka-font-body);
@@ -49,4 +49,4 @@ body {
 .navbar-nav .nav-link:focus,
 .navbar-nav .nav-link:hover {
     color: var(--zyka-accent) !important;
-}
+}*/

@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-
 using Zyka.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,23 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-builder.Services.AddDbContext<ZykaDbContext>(options => options.UseSqlServer(connectionString));
-
-builder.Services.AddAuthentication("ZykaCookie")
-
-    .AddCookie("ZykaCookie", options =>
-
-    {
-
-        options.LoginPath = "/Account/Login";
-
-        options.AccessDeniedPath = "/Account/AccessDenied";
-
-    });
-
+builder.Services.AddDbContext<ZykaDbContext>(options=>options.UseSqlServer("Server=.;Database=ZykaDB;Trusted_Connection=True;MultipleActiveResultSets=true"));))
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
