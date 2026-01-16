@@ -1,6 +1,4 @@
-﻿
-using Zyka.Models;
-@{
+﻿@{
     ViewData["Title"] = "Zyka | Restaurant table Booking";
 }
 <main>
@@ -11,7 +9,7 @@ using Zyka.Models;
             <h1 class="hero-brand">ZYKA</h1>
             <p class="hero-tagline">Food made with love</p>
             <p class="hero-sub">Craving something?</p>
-            <a class="btn btn-cta" id="bookNowBtn" asp-controller="Reservation" asp-action="Index">
+            <a class="btn btn-cta" id="bookNowBtn" asp-controller="Customer" asp-action="Reservation">
 
                 Book Now
                </a>
@@ -240,7 +238,7 @@ using Zyka.Models;
         e.preventDefault(); // stop default navigation if any
         console.log(isAuthenticated);
         if (isAuthenticated) {
-            window.location.href = "/Reservation";
+            window.location.href = "Customer/Reservation";
         } 
         else {
             openLoginPopup();

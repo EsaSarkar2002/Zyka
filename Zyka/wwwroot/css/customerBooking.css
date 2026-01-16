@@ -121,6 +121,11 @@
         color: white;
         border-color: var(--zyka-dark-green);
     }
+.zyka-time-btn.disabled{
+    pointer-events:none;
+    opacity:0.4;
+    background-color:#ccc;
+}
 
 .zyka-btn-submit {
     background: linear-gradient(45deg, var(--zyka-dark-green), #2d6a4f);

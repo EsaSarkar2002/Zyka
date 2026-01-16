@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Zyka.Data;
+using Zyka.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddControllersWithViews();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ZykaDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<ITableAvailabilityService, TableAvailabilityService>();
 
 builder.Services.AddAuthentication("ZykaCookie")
     .AddCookie("ZykaCookie", options =>

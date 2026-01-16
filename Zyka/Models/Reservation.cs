@@ -14,7 +14,7 @@ namespace Zyka.Models
         //User/Customer table foreign key
         [Required]
         public int CustomerId { get; set; }
-        [Required]
+        [Required,ForeignKey(nameof(CustomerId))]
         public User Customer { get; set; }
 
         //TableInfo table foreign key
@@ -53,5 +53,6 @@ namespace Zyka.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? LastUpdatedAt { get; set; }
+        public int UserId { get; internal set; }
     }
 }

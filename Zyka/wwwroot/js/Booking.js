@@ -1,73 +1,151 @@
-﻿let selectedType = '';
-let selectedTime = '';
+﻿let selectedTime = '';
+let selectedCategory = null;
+let selectedDate = '';
 
 $(document).ready(function () {
-    // 1. RELOAD FIX: Temporary bypass for testing
-    // Agar aap login nahi ho phir bhi page khulega
-    if (!localStorage.getItem('userType')) {
-        localStorage.setItem('userType', 'customer');
-    }
-
-    // Set min date to today
+    // Set min date = today
     const today = new Date().toISOString().split('T')[0];
     $('#bookingDate').attr('min', today);
 
-    // Booking type selection
-    $('.booking-type-card').click(function () {
-        $('.booking-type-card').removeClass('active border-primary').css('border', 'none');
-        $(this).addClass('active').css('border', '2px solid #1a4d2e');
+    $('.zyka-type-card').on('click', function () {
+        $('.zyka-type-card')
+            .removeClass('active')
+            .css('border', 'none');
 
-        selectedType = $(this).data('type');
+        $(this)
+            .addClass('active')
+            .css('border', '2px solid #1a4d2e');
+
+        selectedCategory = Number($(this).data('type'));
         const seats = Number($(this).data('seats'));
+
         const min = Number($(this).data('min'));
         const max = Number($(this).data('max'));
 
         $('#seatingCapacity').val(seats).attr('min', min).attr('max', max);
         $('#seatingSection').fadeIn();
         $('#typeError').hide();
+
+        console.log('type selected:', selectedCategory);
+        tryFetchAvailability();
     });
 
-    // Time slot selection
-    $('.time-slot').click(function () {
-        $('.time-slot').removeClass('btn-success text-white').addClass('btn-outline-secondary');
-        $(this).removeClass('btn-outline-secondary').addClass('btn-success text-white');
-        selectedTime = $(this).data('time');
-        $('#timeError').hide();
+    $('#bookingDate').on('change', function () {
+        selectedDate = $(this).val();
+        console.log('date selected:', selectedDate);
+        tryFetchAvailability();
     });
 
-    // Process to Payment Button Logic
-    // Form submit ki jagah hum direct ID use karenge taaki button pakka chale
-    $('#submitBtn, #bookingForm').on('click submit', function (e) {
-        // Agar submit event hai toh default action roko
-        if (e.type === 'submit') e.preventDefault();
+    function tryFetchAvailability() {
+        const date = $('#bookingDate').val();
+        console.log('tryFetchAvailability start', { date: date, selectedCategory: selectedCategory });
 
-        // Agar click event hai aur wo form submit wala button nahi hai toh manual handle karo
-        if (e.target.id === 'submitBtn' || e.type === 'submit') {
+        if (!date || selectedCategory == null) {
+            console.log('tryFetchAvailability aborted: missing date or category', { date, selectedCategory });
+            return;
+        }
 
-            let isValid = true;
-            if (!selectedType) { alert('Please select a booking type'); isValid = false; }
-            if (!$('#bookingDate').val()) { $('#bookingDate').addClass('is-invalid'); isValid = false; }
-            if (!selectedTime) { alert('Please select a time slot'); isValid = false; }
-            if (!$('#customerName').val()) { $('#customerName').addClass('is-invalid'); isValid = false; }
+        $.ajax({
+            url: '/Customer/GetAvailableTimeSlots',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ reservationDate: date, category: selectedCategory }),
+            success: function (response) {
+                console.log('GetAvailableTimeSlots success:', response);
+                updateTimeSlots(response);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('GetAvailableTimeSlots error:', textStatus, errorThrown, jqXHR);
+            }
+        });
+    }
 
-            if (!isValid) return false;
+    function updateTimeSlots(data) {
+        console.log('Updating slots with:', data);
+        $('.zyka-time-btn').each(function () {
+            const slotId = Number($(this).data('timeslotid'));
+            const slot = data.find(x => x.timeSlotId === slotId);
+            if (!slot || slot.isAvailabel === false) {
+                $(this).addClass('disabled').prop('disabled', true).removeClass('btn-success').addClass('btn-outline-secondary');
+            }
+            else {
+                $(this).removeClass('disabled').prop('disabled', false);
+            }
+        });
+    }
 
-            const bookingData = {
-                bookingType: selectedType,
-                seatingCapacity: $('#seatingCapacity').val(),
-                date: $('#bookingDate').val(),
-                timeSlot: selectedTime,
-                customerName: $('#customerName').val().trim(),
+    /* TIME SLOT SELECTION */
+    $('.zyka-time-btn').on('click', function () {
+        if ($(this).hasClass('disabled'))
+        {
+            return;
+        }
+        $('.zyka-time-btn')
+            .removeClass('btn-success text-white')
+            .addClass('btn-outline-secondary');
+
+        $(this)
+            .removeClass('btn-outline-secondary')
+            .addClass('btn-success text-white');
+
+        selectedTime = $(this).data('timeslotid');
+        console.log(selectedTime);
+    });
+
+    
+
+
+    /* FORM SUBMIT */
+    $('#bookingForm').on('submit', function (e) {
+        e.preventDefault();
+        console.log({
+            reservationDate: selectedDate,
+            timeSlotId: selectedTime,
+            category: selectedCategory,
+            numberOfGuests: parseInt($('#seatingCapacity').val()),
+            fullName: $('#customerName').val(),
+            mobileNumber: $('#mobileNumber').val(),
+            whatsappNumber: $('#whatsappNumber').val()
+        });
+        if (selectedCategory==null) {
+            alert('Please select booking type');
+            return;
+        }
+        if (!$('#bookingDate').val()) {
+            alert('Please select date');
+            return;
+        }
+
+        if (!selectedTime) {
+            alert('Please select time slot');
+            return;
+        }
+
+        if (!$('#customerName').val().trim()) {
+            alert('Please enter name');
+            return;
+        }
+
+        $.ajax({
+            url: '/Customer/CreateReservation',
+            type: 'Post',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                reservationDate: selectedDate,
+                timeSlotId: selectedTime,
+                category: parseInt(selectedCategory),
+                numberOfGuests: parseInt($('#seatingCapacity').val()),
+                fullName: $('#customerName').val(),
                 mobileNumber: $('#mobileNumber').val(),
                 whatsappNumber: $('#whatsappNumber').val()
-            };
-
-            console.log("Saving data...", bookingData);
-            localStorage.setItem('currentBooking', JSON.stringify(bookingData));
-
-            // REDIRECT FIX: Seedha Payment page par bhejo
-            window.location.href = '/Customer/Payment';
-            return false;
-        }
+            }),
+            success: function () {
+                window.location.href = '/Customer/Confirmation';
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
     });
+
 });
