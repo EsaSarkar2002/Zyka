@@ -1,5 +1,5 @@
-﻿@model Dictionary<string,string>
-
+﻿@model List<TableInfo>
+    @using Zyka.Models.Enums;
     @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     }
@@ -31,47 +31,50 @@
                     <div class="d-flex justify-content-evenly mb-3">
                         <div>
                             <small>Table Number</small>
-                            <h5 class="mb-0">@table.Key</h5>
+                            <h5 class="mb-0">@table.TableNumber</h5>
                         </div>
                         <div class="vr"></div>
                         <div>
                             <small>Status</small>
                             <div>
-                                @if(table.Value=="Available")
+                                @if(table.Status==TableStatus.Available)
                                 {
-                                <h5 class="mb-0 status-btn bg-success text-white">@table.Value</h5>
+                                <h5 class="mb-0 status-btn bg-success text-white">@table.Status</h5>
                                 }
-                                else if(table.Value=="Booked")
+                                else if(table.Status==TableStatus.Reserved)
                                 {
-                                <h5 class="mb-0 status-btn bg-danger text-white">@table.Value</h5>
+                                <h5 class="mb-0 status-btn bg-danger text-white">@table.Status</h5>
                                 }
-                                else if(table.Value=="Maintenance")
+                                else if(table.Status==TableStatus.Maintenance)
                                 {
-                                <h5 class="mb-0 status-btn bg-warning">@table.Value</h5>
+                                <h5 class="mb-0 status-btn bg-warning">@table.Status</h5>
                                 }
                             </div>
                         </div>
 
                     </div>
-                        @if(table.Value=="Available")
-                        {
+                    @if(table.Status==TableStatus.Available)
+                    {
 
-                        <div class="buttons">
-                            <button>Mark for Maintenance</button>
-                        <button>Reserve this table</button>
-                            </div>
-                        }
-                        else if(table.Value=="Maintenance")
-                        {
-                            <div class="buttons">
-                            <button>Mark as Available</button>
-                        <button>Reserve this table</button>
-                            </div>
-                        }
+                    <div class="buttons">
+                        <a asp-action="MarkMaintenance" asp-route-tableId="@table.TableId"
+                            asp-route-category="@ViewBag.Category" class="status-change-button">Mark for Maintenance</a>
+                        <a class="status-change-button">Reserve this table</a>
+                    </div>
+                    }
+                    else if(table.Status==TableStatus.Maintenance)
+                    {
+                    <div class="buttons">
+                        <a asp-action="MarkAvailable" asp-route-tableId="@table.TableId"
+                            asp-route-category="@ViewBag.Category" class="status-change-button">Mark as Available</a>
+                        <button class="status-change-button">Reserve this table</button>
+                    </div>
+                    }
 
 
 
                 </div>
+
             </div>
             }
             }
@@ -83,6 +86,13 @@
                 </div>
             </div>
             }
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card table-card p-3 shadow">
+                    ADD A Table
+                </div>
+            </div>
 
         </div>
+        
     </div>

@@ -183,20 +183,26 @@
 .buttons {
     display: flex;
     flex-direction: column;
+    justify-content:center;
+    align-items:center;
     gap: 7px;
 }
 
-    .status-btn, .buttons button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 10px;
-        background-color: deepskyblue;
-        font-weight: 500;
-        color: darkblue;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
+.status-btn, .status-change-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: deepskyblue;
+    font-weight: 500;
+    color: darkblue;
+    cursor: pointer;
+    transition: 0.3s;
+    width:max-content;
+}
+a{
+    text-decoration:none;
+    color:inherit;
+}
 .status-btn {
     width: 100%;
     border-radius: 20px;

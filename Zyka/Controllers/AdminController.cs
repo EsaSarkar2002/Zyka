@@ -1,15 +1,30 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Zyka.Data;
 using Zyka.Models.DTOs;
 using Zyka.Models.Enums;
 namespace Zyka.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        [Authorize(Roles ="Admin")]
+        private readonly ZykaDbContext _context;
+
+        public AdminController(ZykaDbContext context)
+        {
+            _context = context;
+        }
         public IActionResult Dashboard()
         {
+            ViewBag.TotalTables = _context.Tables.Count(t => t.IsActive);
+            ViewBag.TadaysReservations = _context.Reservations
+                .Where(r => r.ReservationDate == DateTime.Today)
+                .Count();
+            ViewBag.TotalCustomers = _context.Users.Where(u => u.Role == Models.Enums.UserRole.Customer).Count();
+            ViewBag.TotalStaffs = _context.Users.Where(u => u.Role == Models.Enums.UserRole.Staff).Count();
+            ViewBag.TotalRevenue = _context.Payments.Sum(p => p.Amount);
+            ViewBag.MaintenanceTablse = _context.Tables.Where(t => t.Status == Models.Enums.TableStatus.Maintenance).Count();
             return View(); // by view() ASP.NET will find a view whose name is same as the action name(i.e, Dashboard here). Like it'll search for Dashboard.cshtml
         }
         public IActionResult Bookings()
@@ -22,7 +37,6 @@ namespace Zyka.Controllers
             ViewBag.Bookings = GetBookings();
             return View();
         }
-
         public IActionResult TableCategories()
         {
             return View();
@@ -30,69 +44,32 @@ namespace Zyka.Controllers
         public IActionResult TableList(TableCategory category)
         {
             ViewBag.Category = category;
-
-            // dummy data for now
-            var tables = new Dictionary<string, string>();
-
-            if (category == TableCategory.Family)
-            {
-                tables.Add("F-01", "Available");
-                tables.Add("F-02", "Booked");
-                tables.Add("F-03", "Maintenance");
-                tables.Add("F-04", "Available");
-                tables.Add("F-05", "Available");
-                tables.Add("F-06", "Booked");
-            }
-            else if (category == TableCategory.Date)
-            {
-                tables.Add("D-01", "Available");
-                tables.Add("D-02", "Booked");
-                tables.Add("D-03", "Available");
-                tables.Add("D-04", "Available");
-                tables.Add("D-05", "Booked");
-            }
-            else if (category == TableCategory.Meeting)
-            {
-                tables.Add("M-01", "Available");
-                tables.Add("M-02", "Booked");
-                tables.Add("M-03", "Available");
-                tables.Add("M-04", "Maintenance");
-                tables.Add("M-05", "Available");
-            }
-            else if (category == TableCategory.Celebration)
-            {
-                tables.Add("C-01", "Booked");
-                tables.Add("C-02", "Available");
-                tables.Add("C-03", "Maintenance");
-                tables.Add("C-04", "Maintenance");
-                tables.Add("C-05", "Available");
-            }
+            var tables = _context.Tables.Where(t => t.Category == category).ToList();
 
             return View(tables);
         }
-        //public IActionResult TodayBookings()
-        //{
-        //    ViewData["ActiveMenu"] = "Bookings";
-        //    var today = DateTime.Today;
 
-        //    var bookings = GetBookings()
-        //    .Where(b => b.Date.Date == today)
-        //    .ToList();
+        public IActionResult MarkMaintenance(int tableId,TableCategory category)
+        {
+            var table = _context.Tables.Find(tableId);
+            if (table == null) return NotFound();
 
-        //    return View("Bookings", bookings);
-        //}
+            table.Status = TableStatus.Maintenance;
+            _context.SaveChanges();
 
-        //public IActionResult FutureBookings()
-        //{
-        //    ViewData["ActiveMenu"] = "Bookings";
-        //    var today = DateTime.Today;
+            return RedirectToAction("TableList", new { category });
+        }
 
-        //    var bookings = GetBookings()
-        //    .Where(b => b.Date > today)
-        //    .ToList();
+        public IActionResult MarkAvailable(int tableId, TableCategory category)
+        {
+            var table = _context.Tables.Find(tableId);
+            if (table == null) return NotFound();
 
-        //    return View("Bookings", bookings);
-        //}
+            table.Status = TableStatus.Available;
+            _context.SaveChanges();
+
+            return RedirectToAction("TableList", new { category });
+        }
 
         private List<object> GetBookings()
         {
@@ -342,5 +319,16 @@ namespace Zyka.Controllers
         }
     };
         }
+
+
+        //APIs
+
+        //[ApiController]
+        // [Route("api/admin/tables")]
+        //[HttpGet("by-category/{categoryId}")]
+        //public IActionResult GetAllTables()
+        //{
+        //    var allTables = _context.Tables.Where(t => t.IsActive).Count();
+        //}
     }
 }

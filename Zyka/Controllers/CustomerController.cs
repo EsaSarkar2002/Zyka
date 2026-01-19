@@ -30,6 +30,8 @@ namespace Zyka.Controllers
         public IActionResult AboutUs() { return View(); }
         public IActionResult Gallery() { return View(); }
 
+        public IActionResult ReservationHistory() { return View(); }
+
 
         [Authorize(Roles = "Customer")]
         public IActionResult Reservation()
@@ -43,6 +45,13 @@ namespace Zyka.Controllers
 
         [Authorize(Roles = "Customer")]
         public IActionResult Payment() { return View(); }
+
+        [Authorize(Roles = "Customer")]
+        [HttpGet]
+        public IActionResult Support()
+        {
+            return View();
+        }
 
 
         // APIs
@@ -100,42 +109,6 @@ namespace Zyka.Controllers
             return Ok();
         }
 
-
-
-        [Authorize(Roles = "Customer")]
-        [HttpPost]
-        public IActionResult CreateSupportTicket([FromBody] SupportTicket ticket)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest("Invalid support data");
-
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            ticket.UserId = userId;
-            ticket.Status = SupportTicketStatus.Open;
-            ticket.CreatedAt = DateTime.UtcNow;
-
-            _context.SupportTickets.Add(ticket);
-            _context.SaveChanges();
-
-            return Ok();
-        }
-
-
-        [Authorize(Roles = "Customer")]
-        [HttpGet]
-        public IActionResult Support()
-        {
-            return View();
-        }
-
-
-
-
-
-
-
-
         //[Authorize(Roles = "Customer")]
         [HttpPost]
         public IActionResult GetAvailableTimeSlots(DateTime reservationDate, TableCategory category)
@@ -151,7 +124,7 @@ namespace Zyka.Controllers
 
             foreach (var slot in timeSlots)
             {
-                var reservedCount = _context.Reservations.Join(_context.Tables,r=>r.TableId,t=>t.TableId,(r,t)=>new {r,t}).Count(x => x.r.ReservationDate == reservationDate.Date && x.r.TimeSlotId == slot.TimeSlotId && x.t.Category == category && x.t.IsActive);
+                var reservedCount = _context.Reservations.Join(_context.Tables, r => r.TableId, t => t.TableId, (r, t) => new { r, t }).Count(x => x.r.ReservationDate == reservationDate.Date && x.r.TimeSlotId == slot.TimeSlotId && x.t.Category == category && x.t.IsActive);
                 Console.WriteLine($"{(int)reservedCount},{(int)totalTables}");
                 result.Add(new TimeSlotAvailabilityDto
                 {
@@ -204,10 +177,28 @@ namespace Zyka.Controllers
                 message = "Booking confirmed",
                 reservationId = reservation.ReservationId
             });
-
-
-
         }
+
+
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult CreateSupportTicket([FromBody] SupportTicket ticket)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid support data");
+
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            ticket.UserId = userId;
+            ticket.Status = SupportTicketStatus.Open;
+            ticket.CreatedAt = DateTime.UtcNow;
+
+            _context.SupportTickets.Add(ticket);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
     }
 }
 
