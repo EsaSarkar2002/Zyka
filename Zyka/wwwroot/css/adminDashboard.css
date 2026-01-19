@@ -1,6 +1,9 @@
 ﻿/* ==========================================================================
+
    1. GLOBAL ADMIN VARIABLES & RESET
+
    ========================================================================== */
+
 :root {
     --admin-sidebar-width: 260px;
     --transition-speed: 0.3s;
@@ -12,6 +15,7 @@
 }
 
 /* MAIN LAYOUT (Sidebar & Content Area) */
+
 .admin-sidebar {
     width: var(--admin-sidebar-width);
     height: 100vh;
@@ -69,8 +73,11 @@
 }
 
 /* ==========================================================================
+
    3. DASHBOARD & CATEGORY CARDS
+
    ========================================================================== */
+
 .stat-card, .category-card {
     background: white;
     border-radius: 1rem;
@@ -99,26 +106,12 @@
         transform: scale(1.03);
     }
 
-.stat-icon, .category-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
-}
-
-.stat-value {
-    font-size: 2.5rem;
-    font-weight: 600;
-    margin: 0;
-}
-
 /* ==========================================================================
-   4. DATA TABLES (Admin List View)
+
+   4. DATA TABLES
+
    ========================================================================== */
+
 .admin-table-container {
     background: white;
     border-radius: 1rem;
@@ -144,42 +137,11 @@
     }
 
 /* ==========================================================================
-   5. HISTORY & CALENDAR COMPONENTS
+
+   6. BUTTONS
+
    ========================================================================== */
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0.5rem;
-}
 
-.calendar-day {
-    aspect-ratio: 1;
-    border-radius: 0.5rem;
-    border: 1px solid #dee2e6;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    transition: 0.2s;
-}
-
-    .calendar-day.active {
-        background-color: var(--dark-green);
-        color: white;
-    }
-
-.history-item {
-    padding: 1rem;
-    border-left: 3px solid var(--gold);
-    background: #fff;
-    margin-bottom: 10px;
-    border-radius: 0 8px 8px 0;
-}
-
-/* ==========================================================================
-   6. BUTTONS & ACTIONS
-   ========================================================================== */
 .buttons {
     display: flex;
     flex-direction: column;
@@ -196,11 +158,6 @@
         cursor: pointer;
         transition: 0.3s;
     }
-
-.status-btn {
-    width: 100%;
-    border-radius: 20px;
-}
 
 button:hover {
     background-color: dodgerblue;

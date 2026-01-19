@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using Zyka.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zyka.Models.DTOs;
@@ -7,21 +9,80 @@ namespace Zyka.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly ZykaDbContext _context;
+
+        public AdminController(ZykaDbContext context)
+
+        {
+
+            _context = context;
+
+        }
+        public IActionResult Bookings()
+
+        {
+
+            var bookings =
+
+            (
+
+                from r in _context.Reservations
+
+                join t in _context.Tables on r.TableId equals t.TableId
+
+                join ts in _context.TimeSlots on r.TimeSlotId equals ts.TimeSlotId
+
+                select new BookingsDto
+
+                {
+
+                    ReservationId = r.ReservationId.ToString(),
+
+                    CustomerName = r.FullName,
+
+                    TableCategory = t.Category.ToString(),
+
+                    TableNumber = t.TableNumber,
+
+                    Date = r.ReservationDate,
+
+                    Time = ts.DisplayText,
+
+                    Status = r.Status.ToString().ToLower()
+
+                }
+
+            )
+
+            .OrderByDescending(b => b.Date)
+
+            .ToList();
+
+            ViewBag.Bookings = bookings;
+
+            return View();
+
+        }
+
+
+
+        ///-------------------------/////
+
         [Authorize(Roles ="Admin")]
         public IActionResult Dashboard()
         {
             return View(); // by view() ASP.NET will find a view whose name is same as the action name(i.e, Dashboard here). Like it'll search for Dashboard.cshtml
         }
-        public IActionResult Bookings()
-        {
-            ViewBag.Bookings = GetBookings();
-            return View();
-        }
-        public IActionResult History()
-        {
-            ViewBag.Bookings = GetBookings();
-            return View();
-        }
+        //public IActionResult Bookings()
+        //{
+        //    ViewBag.Bookings = GetBookings();
+        //    return View();
+        //}
+        //public IActionResult History()
+        //{
+        //    ViewBag.Bookings = GetBookings();
+        //    return View();
+        //}
 
         public IActionResult TableCategories()
         {
@@ -94,253 +155,11 @@ namespace Zyka.Controllers
         //    return View("Bookings", bookings);
         //}
 
-        private List<object> GetBookings()
-        {
-            var today = DateTime.Today;
+        //private List<object> GetBookings()
+        //{
+        //    var today = DateTime.Today;
 
-            return new List<object>
-    {
-        new {
-            CustomerName = "John Smith",
-            TableCategory = "date",
-            TableNumber = "D-02",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Sarah Johnson",
-            TableCategory = "meeting",
-            TableNumber = "M-02",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "18:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Michael Chen",
-            TableCategory = "meeting",
-            TableNumber = "M-03",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "cancelled"
-        },
-        new {
-            CustomerName = "Emma Wilson",
-            TableCategory = "celebration",
-            TableNumber = "C-03",
-            Date = new DateTime(2025, 12, 15).ToString("yyyy-MM-dd"),
-            Time = "19:30",
-            Status = "completed"
-        },
-        new {
-            CustomerName = "David Brown",
-            TableCategory = "date",
-            TableNumber = "D-01",
-            Date = new DateTime(2025, 12, 16).ToString("yyyy-MM-dd"),
-            Time = "18:00",
-            Status = "completed"
-        },
-        new {
-            CustomerName = "Olivia Davis",
-            TableCategory = "family",
-            TableNumber = "F-01",
-            Date = new DateTime(2025, 12, 20).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "completed"
-        },
-        new {
-            CustomerName = "James Miller",
-            TableCategory = "date",
-            TableNumber = "D-03",
-            Date = new DateTime(2026, 1, 5).ToString("yyyy-MM-dd"),
-            Time = "19:30",
-            Status = "completed"
-        },
-        new {
-            CustomerName = "Sophia Taylor",
-            TableCategory = "meeting",
-            TableNumber = "M-01",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "21:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Daniel Anderson",
-            TableCategory = "meeting",
-            TableNumber = "M-04",
-            Date = new DateTime(2026, 1, 7).ToString("yyyy-MM-dd"),
-            Time = "20:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Isabella Martinez",
-            TableCategory = "celebration",
-            TableNumber = "C-01",
-            Date = new DateTime(2026, 1, 8).ToString("yyyy-MM-dd"),
-            Time = "18:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "William Garcia",
-            TableCategory = "family",
-            TableNumber = "F-02",
-            Date = new DateTime(2026, 1, 2).ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "cancelled"
-        },
-        new {
-            CustomerName = "Mia Rodriguez",
-            TableCategory = "date",
-            TableNumber = "D-04",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "17:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Ethan Martinez",
-            TableCategory = "meeting",
-            TableNumber = "M-05",
-            Date = new DateTime(2026, 1, 10).ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Charlotte Lee",
-            TableCategory = "meeting",
-            TableNumber = "M-02",
-            Date = new DateTime(2026, 1, 12).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Henry Walker",
-            TableCategory = "celebration",
-            TableNumber = "C-02",
-            Date = new DateTime(2026, 1, 15).ToString("yyyy-MM-dd"),
-            Time = "18:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Amelia Hall",
-            TableCategory = "family",
-            TableNumber = "F-03",
-            Date = new DateTime(2025, 12, 28).ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "completed"
-        },
-        new {
-            CustomerName = "Lucas Allen",
-            TableCategory = "date",
-            TableNumber = "D-05",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "20:15",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Harper Young",
-            TableCategory = "meeting",
-            TableNumber = "M-03",
-            Date = new DateTime(2026, 1, 18).ToString("yyyy-MM-dd"),
-            Time = "18:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Benjamin King",
-            TableCategory = "meeting",
-            TableNumber = "M-04",
-            Date = new DateTime(2026, 1, 20).ToString("yyyy-MM-dd"),
-            Time = "19:30",
-            Status = "cancelled"
-        },
-        new {
-            CustomerName = "Ella Scott",
-            TableCategory = "celebration",
-            TableNumber = "C-03",
-            Date = new DateTime(2026, 1, 22).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Alexander Green",
-            TableCategory = "family",
-            TableNumber = "F-04",
-            Date = new DateTime(2026, 1, 25).ToString("yyyy-MM-dd"),
-            Time = "18:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Grace Adams",
-            TableCategory = "date",
-            TableNumber = "D-01",
-            Date = new DateTime(2026, 1, 26).ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Jack Nelson",
-            TableCategory = "meeting",
-            TableNumber = "M-05",
-            Date = new DateTime(2026, 1, 28).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Chloe Carter",
-            TableCategory = "meeting",
-            TableNumber = "M-01",
-            Date = new DateTime(2026, 1, 30).ToString("yyyy-MM-dd"),
-            Time = "21:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Matthew Perez",
-            TableCategory = "celebration",
-            TableNumber = "C-01",
-            Date = new DateTime(2026, 2, 1).ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Victoria Rivera",
-            TableCategory = "family",
-            TableNumber = "F-05",
-            Date = new DateTime(2026, 2, 3).ToString("yyyy-MM-dd"),
-            Time = "18:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Samuel Brooks",
-            TableCategory = "date",
-            TableNumber = "D-02",
-            Date = new DateTime(2026, 2, 5).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Scarlett Murphy",
-            TableCategory = "meeting",
-            TableNumber = "M-02",
-            Date = new DateTime(2026, 2, 7).ToString("yyyy-MM-dd"),
-            Time = "19:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Joseph Bailey",
-            TableCategory = "meeting",
-            TableNumber = "M-03",
-            Date = new DateTime(2026, 2, 10).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Lily Cooper",
-            TableCategory = "celebration",
-            TableNumber = "C-02",
-            Date = new DateTime(2026, 2, 12).ToString("yyyy-MM-dd"),
-            Time = "18:30",
-            Status = "confirmed"
-        }
-    };
-        }
+        //    return;
+        //}
     }
 }
