@@ -4,11 +4,14 @@
 :root {
     --admin-sidebar-width: 260px;
     --transition-speed: 0.3s;
+    --dark-green: #1B4332;
+    --gold: #D4AF37;
+    --light-green: #2D6A4F;
+    --beige: #F5E6D3;
+    --cream: #FAF3E0;
 }
 
-/* ==========================================================================
-   2. MAIN LAYOUT (Sidebar & Content Area)
-   ========================================================================== */
+/* MAIN LAYOUT (Sidebar & Content Area) */
 .admin-sidebar {
     width: var(--admin-sidebar-width);
     height: 100vh;

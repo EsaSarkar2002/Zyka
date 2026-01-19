@@ -65,11 +65,12 @@ $(document).ready(function () {
         $('.zyka-time-btn').each(function () {
             const slotId = Number($(this).data('timeslotid'));
             const slot = data.find(x => x.timeSlotId === slotId);
-            if (!slot || slot.isAvailabel === false) {
-                $(this).addClass('disabled').prop('disabled', true).removeClass('btn-success').addClass('btn-outline-secondary');
+            if (!slot || !slot.isAvailable) {
+                console.log(slot.isAvailable);
+                $(this).prop('disabled', true).removeClass('btn-success').addClass('btn-outline-secondary');
             }
             else {
-                $(this).removeClass('disabled').prop('disabled', false);
+                $(this).prop('disabled', false);
             }
         });
     }

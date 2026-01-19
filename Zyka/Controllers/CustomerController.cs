@@ -78,11 +78,12 @@ namespace Zyka.Controllers
 
             foreach (var slot in timeSlots)
             {
-                var reservedCount = _context.Reservations.Where(r => r.ReservationDate == reservationDate.Date && r.TimeSlotId == slot.TimeSlotId && r.Table.Category == category).Count();
+                var reservedCount = _context.Reservations.Join(_context.Tables,r=>r.TableId,t=>t.TableId,(r,t)=>new {r,t}).Count(x => x.r.ReservationDate == reservationDate.Date && x.r.TimeSlotId == slot.TimeSlotId && x.t.Category == category && x.t.IsActive);
+                Console.WriteLine($"{(int)reservedCount},{(int)totalTables}");
                 result.Add(new TimeSlotAvailabilityDto
                 {
                     TimeSlotId = slot.TimeSlotId,
-                    IsAvailable = reservedCount < totalTables
+                    IsAvailable = reservedCount <= totalTables
                 });
             }
             return Ok(result);
