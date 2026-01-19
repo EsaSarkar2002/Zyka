@@ -52,6 +52,11 @@
                                 About Us
                             </a>
                         </li>
+                        <li class=" nav-item">
+                            <a class="nav-link" asp-controller="Customer" asp-action="Support">
+                                Support
+                            </a>
+                        </li>
 
                         @if (User?.Identity?.IsAuthenticated==true)
                         {
@@ -129,3 +134,4 @@
 </body>
 
 </html>
+

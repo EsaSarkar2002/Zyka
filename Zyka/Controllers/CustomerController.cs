@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Zyka.Data;
 using Zyka.Models;
 using Zyka.Models.DTOs;
@@ -62,6 +63,78 @@ namespace Zyka.Controllers
             return Ok(availableTables);
 
         }
+
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult CreatePayment(int reservationId, PaymentMethod method)
+        {
+            var reservation = _context.Reservations
+                .Include(r => r.Table)
+                .FirstOrDefault(r => r.ReservationId == reservationId);
+
+            if (reservation == null)
+                return BadRequest("Invalid reservation");
+
+            if (_context.Payments.Any(p => p.ReservationId == reservationId))
+                return BadRequest("Payment already completed");
+
+            decimal amount = reservation.Table.Category switch
+            {
+                TableCategory.Date => 499,
+                TableCategory.Family => 999,
+                TableCategory.Meeting => 2499,
+                TableCategory.Celebration => 4999,
+                _ => 400
+            };
+
+            _context.Payments.Add(new Payment
+            {
+                ReservationId = reservationId,
+                Amount = amount,
+                PaymentMethod = method,
+                PaymentStatus = PaymentStatus.Success,
+                PaidAt = DateTime.UtcNow
+            });
+
+            _context.SaveChanges();
+            return Ok();
+        }
+
+
+
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult CreateSupportTicket([FromBody] SupportTicket ticket)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid support data");
+
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            ticket.UserId = userId;
+            ticket.Status = SupportTicketStatus.Open;
+            ticket.CreatedAt = DateTime.UtcNow;
+
+            _context.SupportTickets.Add(ticket);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+
+        [Authorize(Roles = "Customer")]
+        [HttpGet]
+        public IActionResult Support()
+        {
+            return View();
+        }
+
+
+
+
+
+
+
 
         //[Authorize(Roles = "Customer")]
         [HttpPost]
@@ -130,6 +203,11 @@ namespace Zyka.Controllers
                 message = "Booking confirmed",
                 reservationId = reservation.ReservationId
             });
+
+
+
         }
     }
 }
+
+
