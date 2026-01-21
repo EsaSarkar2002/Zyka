@@ -21,9 +21,9 @@ builder.Services.AddAuthentication("ZykaCookie")
 
 var app = builder.Build();
 
-using(var scope=app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
-    var dbContext=scope.ServiceProvider.GetRequiredService<ZykaDbContext>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ZykaDbContext>();
     DbSeeder.Seed(dbContext);
 }
 

@@ -1,98 +1,255 @@
-﻿@model List<TableInfo>
-    @using Zyka.Models.Enums;
-    @{
+﻿@model List<TableAvailabilityViewModel>
+@using Zyka.Models.Enums
+@using Zyka.ViewModels
+
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    }
 
-    <div class="admin-content">
+    DateTime selectedDate = ViewBag.SelectedDate ?? DateTime.Today;
+    int? selectedSlotId = ViewBag.SelectedTimeSlotId;
+}
 
+<div class="admin-content">
 
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h1 class="text-dark-green">
-                @ViewBag.Category Tables
-            </h1>
+    <!-- HEADER -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h1 class="text-dark-green">
+            @ViewBag.Category Tables
+        </h1>
 
-            <a asp-action="TableCategories" asp-controller="Admin" class="btn btn-outline-secondary">
+        <div>
+            <button class="btn btn-primary me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addTableModal">
+                + Add Table
+            </button>
+
+            <a asp-action="TableCategories"
+               asp-controller="Admin"
+               class="btn btn-outline-secondary">
                 ← Back
             </a>
         </div>
+    </div>
 
+    <!-- FILTERS -->
+    <form method="get"
+          asp-action="TableList"
+          asp-controller="Admin"
+          class="row g-3 mb-4">
 
-        <div class="row g-4">
+        <input type="hidden" name="category" value="@ViewBag.Category" />
 
-            @if (Model != null && Model.Any())
-            {
-            foreach (var table in Model)
-            {
+        <div class="col-md-4">
+            <label class="form-label">Date</label>
+            <input type="date"
+                   name="date"
+                   class="form-control"
+                   value="@selectedDate.ToString("yyyy-MM-dd")"
+                   min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                    />
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Time Slot</label>
+            <select name="timeSlotId" class="form-select">
+                <option value="">-- Select Slot --</option>
+                @foreach (var slot in ViewBag.TimeSlots as List<TimeSlot>)
+                {
+                    <option value="@slot.TimeSlotId"
+                            selected="@(slot.TimeSlotId == selectedSlotId)">
+                        @slot.DisplayText
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-success w-100">
+                Apply Filters
+            </button>
+        </div>
+    </form>
+
+    <!-- TABLE LIST -->
+    <div class="row g-4">
+
+        @foreach (var item in Model)
+        {
+            var table = item.Table;
+            bool isBooked = item.IsBooked;
+
             <div class="col-md-6 col-lg-4">
                 <div class="card table-card p-3 shadow">
 
-                    <i class="bi bi-grid-3x3-gap-fill fs-4 text-success"></i>
-                    <div class="d-flex justify-content-evenly mb-3">
+                    <div class="d-flex justify-content-between mb-3">
                         <div>
                             <small>Table Number</small>
-                            <h5 class="mb-0">@table.TableNumber</h5>
+                            <h5>@table.TableNumber</h5>
                         </div>
-                        <div class="vr"></div>
+
                         <div>
                             <small>Status</small>
                             <div>
-                                @if(table.Status==TableStatus.Available)
+                                @if (selectedSlotId == null)
                                 {
-                                <h5 class="mb-0 status-btn bg-success text-white">@table.Status</h5>
+                                    <span class="badge bg-secondary">Select slot</span>
                                 }
-                                else if(table.Status==TableStatus.Reserved)
+                                else if (isBooked)
                                 {
-                                <h5 class="mb-0 status-btn bg-danger text-white">@table.Status</h5>
+                                    <span class="badge bg-danger">Booked</span>
                                 }
-                                else if(table.Status==TableStatus.Maintenance)
+                                else if (table.Status == TableStatus.Maintenance)
                                 {
-                                <h5 class="mb-0 status-btn bg-warning">@table.Status</h5>
+                                    <span class="badge bg-warning text-dark">Maintenance</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Available</span>
                                 }
                             </div>
                         </div>
-
                     </div>
-                    @if(table.Status==TableStatus.Available)
-                    {
 
+                    <!-- ACTIONS -->
                     <div class="buttons">
-                        <a asp-action="MarkMaintenance" asp-route-tableId="@table.TableId"
-                            asp-route-category="@ViewBag.Category" class="status-change-button">Mark for Maintenance</a>
-                        <a class="status-change-button">Reserve this table</a>
+
+                        @if (!isBooked && table.Status == TableStatus.Available)
+                        {
+                            <a asp-action="MarkMaintenance"
+                               asp-route-tableId="@table.TableId"
+                               asp-route-category="@ViewBag.Category"
+                               class="status-change-button">
+                                Mark for Maintenance
+                            </a>
+                        }
+
+                        @if (table.Status == TableStatus.Maintenance)
+                        {
+                            <a asp-action="MarkAvailable"
+                               asp-route-tableId="@table.TableId"
+                               asp-route-category="@ViewBag.Category"
+                               class="status-change-button">
+                                Mark as Available
+                            </a>
+                        }
+                        <a asp-action="Bookings"
+                           asp-route-tableId="@table.TableId"
+                           asp-route-date="@selectedDate.ToString("yyyy-MM-dd")"
+                           class="status-change-button">
+                            View Reservations
+                        </a>
+
                     </div>
-                    }
-                    else if(table.Status==TableStatus.Maintenance)
-                    {
-                    <div class="buttons">
-                        <a asp-action="MarkAvailable" asp-route-tableId="@table.TableId"
-                            asp-route-category="@ViewBag.Category" class="status-change-button">Mark as Available</a>
-                        <button class="status-change-button">Reserve this table</button>
-                    </div>
-                    }
-
-
 
                 </div>
-
             </div>
-            }
-            }
-            else
-            {
-            <div class="col-12">
-                <div class="alert alert-info">
-                    No tables found for this category.
-                </div>
-            </div>
-            }
-            
-            <div class="col-md-6 col-lg-4">
-                <div class="card table-card p-3 shadow">
-                    ADD A Table
-                </div>
-            </div>
-
-        </div>
-        
+        }
     </div>
+</div>
+<!-- ADD TABLE MODAL -->
+<div class="modal fade" id="addTableModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+ 
+            <div class="modal-header">
+                <h5 class="modal-title">Add Table</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+ 
+            <form asp-action="AddTable" asp-controller="Admin" method="post">
+                <div class="modal-body">
+ 
+                    <div class="mb-3">
+                        <label class="form-label">Table Number</label>
+                        <input type="text"
+                               id="tableNumberInput"
+                               name="TableNumber"
+                               class="form-control"
+                               required />
+                        <small id="tableNumberError"
+                               class="text-danger d-none">
+                            Table number already exists
+                        </small>
+                    </div>
+ <label class="form-label">Table Category</label>
+                    <input type="text" name="Category" value="@ViewBag.Category" disabled/>
+                </div>
+ 
+                <div class="modal-footer">
+                    <button type="submit"
+                            id="saveTableBtn"
+                            class="btn btn-success"
+                            disabled>
+                        Save
+                    </button>
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+ 
+        </div>
+    </div>
+</div>
+ 
+@section Scripts{
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    // if(document.querySelector('.modal.show'))
+    // {
+    //     return;
+    // }
+    const input = document.getElementById("tableNumberInput");
+    const error = document.getElementById("tableNumberError");
+    const saveBtn = document.getElementById("saveTableBtn");
+
+    if (!input) return; // nothing to do if input missing
+
+    let timeout = null;
+
+    input.addEventListener("input", function () {
+        clearTimeout(timeout);
+
+        const value = this.value.trim();
+
+        if (value === "") {
+            if (error) error.classList.add("d-none");
+            if (saveBtn) saveBtn.disabled = true;
+            return;
+        }
+
+        // debounce (avoid calling API on every keystroke)
+        timeout = setTimeout(() => {
+            const url = `/Admin/IsTableNumberExists?tableNumber=${encodeURIComponent(value)}`;
+
+            fetch(url, { method: "GET" })
+                .then(res => {
+                    if (!res.ok) throw new Error(`Network response was not ok (${res.status})`);
+                    return res.json();
+                })
+                .then(exists => {
+                    if (exists) {
+                        if (error) error.classList.remove("d-none");
+                        if (saveBtn) saveBtn.disabled = true;
+                    } else {
+                        if (error) error.classList.add("d-none");
+                        if (saveBtn) saveBtn.disabled = false;
+                    }
+                })
+                .catch(err => {
+                    console.error("Table number validation failed:", err);
+                    // optionally show a user-friendly message or keep the save button disabled
+                    if (error) {
+                        error.textContent = "Validation service unavailable.";
+                        error.classList.remove("d-none");
+                    }
+                    if (saveBtn) saveBtn.disabled = true;
+                });
+        }, 400);
+    });
+});
+</script>
+}

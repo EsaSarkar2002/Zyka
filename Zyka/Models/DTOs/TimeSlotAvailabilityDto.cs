@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Zyka.Models.Enums;
 
 namespace Zyka.Models.DTOs
 {
     public class TimeSlotAvailabilityDto
-    {
-        [Required]
-        public int TimeSlotId { get; set; }
-        [Required]
-        public bool IsAvailable { get; set; }
+    {        
+        public DateTime ReservationDate { get; set; }       
+        public TableCategory Category { get; set; }
     }
 }

@@ -1,149 +1,154 @@
 ﻿@{
-
+ 
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-
+ 
 }
 <div class="admin-content">
-    <div class="mb-4">
-        <h1 class="text-dark-green">Booking Details</h1>
-        <p class="text-muted">Check Bookings Updates</p>
-    </div>
-    <!-- 🔍 Search Bar with Dropdown (REPLACED BUTTONS AREA) -->
-    <div class="mb-4">
-        <div class="input-group">
-            <input type="text"
-                   id="bookingSearchInput"
-                   class="form-control"
-                   placeholder="Search bookings..." />
-            <select id="bookingSearchField" class="form-select" style="max-width: 220px;">
-                <option value="CustomerName">Customer Name</option>
-                <option value="TableCategory">Table Category</option>
-                <option value="TableNumber">Table Number</option>
-                <option value="Date">Date</option>
-                <option value="Time">Time</option>
-                <option value="Status">Status</option>
-            </select>
-        </div>
-    </div>
-    <!-- Bookings Table -->
-    <div class="card">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="bg-beige">
-                        <tr>
-                            <th>Customer Name</th>
-                            <th>Table Category</th>
-                            <th>Table Number</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="bookingsTableBody">
-                        <tr>
-                            <td colspan="6" class="text-center py-5 text-muted">
-
-                                Loading bookings...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<div class="mb-4">
+<h1 class="text-dark-green">Bookings Details</h1>
+<p class="text-muted">Check Bookings Updates</p>
 </div>
+<!-- 🔍 Search Bar with Dropdown (REPLACED BUTTONS AREA) -->
+<div class="mb-4">
+<div class="input-group">
+<input type="text"
 
+                   id="bookingSearchInput"
+
+                   class="form-control"
+
+                   placeholder="Search bookings..." />
+<select id="bookingSearchField" class="form-select" style="max-width: 220px;">
+<option value="CustomerName">Customer Name</option>
+<option value="TableCategory">Table Category</option>
+<option value="TableNumber">Table Number</option>
+<option value="Date">Date</option>
+<option value="Time">Time</option>
+<option value="Status">Status</option>
+</select>
+</div>
+</div>
+<!-- Bookings Table -->
+<div class="card">
+<div class="card-body">
+<div class="table-responsive">
+<table class="table table-hover">
+<thead class="bg-beige">
+<tr>
+<th>Customer Name</th>
+<th>Table Category</th>
+<th>Table Number</th>
+<th>Date</th>
+<th>Time</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="bookingsTableBody">
+<tr>
+<td colspan="6" class="text-center py-5 text-muted">
+ 
+                                Loading bookings...
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+ 
 @section Scripts {
-    <script src="~/js/admin.js"></script>
-    <script>
-
+<script src="~/js/admin.js"></script>
+<script>
+ 
                 document.addEventListener("DOMContentLoaded", function () {
-
+ 
                     initBookings(
-
+ 
                         @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.Bookings))
-
+ 
                     );
-
+ 
                     // Default: show all bookings
-
+ 
                     // renderBookingsTable(ALL_BOOKINGS);
-
+ 
                 });
-
+ 
                 // 🔍 Search logic
-
+ 
                 document.getElementById("bookingSearchInput").addEventListener("input", applySearch);
-
+ 
                 document.getElementById("bookingSearchField").addEventListener("change", applySearch);
-
+ 
                 function applySearch() {
-
+ 
                     const searchText = document.getElementById("bookingSearchInput").value.toLowerCase();
-
+ 
                     const field = document.getElementById("bookingSearchField").value;
-
+ 
                     const filtered = ALL_BOOKINGS.filter(b => {
-
+ 
                         const value = (b[field] ?? "").toString().toLowerCase();
-
+ 
                         return value.includes(searchText);
-
+ 
                     });
-
+ 
                     renderBookingsTable(filtered);
-
+ 
                 }
-
+ 
                 function renderBookingsTable(bookings) {
-
+ 
                     const tbody = document.getElementById("bookingsTableBody");
-
+ 
                     if (bookings.length === 0) {
-
+ 
                         tbody.innerHTML = `
-        <tr>
-        <td colspan="6" class="text-center py-5 text-muted">
-
+<tr>
+<td colspan="6" class="text-center py-5 text-muted">
+ 
                                     No bookings found
-        </td>
-        </tr>`;
-
+</td>
+</tr>`;
+ 
                         return;
-
+ 
                     }
-
+ 
                     let html = "";
-
+ 
                     bookings.forEach(b => {
-
+ 
                         const badgeClass =
-
+ 
                             b.Status === "confirmed" ? "success" :
-
+ 
                             b.Status === "completed" ? "secondary" : "danger";
-
+ 
                         html += `
-        <tr>
-        <td>${b.CustomerName}</td>
-        <td class="text-capitalize">${b.TableCategory}</td>
-        <td>${b.TableNumber}</td>
-        <td>${formatDateForTitle(b.Date)}</td>
-        <td>${b.Time}</td>
-        <td>
-        <span class="badge bg-${badgeClass} text-capitalize">
-
+<tr>
+<td>${b.CustomerName}</td>
+<td class="text-capitalize">${b.TableCategory}</td>
+<td>${b.TableNumber}</td>
+<td>${formatDateForTitle(b.Date)}</td>
+<td>${b.Time}</td>
+<td>
+<span class="badge bg-${badgeClass} text-capitalize">
+ 
                                         ${b.Status}
-        </span>
-        </td>
-        </tr>`;
-
+</span>
+</td>
+</tr>`;
+ 
                     });
-
+ 
                     tbody.innerHTML = html;
-
+ 
                 }
-    </script>
-
+</script>
+ 
 }
+
+ 

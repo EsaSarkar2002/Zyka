@@ -125,6 +125,7 @@
     pointer-events:none;
     opacity:0.4;
     background-color:#ccc;
+    color:darkslategrey;
 }
 
 .zyka-btn-submit {

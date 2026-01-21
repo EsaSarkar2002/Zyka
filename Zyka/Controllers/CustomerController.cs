@@ -9,6 +9,7 @@ using Zyka.Models;
 using Zyka.Models.DTOs;
 using Zyka.Models.Enums;
 using Zyka.Services;
+using Zyka.ViewModels;
 
 namespace Zyka.Controllers
 {
@@ -30,14 +31,57 @@ namespace Zyka.Controllers
         public IActionResult AboutUs() { return View(); }
         public IActionResult Gallery() { return View(); }
 
-        public IActionResult ReservationHistory() { return View(); }
+        public IActionResult ReservationHistory() {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+                return Forbid();
 
+            var bookings = _context.Reservations
+                .Include(r => r.Table)
+                .Include(r => r.TimeSlot)
+                .Where(r => r.CustomerId == userId)
+                .OrderByDescending(r => r.CreatedAt)
+                .Select(r => new BookingHistoryViewModel
+                {
+                    BookingCode = r.ReservationId.ToString(),
+                    CustomerName = r.FullName,
+                    Guests = r.NumberOfGuests,
+                    TableType = r.Table.Category.ToString(),
+                    Status = r.Status.ToString(),
+                    Category = r.Table.Category.ToString().ToLower()
+                })
+                .ToList();
+            return View(bookings);
+        }
+
+
+        //[Authorize(Roles = "Customer")]
+        //public IActionResult Reservation()
+        //{
+        //    var timeSlots = _context.TimeSlots
+        //        .Where(t => t.IsActive)
+        //        .OrderBy(t => t.StartTime)
+        //        .ToList();
+
+        //    if (TempData["AvailableSlotIds"] != null)
+        //    {
+        //        ViewBag.AvailableSlotIds =
+        //            System.Text.Json.JsonSerializer
+        //                .Deserialize<List<int>>(TempData["AvailableSlotIds"].ToString());
+        //    }
+
+        //    return View(timeSlots);
+        //}
 
         [Authorize(Roles = "Customer")]
         public IActionResult Reservation()
+
         {
+
             var timeSlots = _context.TimeSlots.Where(t => t.IsActive).OrderBy(t => t.StartTime).ToList();
+
             return View(timeSlots);
+
         }
 
         [Authorize(Roles = "Customer")]
@@ -58,18 +102,72 @@ namespace Zyka.Controllers
 
         [Authorize(Roles = "Customer")]
         [HttpPost]
+        public IActionResult GetAvailableTimeSlots([FromBody] TimeSlotAvailabilityDto request)
+        {
+            var selectedDate = request.ReservationDate.Date;
+
+            // 1️⃣ Tables for category
+            var tableIds = _context.Tables
+                .Where(t =>
+                    t.Category == request.Category &&
+                    t.IsActive &&
+                    t.Status == TableStatus.Available)
+                .Select(t => t.TableId)
+                .ToList();
+
+            if (!tableIds.Any())
+                return Ok(new List<int>());
+
+            // 2️⃣ All active slots
+            var slotIds = _context.TimeSlots
+                .Where(ts => ts.IsActive)
+                .Select(ts => ts.TimeSlotId)
+                .ToList();
+
+            // 3️⃣ Booked reservations
+            var booked = _context.Reservations
+                .Where(r =>
+                    r.ReservationDate == selectedDate &&
+                    tableIds.Contains(r.TableId) &&
+                    r.Status == ReservationStatus.Confirmed)
+                .Select(r => new { r.TableId, r.TimeSlotId })
+                .ToList();
+
+            // 4️⃣ Availability check
+            List<int> availableSlotIds = new();
+
+            foreach (var slotId in slotIds)
+            {
+                bool hasFreeTable = tableIds.Any(tableId =>
+                    !booked.Any(b =>
+                        b.TableId == tableId &&
+                        b.TimeSlotId == slotId));
+
+                if (hasFreeTable)
+                    availableSlotIds.Add(slotId);
+            }
+
+            return Ok(availableSlotIds);
+        }
+
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
         public IActionResult GetAvailableTables(DateTime reservationDate, int timeSlotId, TableCategory category)
         {
             var reservedTables = _context.Reservations
             .Where(r => r.ReservationDate == reservationDate.Date &&
-            r.TimeSlotId == timeSlotId)
+            r.TimeSlotId == timeSlotId && r.Status == ReservationStatus.Confirmed)
             .Select(r => r.TableId)
             .ToList();
-            var availableTables = _context.Tables.Where(t => t.Category == category && !reservedTables.Contains(t.TableId))
+            var availableTables = _context.Tables.Where(t => t.Category == category && !reservedTables.Contains(t.TableId) && t.Status == TableStatus.Available)
             .Select(t => t.TableId)
             .ToList();
 
-            return Ok(availableTables);
+            return Ok(new
+            {
+                ReservedTableIds = reservedTables,
+                AvailableTableIds = availableTables
+            });
 
         }
 
@@ -109,31 +207,7 @@ namespace Zyka.Controllers
             return Ok();
         }
 
-        //[Authorize(Roles = "Customer")]
-        [HttpPost]
-        public IActionResult GetAvailableTimeSlots(DateTime reservationDate, TableCategory category)
-        {
-            Console.WriteLine($"{reservationDate},{category}");
-            var result = new List<TimeSlotAvailabilityDto>();
 
-            var timeSlots = _context.TimeSlots
-            .Where(t => t.IsActive)
-            .ToList();
-
-            var totalTables = _context.Tables.Count(t => t.Category == category && t.IsActive);
-
-            foreach (var slot in timeSlots)
-            {
-                var reservedCount = _context.Reservations.Join(_context.Tables, r => r.TableId, t => t.TableId, (r, t) => new { r, t }).Count(x => x.r.ReservationDate == reservationDate.Date && x.r.TimeSlotId == slot.TimeSlotId && x.t.Category == category && x.t.IsActive);
-                Console.WriteLine($"{(int)reservedCount},{(int)totalTables}");
-                result.Add(new TimeSlotAvailabilityDto
-                {
-                    TimeSlotId = slot.TimeSlotId,
-                    IsAvailable = reservedCount <= totalTables
-                });
-            }
-            return Ok(result);
-        }
 
         [Authorize(Roles = "Customer")]
         [HttpPost]

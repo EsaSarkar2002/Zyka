@@ -1,11 +1,14 @@
-﻿using Zyka.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Zyka.Data;
+using Zyka.Data;
+using Zyka.Models;
 using Zyka.Models.DTOs;
 using Zyka.Models.Enums;
+using Zyka.ViewModels;
 namespace Zyka.Controllers
 {
     [Authorize(Roles = "Admin")]
@@ -17,32 +20,137 @@ namespace Zyka.Controllers
         {
             _context = context;
         }
-        public IActionResult Dashboard()
-        private readonly ZykaDbContext _context;
 
-        public AdminController(ZykaDbContext context)
+        public IActionResult Dashboard()
 
         {
             ViewBag.TotalTables = _context.Tables.Count(t => t.IsActive);
             ViewBag.TadaysReservations = _context.Reservations
-                .Where(r => r.ReservationDate == DateTime.Today)
-                .Count();
+            .Where(r => r.ReservationDate == DateTime.Today)
+            .Count();
+            ViewBag.UpcomingReservations     = _context.Reservations
+            .Where(r => r.ReservationDate > DateTime.Today)
+            .Count();
             ViewBag.TotalCustomers = _context.Users.Where(u => u.Role == Models.Enums.UserRole.Customer).Count();
             ViewBag.TotalStaffs = _context.Users.Where(u => u.Role == Models.Enums.UserRole.Staff).Count();
             ViewBag.TotalRevenue = _context.Payments.Sum(p => p.Amount);
             ViewBag.MaintenanceTablse = _context.Tables.Where(t => t.Status == Models.Enums.TableStatus.Maintenance).Count();
             return View(); // by view() ASP.NET will find a view whose name is same as the action name(i.e, Dashboard here). Like it'll search for Dashboard.cshtml
-
-            _context = context;
-
         }
         public IActionResult Bookings()
 
         {
-
             var bookings =
-
             (
+
+            from r in _context.Reservations
+
+            join t in _context.Tables on r.TableId equals t.TableId
+
+            join ts in _context.TimeSlots on r.TimeSlotId equals ts.TimeSlotId
+
+            select new BookingsDto
+
+            {
+
+                ReservationId = r.ReservationId.ToString(),
+
+                CustomerName = r.FullName,
+
+                TableCategory = t.Category.ToString(),
+
+                TableNumber = t.TableNumber,
+
+                Date = r.ReservationDate,
+
+                Time = ts.DisplayText,
+
+                Status = r.Status.ToString().ToLower()
+
+            }
+
+            )
+
+            .OrderByDescending(b => b.Date)
+
+            .ToList();
+
+            ViewBag.Bookings = bookings;
+
+            return View();
+
+        }
+        public IActionResult TableCategories()
+        {
+            return View();
+        }
+        public IActionResult TableList(
+    TableCategory category,
+    DateTime? date,
+    int? timeSlotId)
+        {
+            DateTime selectedDate = date ?? DateTime.Today;
+            Console.WriteLine(timeSlotId);
+            ViewBag.Category = category;
+            ViewBag.SelectedDate = selectedDate;
+            ViewBag.SelectedTimeSlotId = timeSlotId;
+            ViewBag.TimeSlots = _context.TimeSlots.ToList();
+
+            var tables = _context.Tables
+                .Where(t => t.Category == category && t.IsActive)
+                .ToList();
+
+            var bookings = new List<TableAvailabilityViewModel>();
+
+            foreach (var table in tables)
+            {
+                bool isBooked = false;
+
+                if (timeSlotId != null)
+                {
+                    isBooked = _context.Reservations.Any(r =>
+                        r.TableId == table.TableId &&
+                        r.ReservationDate == selectedDate &&
+                        r.TimeSlotId == timeSlotId &&
+                        r.Status == ReservationStatus.Confirmed
+                    );
+                }
+
+                bookings.Add(new TableAvailabilityViewModel
+                {
+                    Table = table,
+                    IsBooked = isBooked
+                });
+            }
+
+            return View(bookings);
+        }
+        public IActionResult MarkMaintenance(int tableId, TableCategory category)
+        {
+            var table = _context.Tables.Find(tableId);
+            if (table == null) return NotFound();
+
+            table.Status = TableStatus.Maintenance;
+            _context.SaveChanges();
+
+            return RedirectToAction("TableList", new { category });
+        }
+        public IActionResult MarkAvailable(int tableId, TableCategory category)
+        {
+            var table = _context.Tables.Find(tableId);
+            if (table == null) return NotFound();
+
+            table.Status = TableStatus.Available;
+            _context.SaveChanges();
+
+            return RedirectToAction("TableList", new { category });
+        }
+
+        public IActionResult History()
+
+        {
+
+            var bookings = (
 
                 from r in _context.Reservations
 
@@ -83,308 +191,56 @@ namespace Zyka.Controllers
         }
 
 
-
-        ///-------------------------/////
-
-        [Authorize(Roles ="Admin")]
-        public IActionResult Dashboard()
+        [HttpPost]
+        public async Task<IActionResult> AddTable(string tableNumber, TableCategory category)
         {
-            return View(); // by view() ASP.NET will find a view whose name is same as the action name(i.e, Dashboard here). Like it'll search for Dashboard.cshtml
-        }
-        public IActionResult TableCategories()
-        {
-            return View();
-        }
-        public IActionResult TableList(TableCategory category)
-        {
-            ViewBag.Category = category;
-            var tables = _context.Tables.Where(t => t.Category == category).ToList();
+            
 
-            return View(tables);
-        }
+            if (_context.Tables.Any(t=>t.TableNumber==tableNumber))
+            {
+                TempData["Error"] = "Table Already Exists";
+            }
+            var table = new TableInfo
+            {
+                TableNumber = tableNumber,
+                Category = category,
+                Status = TableStatus.Available,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow
+            };
 
-        public IActionResult MarkMaintenance(int tableId,TableCategory category)
-        {
-            var table = _context.Tables.Find(tableId);
-            if (table == null) return NotFound();
-
-            table.Status = TableStatus.Maintenance;
-            _context.SaveChanges();
+            _context.Tables.Add(table);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("TableList", new { category });
         }
 
-        public IActionResult MarkAvailable(int tableId, TableCategory category)
+        [HttpGet]
+        public IActionResult IsTableNumberExists(string tableNumber)
         {
-            var table = _context.Tables.Find(tableId);
-            if (table == null) return NotFound();
+            if (string.IsNullOrWhiteSpace(tableNumber))
+                return Json(false);
 
-            table.Status = TableStatus.Available;
-            _context.SaveChanges();
+            bool exists = _context.Tables
+                .Any(t => t.TableNumber == tableNumber);
 
-            return RedirectToAction("TableList", new { category });
+            return Json(exists);
         }
 
-        //private List<object> GetBookings()
-        //{
-        //    var today = DateTime.Today;
+    //    public IActionResult TableList(
+    //TableCategory category,
+    //DateTime? date,
+    //int? timeSlotId)
+    //    {
+    //        ViewBag.Category = category;
+    //        ViewBag.SelectedDate = date ?? DateTime.Today;
+    //        ViewBag.SelectedTimeSlotId = timeSlotId;
 
-            return new List<object>
-    {
-        new {
-            CustomerName = "John Smith",
-            TableCategory = "date",
-            TableNumber = "D-02",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Sarah Johnson",
-            TableCategory = "meeting",
-            TableNumber = "M-02",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "18:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Michael Chen",
-            TableCategory = "meeting",
-            TableNumber = "M-03",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "cancelled"
-        },
-        new {
-            CustomerName = "Emma Wilson",
-            TableCategory = "celebration",
-            TableNumber = "C-03",
-            Date = new DateTime(2025, 12, 15).ToString("yyyy-MM-dd"),
-            Time = "19:30",
-            Status = "completed"
-        },
-        new {
-            CustomerName = "David Brown",
-            TableCategory = "date",
-            TableNumber = "D-01",
-            Date = new DateTime(2025, 12, 16).ToString("yyyy-MM-dd"),
-            Time = "18:00",
-            Status = "completed"
-        },
-        new {
-            CustomerName = "Olivia Davis",
-            TableCategory = "family",
-            TableNumber = "F-01",
-            Date = new DateTime(2025, 12, 20).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "completed"
-        },
-        new {
-            CustomerName = "James Miller",
-            TableCategory = "date",
-            TableNumber = "D-03",
-            Date = new DateTime(2026, 1, 5).ToString("yyyy-MM-dd"),
-            Time = "19:30",
-            Status = "completed"
-        },
-        new {
-            CustomerName = "Sophia Taylor",
-            TableCategory = "meeting",
-            TableNumber = "M-01",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "21:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Daniel Anderson",
-            TableCategory = "meeting",
-            TableNumber = "M-04",
-            Date = new DateTime(2026, 1, 7).ToString("yyyy-MM-dd"),
-            Time = "20:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Isabella Martinez",
-            TableCategory = "celebration",
-            TableNumber = "C-01",
-            Date = new DateTime(2026, 1, 8).ToString("yyyy-MM-dd"),
-            Time = "18:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "William Garcia",
-            TableCategory = "family",
-            TableNumber = "F-02",
-            Date = new DateTime(2026, 1, 2).ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "cancelled"
-        },
-        new {
-            CustomerName = "Mia Rodriguez",
-            TableCategory = "date",
-            TableNumber = "D-04",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "17:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Ethan Martinez",
-            TableCategory = "meeting",
-            TableNumber = "M-05",
-            Date = new DateTime(2026, 1, 10).ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Charlotte Lee",
-            TableCategory = "meeting",
-            TableNumber = "M-02",
-            Date = new DateTime(2026, 1, 12).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Henry Walker",
-            TableCategory = "celebration",
-            TableNumber = "C-02",
-            Date = new DateTime(2026, 1, 15).ToString("yyyy-MM-dd"),
-            Time = "18:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Amelia Hall",
-            TableCategory = "family",
-            TableNumber = "F-03",
-            Date = new DateTime(2025, 12, 28).ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "completed"
-        },
-        new {
-            CustomerName = "Lucas Allen",
-            TableCategory = "date",
-            TableNumber = "D-05",
-            Date = today.ToString("yyyy-MM-dd"),
-            Time = "20:15",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Harper Young",
-            TableCategory = "meeting",
-            TableNumber = "M-03",
-            Date = new DateTime(2026, 1, 18).ToString("yyyy-MM-dd"),
-            Time = "18:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Benjamin King",
-            TableCategory = "meeting",
-            TableNumber = "M-04",
-            Date = new DateTime(2026, 1, 20).ToString("yyyy-MM-dd"),
-            Time = "19:30",
-            Status = "cancelled"
-        },
-        new {
-            CustomerName = "Ella Scott",
-            TableCategory = "celebration",
-            TableNumber = "C-03",
-            Date = new DateTime(2026, 1, 22).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Alexander Green",
-            TableCategory = "family",
-            TableNumber = "F-04",
-            Date = new DateTime(2026, 1, 25).ToString("yyyy-MM-dd"),
-            Time = "18:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Grace Adams",
-            TableCategory = "date",
-            TableNumber = "D-01",
-            Date = new DateTime(2026, 1, 26).ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Jack Nelson",
-            TableCategory = "meeting",
-            TableNumber = "M-05",
-            Date = new DateTime(2026, 1, 28).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Chloe Carter",
-            TableCategory = "meeting",
-            TableNumber = "M-01",
-            Date = new DateTime(2026, 1, 30).ToString("yyyy-MM-dd"),
-            Time = "21:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Matthew Perez",
-            TableCategory = "celebration",
-            TableNumber = "C-01",
-            Date = new DateTime(2026, 2, 1).ToString("yyyy-MM-dd"),
-            Time = "19:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Victoria Rivera",
-            TableCategory = "family",
-            TableNumber = "F-05",
-            Date = new DateTime(2026, 2, 3).ToString("yyyy-MM-dd"),
-            Time = "18:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Samuel Brooks",
-            TableCategory = "date",
-            TableNumber = "D-02",
-            Date = new DateTime(2026, 2, 5).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Scarlett Murphy",
-            TableCategory = "meeting",
-            TableNumber = "M-02",
-            Date = new DateTime(2026, 2, 7).ToString("yyyy-MM-dd"),
-            Time = "19:30",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Joseph Bailey",
-            TableCategory = "meeting",
-            TableNumber = "M-03",
-            Date = new DateTime(2026, 2, 10).ToString("yyyy-MM-dd"),
-            Time = "20:00",
-            Status = "confirmed"
-        },
-        new {
-            CustomerName = "Lily Cooper",
-            TableCategory = "celebration",
-            TableNumber = "C-02",
-            Date = new DateTime(2026, 2, 12).ToString("yyyy-MM-dd"),
-            Time = "18:30",
-            Status = "confirmed"
-        }
-    };
-        }
+    //        var tables = _context.Tables
+    //            .Where(t => t.Category == category && t.IsActive)
+    //            .ToList();
 
-
-        //APIs
-
-        //[ApiController]
-        // [Route("api/admin/tables")]
-        //[HttpGet("by-category/{categoryId}")]
-        //public IActionResult GetAllTables()
-        //{
-        //    var allTables = _context.Tables.Where(t => t.IsActive).Count();
-        //}
-        //    return;
-        //}
+    //        return View(tables);
+    //    }
     }
 }
