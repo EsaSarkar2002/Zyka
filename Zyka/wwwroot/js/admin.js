@@ -1,9 +1,14 @@
 ﻿/*GLOBAL STATE */
 let ALL_BOOKINGS = [];
 
-/* INITIALIZER*/
-function initBookings(bookingsFromServer) {
-    ALL_BOOKINGS = bookingsFromServer || [];
+function initBookings(bookings) {
+
+    ALL_BOOKINGS = bookings || [];
+
+    renderBookingsTable(ALL_BOOKINGS);
+
+    updateCounts();
+
 }
 
 /* DATE GETTERS*/

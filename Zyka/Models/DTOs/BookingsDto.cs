@@ -2,6 +2,7 @@
 {
     public class BookingsDto
     {
+        public string ReservationId { get; set; }
         public string CustomerName { get; set; } = string.Empty;
         public string TableCategory { get; set; } = string.Empty;
         public string TableNumber { get; set; } = string.Empty;

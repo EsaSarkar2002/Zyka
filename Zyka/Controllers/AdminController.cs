@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using Zyka.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zyka.Data;
@@ -16,6 +18,10 @@ namespace Zyka.Controllers
             _context = context;
         }
         public IActionResult Dashboard()
+        private readonly ZykaDbContext _context;
+
+        public AdminController(ZykaDbContext context)
+
         {
             ViewBag.TotalTables = _context.Tables.Count(t => t.IsActive);
             ViewBag.TadaysReservations = _context.Reservations
@@ -26,16 +32,64 @@ namespace Zyka.Controllers
             ViewBag.TotalRevenue = _context.Payments.Sum(p => p.Amount);
             ViewBag.MaintenanceTablse = _context.Tables.Where(t => t.Status == Models.Enums.TableStatus.Maintenance).Count();
             return View(); // by view() ASP.NET will find a view whose name is same as the action name(i.e, Dashboard here). Like it'll search for Dashboard.cshtml
+
+            _context = context;
+
         }
         public IActionResult Bookings()
+
         {
-            ViewBag.Bookings = GetBookings();
+
+            var bookings =
+
+            (
+
+                from r in _context.Reservations
+
+                join t in _context.Tables on r.TableId equals t.TableId
+
+                join ts in _context.TimeSlots on r.TimeSlotId equals ts.TimeSlotId
+
+                select new BookingsDto
+
+                {
+
+                    ReservationId = r.ReservationId.ToString(),
+
+                    CustomerName = r.FullName,
+
+                    TableCategory = t.Category.ToString(),
+
+                    TableNumber = t.TableNumber,
+
+                    Date = r.ReservationDate,
+
+                    Time = ts.DisplayText,
+
+                    Status = r.Status.ToString().ToLower()
+
+                }
+
+            )
+
+            .OrderByDescending(b => b.Date)
+
+            .ToList();
+
+            ViewBag.Bookings = bookings;
+
             return View();
+
         }
-        public IActionResult History()
+
+
+
+        ///-------------------------/////
+
+        [Authorize(Roles ="Admin")]
+        public IActionResult Dashboard()
         {
-            ViewBag.Bookings = GetBookings();
-            return View();
+            return View(); // by view() ASP.NET will find a view whose name is same as the action name(i.e, Dashboard here). Like it'll search for Dashboard.cshtml
         }
         public IActionResult TableCategories()
         {
@@ -71,9 +125,9 @@ namespace Zyka.Controllers
             return RedirectToAction("TableList", new { category });
         }
 
-        private List<object> GetBookings()
-        {
-            var today = DateTime.Today;
+        //private List<object> GetBookings()
+        //{
+        //    var today = DateTime.Today;
 
             return new List<object>
     {
@@ -329,6 +383,8 @@ namespace Zyka.Controllers
         //public IActionResult GetAllTables()
         //{
         //    var allTables = _context.Tables.Where(t => t.IsActive).Count();
+        //}
+        //    return;
         //}
     }
 }
