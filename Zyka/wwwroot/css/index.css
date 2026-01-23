@@ -1,6 +1,4 @@
-﻿/* ============================================================
-   ZYKA CONSOLIDATED & ALIGNED STYLESHEET
-   ============================================================ */
+﻿
 
 /* ---------- 1. DESIGN TOKENS (CSS VARIABLES) ---------- */
 :root {
@@ -105,6 +103,16 @@ header {
 .navbar .dropdown-toggle::after {
     display: none !important;
 }
+
+/* Remove default link styling and ensure it fills the area */
+.dropdown-item a {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Takes the color from the parent li */
+    display: block; /* Makes the whole area clickable */
+    width: 100%;
+}
+
+/* Optional: Add a hover effect */
 
 .navbar .dropdown-toggle:hover .profile-img {
     transform: scale(1.1);
@@ -250,7 +258,7 @@ header {
 .login-popup {
     width: 760px;
     max-width: 95%;
-    height:fit-content;
+    height: fit-content;
     background: #ffffff;
     border-radius: 18px;
     display: flex;
@@ -357,17 +365,19 @@ header {
     margin: 40px auto;
     max-width: 1000px;
 }
+
 .feed-header {
     text-align: center;
-    padding-top:40px;
+    padding-top: 40px;
 }
+
 .feed-body {
     padding: 20px;
 }
 
 .feed-image, .custom-gallery-img {
     width: 100%;
-    height:350px;
+    height: 350px;
     border-radius: 22px;
     object-fit: cover;
     display: block;
@@ -427,7 +437,6 @@ header {
 /* Header & Filters */
 .zyka-header {
     margin-bottom: 40px;
-
 }
 
 .zyka-filter-btn {
@@ -537,16 +546,16 @@ header {
     border-bottom: 1px solid #333;
 }
 
-.hero-content{
-    padding-top:15px;
+.hero-content {
+    padding-top: 15px;
 }
-
 /* --- Carousel Styling --- */
 .carousel-img {
     width: 100%;
     height: 450px;
     object-fit: cover;
 }
+
 
 .zyka-caption {
     background: rgba(0, 0, 0, 0.7);
@@ -670,14 +679,10 @@ header {
 /* Image Stack Decoration */
 .zyka-image-stack {
     position: relative;
-    padding: 40px;
+    width: 600px;
+    padding-top: 60px;
 }
 
-.img-main {
-    width: 100%;
-    position: relative;
-    z-index: 2;
-}
 
 .img-accent {
     position: absolute;
@@ -734,11 +739,14 @@ header {
     --zyka-cream: #f8f5f0;
 }
 
+.text-color-maroon {
+    text-decoration-color;
+    #c5a059;
+}
 /* Hero Section */
 .zyka-about-hero {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                url('/images/about-hero-bg.jpg') center/cover no-repeat;
-    padding: 120px 0;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/about-hero-bg.jpg') center/cover no-repeat;
+    padding: 180px 0;
     margin-bottom: 60px;
 }
 
@@ -807,9 +815,9 @@ header {
     transition: transform 0.3s ease;
 }
 
-.zyka-pillar-card:hover {
-    transform: translateY(-10px);
-}
+    .zyka-pillar-card:hover {
+        transform: translateY(-10px);
+    }
 
 .pillar-icon-box {
     font-size: 2.5rem;
@@ -835,11 +843,11 @@ header {
     border: none;
 }
 
-.zyka-btn-gold:hover {
-    background-color: #b38e4a;
-    color: white;
-    box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4);
-}
+    .zyka-btn-gold:hover {
+        background-color: #b38e4a;
+        color: white;
+        box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4);
+    }
 
 footer {
     background: black;

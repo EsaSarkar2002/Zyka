@@ -1,164 +1,127 @@
-﻿@{
-ViewData["Title"] = "Booking";
-Layout = "~/Views/Shared/_StaffLayout.cshtml";
+﻿@model IEnumerable<Zyka.Models.Reservation>
+@using Zyka.Models.Enums
+@{
+    ViewData["Title"] = "Booking Management";
+    Layout = "~/Views/Shared/_StaffLayout.cshtml";
 }
-
+ 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - Staff Portal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
-    <link rel="stylesheet" href="~/css/StaffBooking.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<link rel="stylesheet" href="~/css/StaffBooking.css">
+<script src="~/js/site-clock.js"></script>
 </head>
-
+ 
 <main class="main-content">
-    <div class="top-bar">
-        <div class="page-title">
-            <h2 id="pageTitle">Booking Management</h2>
-            <p id="pageSubtitle">Viewing all current and scheduled reservations</p>
-        </div>
-
+<div class="top-bar">
+<div class="page-title">
+<h2 id="pageTitle">Booking Management</h2>
+<p id="pageSubtitle">Viewing all current and scheduled reservations</p>
+</div>
+ 
         <div class="top-bar-right">
-            <div class="datetime-display">
-                <p class="time" id="currentTime">15:52:10</p>
-                <p class="date" id="currentDate">Tuesday, January 6, 2026</p>
-            </div>
-
+<div class="datetime-display">
+<p class="time" id="currentTime">@DateTime.Now.ToString("HH:mm:ss")</p>
+<p class="date" id="currentDate">@DateTime.Now.ToString("dddd, MMMM d, yyyy")</p>
+</div>
+ 
             <div class="staff-info">
-                <div class="staff-avatar" id="staffAvatar">S</div>
-                <div>
-                    <p class="staff-name" id="staffName">Staff Member</p>
-                    <p class="staff-role">Staff</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<div class="staff-avatar">S</div>
+<div>
+<p class="staff-name">Staff Member</p>
+<p class="staff-role">Staff</p>
+</div>
+</div>
+</div>
+</div>
+ 
     <section id="bookings-section" class="content-section active px-4 py-4">
-        <div class="filters-bar mb-4 p-3 bg-white rounded shadow-sm">
-            <div class="row g-3 align-items-end">
-                <div class="col-md-3">
-                    <label for="filterDate" class="form-label small fw-bold">Filter by Date</label>
-                    <input type="date" id="filterDate" class="form-control" value="2026-01-06">
-                </div>
-                <div class="col-md-3">
-                    <label for="filterStatus" class="form-label small fw-bold">Filter by Status</label>
-                    <select id="filterStatus" class="form-select">
-                        <option value="all">All Bookings</option>
-                        <option value="upcoming">Upcoming</option>
-                        <option value="ongoing">Ongoing</option>
-                        <option value="completed">Completed</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-outline-secondary w-100" id="clearFiltersBtn">
-                        <i class="bi bi-arrow-clockwise"></i> Reset
-                    </button>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <button class="btn btn-success">
-                        <i class="bi bi-file-earmark-spreadsheet"></i> Export to Excel
-                    </button>
-                </div>
-            </div>
-        </div>
-
+<div class="filters-bar mb-4 p-3 bg-white rounded shadow-sm">
+<form method="get" asp-action="Booking" class="row g-3 align-items-end">
+<div class="col-md-3">
+<label for="filterDate" class="form-label small fw-bold">Filter by Date</label>
+<input type="date" name="filterDate" id="filterDate" class="form-control" value="@ViewBag.SelectedDate" onchange="this.form.submit()">
+</div>
+<div class="col-md-3">
+<label for="filterStatus" class="form-label small fw-bold">Filter by Status</label>
+<select name="filterStatus" id="filterStatus" class="form-select" onchange="this.form.submit()">
+<option value="">All Bookings</option>
+<option value="Confirmed" selected="@(ViewBag.SelectedStatus?.ToString() == "Confirmed")">Confirmed</option>
+<option value="Cancelled" selected="@(ViewBag.SelectedStatus?.ToString() == "Cancelled")">Cancelled</option>
+<option value="Completed" selected="@(ViewBag.SelectedStatus?.ToString() == "Completed")">Completed</option>
+</select>
+</div>
+</form>
+</div>
+ 
         <div class="card border-0 shadow-sm">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="bg-light">
-                            <tr>
-                                <th class="ps-4 py-3">Customer Name</th>
-                                <th class="py-3">Table Number</th>
-                                <th class="py-3">Booking Time</th>
-                                <th class="py-3">Guests</th>
-                                <th class="py-3">Status</th>
-                                <th class="pe-4 py-3 text-end">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bookingsTableBody">
-                            <tr>
-                                <td class="ps-4">
-                                    <div class="fw-bold text-dark">Liam Thompson</div>
-                                    <small class="text-muted">liam.t@email.com</small>
-                                </td>
-                                <td><span class="badge bg-light text-dark border">Table 03</span></td>
-                                <td>Jan 6, 2026 • 3:00 PM</td>
-                                <td><i class="bi bi-people me-1"></i> 2</td>
-                                <td><span class="status-badge ongoing">Ongoing</span></td>
-                                <td class="pe-4 text-end">
-                                    <button class="btn btn-sm btn-primary px-3">
-                                        <i class="bi bi-check2-circle"></i> Mark Complete
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="ps-4">
-                                    <div class="fw-bold text-dark">Sophia Rodriguez</div>
-                                    <small class="text-muted">sophia.r@email.com</small>
-                                </td>
-                                <td><span class="badge bg-light text-dark border">Table 07</span></td>
-                                <td>Jan 6, 2026 • 5:30 PM</td>
-                                <td><i class="bi bi-people me-1"></i> 5</td>
-                                <td><span class="status-badge upcoming">Upcoming</span></td>
-                                <td class="pe-4 text-end">
-                                    <span class="text-muted small italic">Awaiting Arrival</span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="ps-4">
-                                    <div class="fw-bold text-dark">Marcus Wright</div>
-                                    <small class="text-muted">m.wright@email.com</small>
-                                </td>
-                                <td><span class="badge bg-light text-dark border">Table 10</span></td>
-                                <td>Jan 6, 2026 • 3:45 PM</td>
-                                <td><i class="bi bi-people me-1"></i> 4</td>
-                                <td><span class="status-badge ongoing">Ongoing</span></td>
-                                <td class="pe-4 text-end">
-                                    <button class="btn btn-sm btn-primary px-3">
-                                        <i class="bi bi-check2-circle"></i> Mark Complete
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="ps-4">
-                                    <div class="fw-bold text-dark">Olivia Bennett</div>
-                                    <small class="text-muted">olivia.b@email.com</small>
-                                </td>
-                                <td><span class="badge bg-light text-dark border">Table 01</span></td>
-                                <td>Jan 6, 2026 • 12:00 PM</td>
-                                <td><i class="bi bi-people me-1"></i> 2</td>
-                                <td><span class="status-badge completed">Completed</span></td>
-                                <td class="pe-4 text-end">
-                                    <span class="badge bg-success-subtle text-success border-0">Closed</span>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center mt-4">
-            <p class="text-muted small mb-0">Showing 5 of 24 bookings</p>
-            <nav>
-                <ul class="pagination mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a></li>
-                </ul>
-            </nav>
-        </div>
-    </section>
+<div class="card-body p-0">
+<div class="table-responsive">
+<table class="table table-hover align-middle mb-0">
+<thead class="bg-light">
+<tr>
+<th class="ps-4 py-3">Customer Name</th>
+<th class="py-3">Table Number</th>
+<th class="py-3">Date & Time</th>
+<th class="py-3">Guests</th>
+<th class="py-3">Status</th>
+<th class="pe-4 py-3 text-end">Action</th>
+</tr>
+</thead>
+<tbody id="bookingsTableBody">
+                            @foreach (var item in Model)
+                            {
+<tr>
+<td class="ps-4">
+<div class="fw-bold text-dark">@item.FullName</div>
+<small class="text-muted">@item.MobileNumber</small>
+</td>
+<td>
+<span class="badge bg-light text-dark border">
+                                            @(item.Table != null ? item.Table.TableNumber : "T" + item.TableId)
+</span>
+</td>
+<td>
+<div class="fw-bold">@item.ReservationDate.ToString("MMM d, yyyy")</div>
+                                        @* CHANGED: Using DisplayText instead of TimeSlotId *@
+<small class="text-primary">
+<i class="bi bi-clock me-1"></i>
+                                            @(item.TimeSlot != null ? item.TimeSlot.DisplayText : "N/A")
+</small>
+</td>
+<td><i class="bi bi-people me-1"></i> @item.NumberOfGuests</td>
+<td>
+                                        @{ var sClass = item.Status.ToString().ToLower(); }
+<span class="status-badge @sClass">@item.Status</span>
+</td>
+<td class="pe-4 text-end">
+                                        @if (item.Status == ReservationStatus.Confirmed)
+                                        {
+<form asp-action="MarkComplete" method="post" style="display:inline;">
+<input type="hidden" name="id" value="@item.ReservationId" />
+<button type="submit" class="btn btn-sm btn-primary px-3">
+<i class="bi bi-check2-circle"></i> Mark Complete
+</button>
+</form>
+                                        }
+                                        else if (item.Status == ReservationStatus.Completed)
+                                        {
+<span class="badge bg-success-subtle text-success border-0 px-3 py-2">
+<i class="bi bi-check-all"></i> Closed
+</span>
+                                        }
+                                        else
+                                        {
+<span class="text-muted small">No Action</span>
+                                        }
+</td>
+</tr>
+                            }
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
 </main>
-
-</html>
+ 

@@ -189,6 +189,114 @@ namespace Zyka.Controllers
             return View();
 
         }
+        //============Staff details===============
+        public IActionResult StaffDetails()
+
+        {
+
+            var staff = _context.Users
+
+                .Where(u => u.Role == UserRole.Staff)
+
+                .Select(u => new StaffDto
+
+                {
+
+                    StaffId = u.UserId,
+
+                    Name = u.UserName,
+
+                    IsActive = u.IsActive
+
+                })
+
+                .ToList();
+
+            ViewBag.Staff = staff;
+
+            return View();
+
+        }
+
+        // ================= CUSTOMER DETAILS =================
+
+        [Authorize(Roles = "Admin")]
+
+        public IActionResult CustomerDetails()
+
+        {
+
+            var customers = _context.Users
+
+                .Where(u => u.Role == UserRole.Customer)
+
+                .Select(u => new
+
+                {
+
+                    u.UserId,
+
+                    Name = u.UserName,
+
+                    Email = u.EmailAddress,
+
+                    IsActive = u.IsActive,
+
+                    LatestBooking = _context.Reservations
+
+                        .Where(r => r.CustomerId == u.UserId)
+
+                        .OrderByDescending(r => r.ReservationDate)
+
+                        .Select(r => new
+
+                        {
+
+                            TableCategory = r.Table.Category.ToString(),
+
+                            TableNumber = r.Table.TableNumber
+
+                        })
+
+                        .FirstOrDefault()
+
+                })
+
+                .ToList();
+
+            ViewBag.Customers = customers;
+
+            return View();
+
+        }
+
+
+
+
+        // ================= ENABLE / DISABLE USER =================
+
+        [HttpPost]
+
+        public IActionResult ToggleUserStatus(int userId)
+
+        {
+
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+
+            if (user == null)
+
+                return NotFound();
+
+            user.IsActive = !user.IsActive;
+
+            user.LastUpdatedAt = DateTime.UtcNow;
+
+            _context.SaveChanges();
+
+            return Redirect(Request.Headers["Referer"].ToString());
+
+        }
+
 
 
         [HttpPost]

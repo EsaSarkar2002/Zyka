@@ -1,0 +1,32 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var staffList = ViewBag.Staff;
+
+}
+<div class="admin-content">
+    <h1 class="top-bar mb-4">Staff Details</h1>
+    <div class="row g-4">
+
+        @foreach (var staff in staffList)
+
+        {
+            <div class="col-md-4">
+                <div class="card shadow-lg p-3 rounded-4">
+                    <h5 class="fw-bold">@staff.Name</h5>
+                    <p class="text-muted mb-3">Staff ID: @staff.StaffId</p>
+                    <form asp-action="ToggleUserStatus" method="post">
+                        <input type="hidden" name="userId" value="@staff.StaffId" />
+                        <button type="submit"
+                                class="btn @(staff.IsActive ? "btn-success" : "btn-danger") w-100">
+
+                            @(staff.IsActive ? "Enabled" : "Disabled")
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>

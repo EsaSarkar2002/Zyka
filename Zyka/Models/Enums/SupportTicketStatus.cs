@@ -3,7 +3,6 @@
     public enum SupportTicketStatus
     {
         Open,
-        InProgress,
-        Closed
+        Resolved
     }
 }

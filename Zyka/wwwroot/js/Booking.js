@@ -13,7 +13,7 @@ $(document).ready(function () {
 
         $('.zyka-type-card').removeClass('active').css('border', 'none');
 
-        $(this).addClass('active').css('border', '2px solid #1a4d2e');
+        $(this).addClass('active').css('border', '2px solid #ffffff');
 
         selectedCategory = Number($(this).data('type'));
 
@@ -116,7 +116,7 @@ $(document).ready(function () {
                 whatsappNumber: $('#whatsappNumber').val()
             }),
             success: function (res) {
-
+                console.log(res);
                 // 🔐 Save data for Payment page
                 sessionStorage.setItem('currentReservation', JSON.stringify({
                     reservationId: res.reservationId,

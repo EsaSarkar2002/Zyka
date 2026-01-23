@@ -1,44 +1,149 @@
-﻿@{
-    ViewData["Title"] = "Support";
+﻿@model List<SupportTicket>
+@using Zyka.Models.Enums
+ 
+@{
+    ViewData["Title"] = "Customer Support";
     Layout = "_Layout";
 }
-
+ 
 <div class="container py-5">
-    <h2 class="mb-4">Customer Support</h2>
-
-    <div class="card p-4 shadow-sm">
-        <div class="mb-3">
-            <label>Name</label>
-            <input id="custName" class="form-control" />
+ 
+    <!-- HEADER -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Customer Support</h2>
+        <p class="text-muted">
+            Need help? Contact us directly or raise a support request.
+        </p>
+    </div>
+ 
+    <!-- CONTACT INFO -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="card p-4 shadow-sm h-100">
+                <h5 class="fw-semibold">📞 Call Us</h5>
+                <p class="mb-1">+91 98765 43210</p>
+                <small class="text-muted">Available 10 AM – 10 PM</small>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label>Phone</label>
-            <input id="phone" class="form-control" />
+ 
+        <div class="col-md-6 mb-3">
+            <div class="card p-4 shadow-sm h-100">
+                <h5 class="fw-semibold">📧 Email Us</h5>
+                <p class="mb-1">support@zyka.com</p>
+                <small class="text-muted">We usually reply within 24 hours</small>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label>Email</label>
-            <input id="email" class="form-control" />
+    </div>
+ 
+    <!-- MAIN CONTENT -->
+    <div class="row">
+ 
+        <!-- LEFT: PREVIOUS QUERIES -->
+        <div class="col-md-5 mb-4" style="height: fit-content;">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white">
+                    <h6 class="mb-0">Your Previous Queries</h6>
+                </div>
+ 
+                <div class="card-body p-0">
+                    @if (!Model.Any())
+                    {
+                        <div class="p-4 text-muted text-center">
+                            No support queries raised yet.
+                        </div>
+                    }
+                    else
+                    {
+                        <ul class="list-group list-group-flush">
+@foreach (var ticket in Model)
+{
+    <li class="list-group-item">
+ 
+        <!-- Ticket header -->
+        <div class="d-flex justify-content-between align-items-center mb-1">
+            <strong>#@ticket.TicketId</strong>
+ 
+            <span class="badge
+                @(ticket.Status == SupportTicketStatus.Open ? "bg-warning text-dark" : "bg-success")">
+                @ticket.Status
+            </span>
         </div>
-
-        <div class="mb-3">
-            <label>Booking ID (optional)</label>
-            <input id="reservationId" class="form-control" />
+ 
+        <!-- Customer Query -->
+        <div class="mb-2">
+            <small class="fw-semibold">Your Query:</small>
+            <div class="text-muted">
+                @ticket.Query
+            </div>
         </div>
+ 
+        <!-- Staff Reply (only if exists) -->
+        @if (!string.IsNullOrWhiteSpace(ticket.StafReply))
+        {
+            <div class="mt-2 p-2 bg-light rounded">
+                <small class="fw-semibold text-success">Staff Reply:</small>
+                <div>
+                    @ticket.StafReply
+                </div>
+            </div>
+        }
 
-        <div class="mb-3">
-            <label>Your Query</label>
-            <textarea id="query" class="form-control"></textarea>
+        <!-- Date + Time -->
+        <small class="text-muted d-block mb-2">
+            @ticket.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+        </small>
+    </li>
+}
+</ul>
+                    }
+                </div>
+            </div>
         </div>
-
-        <button id="submitTicket" class="btn btn-dark w-100">
-            Submit Query
-        </button>
+ 
+        <!-- RIGHT: SUPPORT FORM -->
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0">Raise a Support Query</h6>
+                </div>
+ 
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input id="custName" class="form-control" maxlength="100" value="@(ViewBag.UserName ?? "")"/>
+                    </div>
+ 
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input id="phone" class="form-control" maxlength="15" />
+                    </div>
+ 
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input id="email" class="form-control" maxlength="100" value="@(ViewBag.UserEmail ?? "")" readonly />
+                    </div>
+ 
+                    <div class="mb-3">
+                        <label class="form-label">Booking ID (optional)</label>
+                        <input id="reservationId" class="form-control" />
+                    </div>
+ 
+                    <div class="mb-3">
+                        <label class="form-label">Your Query</label>
+                        <textarea id="query" class="form-control" rows="4" maxlength="1000"></textarea>
+                    </div>
+ 
+                    <button id="submitTicket" class="btn btn-dark w-100">
+                        Submit Query
+                    </button>
+                </div>
+            </div>
+        </div>
+ 
     </div>
 </div>
-
+ 
 @section Scripts {
     <script src="~/js/support.js"></script>
 }
-
+ 

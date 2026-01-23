@@ -1,0 +1,34 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var customers = ViewBag.Customers;
+
+}
+<div class="admin-content">
+    <h1 class="top-bar mb-4">Customer Details</h1>
+    <div class="row g-4">
+
+        @foreach (var user in customers)
+
+        {
+            <div class="col-md-4">
+                <div class="card shadow-lg p-3 rounded-4">
+                    <h5 class="fw-bold">@user.Name</h5>
+                    <p class="mb-1 text-muted">User ID: @user.UserId</p>
+                    <p class="mb-3 text-muted">Contact: @user.Email</p>
+                    <form asp-action="ToggleUserStatus" method="post">
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <button type="submit"
+                                class="btn @(user.IsActive ? "btn-success" : "btn-danger") w-100">
+
+                            @(user.IsActive ? "Enabled" : "Disabled")
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+        }
+    </div>
+</div>

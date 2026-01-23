@@ -1,109 +1,136 @@
 ﻿@model List<Zyka.ViewModels.BookingHistoryViewModel>
  
 @{
+
     ViewData["Title"] = "ReservationHistory";
+
     Layout = "_Layout";
+
 }
  
 <link rel="stylesheet" href="~/css/reservation.css" />
  
 <div class="zyka-reservation-page">
-    <div class="zyka-bg-layer"></div>
+<div class="zyka-bg-layer"></div>
  
     <div class="zyka-overlay">
-        <div class="container">
+<div class="container">
  
             <div class="zyka-header text-center">
-                <p class="text-white h3">Your Personal Booking History</p>
-            </div>
- 
-            <nav class="zyka-filter-nav d-flex justify-content-center flex-wrap gap-2 mb-5">
-                <button class="btn zyka-filter-btn active" data-filter="all">All Bookings</button>
-                <button class="btn zyka-filter-btn" data-filter="date">❤️ Date</button>
-                <button class="btn zyka-filter-btn" data-filter="family">👨‍👩‍👧 Family</button>
-                <button class="btn zyka-filter-btn" data-filter="meeting">💼 Meeting</button>
-                <button class="btn zyka-filter-btn" data-filter="celebrate">🎉 Celebrate</button>
-            </nav>
+<p class="text-white h3">Your Personal Booking History</p>
+</div>
  
             <div class="zyka-booking-list">
  
                 @if (Model == null || !Model.Any())
+
                 {
-                    <div class="text-center text-white">
-                        <p>No bookings found.</p>
-                    </div>
+<div class="text-center text-white">
+<p>No bookings found.</p>
+</div>
+
                 }
+
                 else
+
                 {
+
                     foreach (var booking in Model)
+
                     {
-                        <article class="zyka-card" data-category="@booking.Category?.ToLower()">
+<article class="zyka-card" data-category="@booking.Category">
+
+                            @* <div class="zyka-card-content">
+
+                            @*     <h5>@booking.CustomerName</h5>
+ 
+                                <p>ID: <strong>@booking.BookingCode</strong></p>
+<p>@booking.Guests Guests | @booking.TableType</p>
+</div> *@
+ 
+ 
+ 
                             <div class="zyka-card-content">
-                                <h5 class="zyka-card-name">
-                                    @booking.CustomerName
-                                </h5>
+<h5 class="zyka-card-name">@booking.CustomerName</h5>
  
                                 <p class="zyka-card-id">
+
                                     ID: <span>@booking.BookingCode</span>
-                                </p>
+</p>
  
                                 <p class="zyka-card-info">
-                                    @booking.Guests Members | @booking.TableType Table
-                                </p>
-                            </div>
+
+                                    👥 @booking.Guests Members | 🍽️ @booking.TableType Table
+</p>
  
-                            <div class="zyka-card-status">
-                                @if (booking.Status?.ToLower() == "completed")
+                                <p class="text-white small mb-1">
+
+                                    📅 @booking.ReservationDate.ToString("dd MMM yyyy")
+</p>
+ 
+                                <p class="text-white small mb-1">
+
+                                    ⏰ @booking.TimeSlotText
+</p>
+ 
+                                <p class="text-white small">
+
+                                    📞 @booking.PhoneNumber
+</p>
+</div>
+ 
+ 
+ 
+ 
+ 
+                            <div class="zyka-card-status text-end">
+
+                                @if (booking.Status == "Cancelled")
+
                                 {
-                                    <span class="zyka-badge status-completed">Completed</span>
+<span class="zyka-badge status-cancelled">Cancelled</span>
+
                                 }
-                                else if (booking.Status?.ToLower() == "upcoming")
+
+                                else if (booking.Status == "Completed")
+
                                 {
-                                    <span class="zyka-badge status-upcoming">Upcoming</span>
+<span class="zyka-badge status-completed">Completed</span>
+
                                 }
-                                else if (booking.Status?.ToLower() == "cancelled")
-                                {
-                                    <span class="zyka-badge status-cancelled">Cancelled</span>
-                                }
+
                                 else
+
                                 {
-                                    <span class="zyka-badge status-upcoming">@booking.Status</span>
+<span class="zyka-badge status-upcoming d-block mb-2">
+
+                                        Confirmed
+</span>
+ 
+                                    <button class="btn btn-sm btn-outline-danger cancel-booking-btn"
+
+                                            data-id="@booking.BookingCode">
+
+                                        Cancel Booking
+</button>
+
                                 }
-                            </div>
-                        </article>
+</div>
+</article>
+
                     }
+
                 }
  
             </div>
  
         </div>
-    </div>
+</div>
 </div>
  
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const filters = document.querySelectorAll('.zyka-filter-btn');
-            const cards = document.querySelectorAll('.zyka-card');
- 
-            filters.forEach(btn => {
-                btn.addEventListener('click', function () {
-                    filters.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
- 
-                    const category = this.getAttribute('data-filter');
- 
-                    cards.forEach(card => {
-                        const cardCategory = card.getAttribute('data-category');
-                        if (category === "all" || cardCategory === category) {
-                            card.style.display = "flex";
-                        } else {
-                            card.style.display = "none";
-                        }
-                    });
-                });
-            });
-        });
-    </script>
+<script src="~/js/reservation-history.js"></script>
+
 }
+
  

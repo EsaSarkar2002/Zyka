@@ -15,7 +15,7 @@ namespace Zyka.Models
         [StringLength(100)]
         public string CustomerName { get; set; }
 
-        public int? ReservationId { get; set; }   // booking id
+        public int? ReservationId { get; set; }
         public Reservation? Reservation { get; set; }
 
         [Required]
@@ -26,10 +26,15 @@ namespace Zyka.Models
         [EmailAddress]
         [StringLength(100)]
         public string Email { get; set; }
-
+        
         [Required]
-        [StringLength(1000)]
+        [StringLength(5000)]
         public string Query { get; set; }
+
+        [StringLength(5000)]
+        public string? StafReply { get; set; }
+
+        public DateTime? RepliedAt { get; set; }
 
         [Required]
         public SupportTicketStatus Status { get; set; } = SupportTicketStatus.Open;

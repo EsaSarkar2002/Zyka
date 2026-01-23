@@ -10,7 +10,7 @@ namespace Zyka.Data
     {
         public static void Seed(ZykaDbContext context)
         {
-            if (!context.Users.Any())
+            if (!context.Users.Any(u => u.Role == UserRole.Admin))
             {
                 var adminUser = new User
                 {

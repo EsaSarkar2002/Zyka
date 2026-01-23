@@ -31,28 +31,58 @@ namespace Zyka.Controllers
         public IActionResult AboutUs() { return View(); }
         public IActionResult Gallery() { return View(); }
 
-        public IActionResult ReservationHistory() {
+        public IActionResult ReservationHistory()
+
+        {
+
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+
+            if (!int.TryParse(userIdClaim, out var userId))
+
                 return Forbid();
 
             var bookings = _context.Reservations
+
                 .Include(r => r.Table)
+
                 .Include(r => r.TimeSlot)
+
                 .Where(r => r.CustomerId == userId)
+
                 .OrderByDescending(r => r.CreatedAt)
+
                 .Select(r => new BookingHistoryViewModel
+
                 {
+
                     BookingCode = r.ReservationId.ToString(),
+
                     CustomerName = r.FullName,
+
                     Guests = r.NumberOfGuests,
+
                     TableType = r.Table.Category.ToString(),
+
                     Status = r.Status.ToString(),
-                    Category = r.Table.Category.ToString().ToLower()
+
+                    Category = r.Table.Category.ToString().ToLower(),
+
+                    // ✅ NEW
+
+                    ReservationDate = r.ReservationDate,
+
+                    TimeSlotText = r.TimeSlot.DisplayText,
+
+                    PhoneNumber = r.MobileNumber
+
                 })
+
                 .ToList();
+
             return View(bookings);
+
         }
+    
 
 
         //[Authorize(Roles = "Customer")]
@@ -85,7 +115,9 @@ namespace Zyka.Controllers
         }
 
         [Authorize(Roles = "Customer")]
-        public IActionResult Confirmation() { return View(); }
+        public IActionResult Confirmation() { 
+            return View(); 
+        }
 
         [Authorize(Roles = "Customer")]
         public IActionResult Payment() { return View(); }
@@ -94,10 +126,18 @@ namespace Zyka.Controllers
         [HttpGet]
         public IActionResult Support()
         {
-            return View();
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var tickets = _context.SupportTickets.Where(t => t.UserId == userId).OrderByDescending(t => t.CreatedAt).ToList();
+
+            var userName = _context.Users.Where(u => u.UserId == userId).Select(u => u.EmailAddress).FirstOrDefault();
+            var userEmail = _context.Users.Where(u => u.UserId == userId).Select(u => u.EmailAddress).FirstOrDefault();
+            ViewBag.UserEmail = userEmail;
+            ViewBag.UserName = userName;
+
+            return View(tickets);
         }
 
-
+        
         // APIs
 
         [Authorize(Roles = "Customer")]
@@ -208,7 +248,6 @@ namespace Zyka.Controllers
         }
 
 
-
         [Authorize(Roles = "Customer")]
         [HttpPost]
         public IActionResult CreateReservation(
@@ -256,22 +295,71 @@ namespace Zyka.Controllers
 
         [Authorize(Roles = "Customer")]
         [HttpPost]
-        public IActionResult CreateSupportTicket([FromBody] SupportTicket ticket)
+        public IActionResult CreateSupportTicket([FromBody] CreateSupportTicketDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Invalid support data");
 
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            ticket.UserId = userId;
-            ticket.Status = SupportTicketStatus.Open;
-            ticket.CreatedAt = DateTime.UtcNow;
+            var ticket = new SupportTicket
+            {
+                UserId = userId,
+                CustomerName = dto.CustomerName.Trim(),
+                PhoneNumber = dto.PhoneNumber.Trim(),
+                Email = dto.Email.Trim(),
+                ReservationId = dto.ReservationId,
+                Query = dto.Query.Trim(),
+                Status = SupportTicketStatus.Open,
+                CreatedAt = DateTime.UtcNow
+            };
 
             _context.SupportTickets.Add(ticket);
             _context.SaveChanges();
 
-            return Ok();
+            return Ok(new { ticketId = ticket.TicketId });
         }
+
+        [Authorize(Roles ="Customer")]
+        [HttpPost]
+        public IActionResult CancelReservation(int reservationId)
+
+        {
+
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var reservation = _context.Reservations
+
+                .FirstOrDefault(r =>
+
+                    r.ReservationId == reservationId &&
+
+                    r.CustomerId == userId &&
+
+                    r.Status == ReservationStatus.Confirmed);
+
+            if (reservation == null)
+
+                return NotFound("Reservation not found");
+
+            if (reservation.Status == ReservationStatus.Cancelled)
+
+                return BadRequest("Reservation already cancelled");
+
+            if (reservation.Status == ReservationStatus.Completed)
+
+                return BadRequest("Completed reservation cannot be cancelled");
+
+            reservation.Status = ReservationStatus.Cancelled;
+
+            reservation.LastUpdatedAt = DateTime.UtcNow;
+
+            _context.SaveChanges();
+
+            return Ok(new { message = "Reservation cancelled successfully" });
+
+        }
+
 
     }
 }

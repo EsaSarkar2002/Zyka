@@ -25,7 +25,7 @@
 
     <div class="admin-sidebar">
         <div class="sidebar-header">
-            <h2 class="brand-title">ZYKA</h2>
+             <img src="~/images/Zyka_logo_transparent.png" alt="ZYKA Logo" class="brand-logo mb-2">
             <p class="text-white-50 mb-0">Admin Panel</p>
         </div>
 
@@ -46,10 +46,15 @@
                 asp-action="History">
                 <i class="bi bi-clock-history"></i> History
             </a>
-            <a class="nav-link @(currentController=="Admin"&&currentAction=="" ?"active":"")" asp-controller="Admin"
-                asp-action="Dashboard">
-                <i class="bi bi-chat-square-text"></i> Restaurant Closed Message
+            <a class="nav-link @(currentController=="Admin"&&currentAction=="CustomerDetails" ?"active":"")" asp-controller="Admin"
+                asp-action="CustomerDetails">
+                <i class="bi bi-calendar-check"></i> CustomerDetails
             </a>
+            <a class="nav-link @(currentController=="Admin"&&currentAction=="StaffDetails" ?"active":"")" asp-controller="Admin"
+                asp-action="StaffDetails">
+                <i class="bi bi-clock-history"></i> StaffDetails
+            </a>
+
         </nav>
 
         <form class="p-3 mt-auto" method="post" action="/Account/Logout"
@@ -66,7 +71,7 @@
     </div>
 
 
-        <main role="admin" class="pb-3">
+        <main role="admin">
             @RenderBody()
         </main>
 
