@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    string currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,52 +13,49 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
+    <link rel="stylesheet" href="~/css/adminDashboard.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/StaffBooking.css" asp-append-version="true" />
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <img src="~/images/Zka_logo_transparent.png" alt="ZYKA Logo" class="brand-logo mb-2">
-            <p>Staff Portal</p>
+    <div class="admin-sidebar">
+        <div class="sidebar-header">
+             <img src="~/images/Zyka_logo_transparent.png" alt="ZYKA Logo" class="brand-logo mb-2">
+            <p class="text-white-50 mb-0">Staff Panel</p>
         </div>
-        
-        <nav class="flex-grow-1">
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="/Staff/Dashboard" class="nav-link-custom">
-                        <i class="bi bi-speedometer2"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Staff/Booking" class="nav-link-custom">
-                        <i class="bi bi-calendar-check"></i>
-                        <span>Bookings</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Staff/Table" class="nav-link-custom">
-                        <i class="bi bi-grid-3x3-gap"></i>
-                        <span>Tables</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Staff/Support" class="nav-link-custom">
-                        <i class="bi bi-question-circle"></i>
-                        <span>Support</span>
-                    </a>
-                </li>
-            </ul>
+
+        <nav class="nav flex-column py-3">
+            <a class="nav-link @(currentController=="Staff"&&currentAction=="Dashboard" ?"active":"")" asp-controller="Staff"
+                asp-action="Dashboard">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a class="nav-link @(currentController=="Staff"&&currentAction=="Booking" ?"active":"")" asp-controller="Staff"
+                asp-action="Booking">
+                <i class="bi bi-bell"></i> Bookings
+            </a>
+            <a class="nav-link @(currentController=="Staff"&&currentAction=="Table" ?"active":"")" asp-controller="Staff"
+                asp-action="Table">
+                <i class="bi bi-grid-3x3"></i> Tables
+            </a>
+            <a class="nav-link @(currentController=="Staff"&&currentAction=="Support" ?"active":"")" asp-controller="Staff"
+                asp-action="Support">
+                <i class="bi bi-people"></i> Support
+            </a>
+
         </nav>
 
-        <form class="p-3" method="post" action="/Account/Logout" style="border-top: 1px solid rgba(255,255,255,0.1);">
-            <button type="submit" class="btn btn-outline-light w-100 d-flex align-items-center justify-content-center gap-2" id="logoutBtn">
-                <i class="bi bi-box-arrow-left"></i>
-                <span>Logout</span>
-            </button>
+        <form class="p-3 mt-auto" method="post" action="/Account/Logout"
+            style="position: absolute; bottom: 0; width: 100%; border-top: 1px solid rgba(255,255,255,0.1);">
+                <button type="submit"
+                    class="btn  text-white p-0 d-flex text-decoration-none align-items-center justify-content-between bg-white bg-opacity-10 rounded p-3"
+                    id="logoutBtn">
+                    <i class="bi bi-box-arrow-left fs-5"></i>
+                    <p class="mb-0 text-white px-5 ">Logout</p>
+                </button>
         </form>
-    </aside>
+        </div>
+    </div>
+    </div>
 
     <main role="main">
         @RenderBody()

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -8,6 +9,7 @@ using Zyka.Data;
 using Zyka.Models;
 using Zyka.Models.DTOs;
 using Zyka.Models.Enums;
+using Zyka.Security;
 using Zyka.ViewModels;
 namespace Zyka.Controllers
 {
@@ -125,6 +127,65 @@ namespace Zyka.Controllers
 
             return View(bookings);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTable(string tableNumber, TableCategory category)
+        {
+            
+
+            if (_context.Tables.Any(t=>t.TableNumber==tableNumber))
+            {
+                TempData["Error"] = "Table Already Exists";
+            }
+            var table = new TableInfo
+            {
+                TableNumber = tableNumber,
+                Category = category,
+                Status = TableStatus.Available,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Tables.Add(table);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("TableList", new { category });
+        }
+        //[HttpPost]
+        //public async Task<IActionResult> AddStaff(string tableNumber, TableCategory category)
+        //{
+
+
+        //    if (_context.Users.Any(t => t.EmailAddress == tableNumber))
+        //    {
+        //        TempData["Error"] = "Staff Already Exists. Please use new Email Address.";
+        //    }
+        //    var table = new User
+        //    {
+        //        TableNumber = tableNumber,
+        //        Category = category,
+        //        Status = TableStatus.Available,
+        //        IsActive = true,
+        //        CreatedAt = DateTime.UtcNow
+        //    };
+
+        //    _context.Tables.Add(table);
+        //    await _context.SaveChangesAsync();
+
+        //    return RedirectToAction("TableList", new { category });
+        //}
+        [HttpGet]
+        public IActionResult IsTableNumberExists(string tableNumber)
+        {
+            if (string.IsNullOrWhiteSpace(tableNumber))
+                return Json(false);
+
+            bool exists = _context.Tables
+                .Any(t => t.TableNumber == tableNumber);
+
+            return Json(exists);
+        }
+
         public IActionResult MarkMaintenance(int tableId, TableCategory category)
         {
             var table = _context.Tables.Find(tableId);
@@ -193,21 +254,14 @@ namespace Zyka.Controllers
         public IActionResult StaffDetails()
 
         {
-
             var staff = _context.Users
-
                 .Where(u => u.Role == UserRole.Staff)
-
                 .Select(u => new StaffDto
-
                 {
-
                     StaffId = u.UserId,
-
                     Name = u.UserName,
-
+                    Email=u.EmailAddress,
                     IsActive = u.IsActive
-
                 })
 
                 .ToList();
@@ -221,7 +275,6 @@ namespace Zyka.Controllers
         // ================= CUSTOMER DETAILS =================
 
         [Authorize(Roles = "Admin")]
-
         public IActionResult CustomerDetails()
 
         {
@@ -230,11 +283,11 @@ namespace Zyka.Controllers
 
                 .Where(u => u.Role == UserRole.Customer)
 
-                .Select(u => new
+                .Select(u => new CustomerListDto
 
                 {
 
-                    u.UserId,
+                    UserId = u.UserId,
 
                     Name = u.UserName,
 
@@ -242,21 +295,13 @@ namespace Zyka.Controllers
 
                     IsActive = u.IsActive,
 
-                    LatestBooking = _context.Reservations
+                    MobileNumber = _context.Reservations
 
                         .Where(r => r.CustomerId == u.UserId)
 
                         .OrderByDescending(r => r.ReservationDate)
 
-                        .Select(r => new
-
-                        {
-
-                            TableCategory = r.Table.Category.ToString(),
-
-                            TableNumber = r.Table.TableNumber
-
-                        })
+                        .Select(r => r.MobileNumber)
 
                         .FirstOrDefault()
 
@@ -271,27 +316,43 @@ namespace Zyka.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> AddStaff(AddStaffViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("StaffDetails");
+
+            var staff = new User
+            {
+                UserName = model.Name,
+                EmailAddress = model.Email,
+                HashedPassword = PasswordHasher.Hash($"{model.Password}"),
+                Role=UserRole.Staff,
+                CreatedAt = DateTime.UtcNow,
+                IsActive = true
+            };
+
+            _context.Users.Add(staff);
+            await _context.SaveChangesAsync();
 
 
-        // ================= ENABLE / DISABLE USER =================
+            return RedirectToAction("StaffDetails");
+        }
 
         [HttpPost]
-
         public IActionResult ToggleUserStatus(int userId)
 
         {
 
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
 
-            if (user == null)
-
-                return NotFound();
+            if (user == null) return NotFound();
 
             user.IsActive = !user.IsActive;
 
-            user.LastUpdatedAt = DateTime.UtcNow;
-
             _context.SaveChanges();
+
+            // ✅ Redirect back to the same page
 
             return Redirect(Request.Headers["Referer"].ToString());
 
@@ -299,56 +360,22 @@ namespace Zyka.Controllers
 
 
 
-        [HttpPost]
-        public async Task<IActionResult> AddTable(string tableNumber, TableCategory category)
-        {
-            
 
-            if (_context.Tables.Any(t=>t.TableNumber==tableNumber))
-            {
-                TempData["Error"] = "Table Already Exists";
-            }
-            var table = new TableInfo
-            {
-                TableNumber = tableNumber,
-                Category = category,
-                Status = TableStatus.Available,
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow
-            };
 
-            _context.Tables.Add(table);
-            await _context.SaveChangesAsync();
+        //    public IActionResult TableList(
+        //TableCategory category,
+        //DateTime? date,
+        //int? timeSlotId)
+        //    {
+        //        ViewBag.Category = category;
+        //        ViewBag.SelectedDate = date ?? DateTime.Today;
+        //        ViewBag.SelectedTimeSlotId = timeSlotId;
 
-            return RedirectToAction("TableList", new { category });
-        }
+        //        var tables = _context.Tables
+        //            .Where(t => t.Category == category && t.IsActive)
+        //            .ToList();
 
-        [HttpGet]
-        public IActionResult IsTableNumberExists(string tableNumber)
-        {
-            if (string.IsNullOrWhiteSpace(tableNumber))
-                return Json(false);
-
-            bool exists = _context.Tables
-                .Any(t => t.TableNumber == tableNumber);
-
-            return Json(exists);
-        }
-
-    //    public IActionResult TableList(
-    //TableCategory category,
-    //DateTime? date,
-    //int? timeSlotId)
-    //    {
-    //        ViewBag.Category = category;
-    //        ViewBag.SelectedDate = date ?? DateTime.Today;
-    //        ViewBag.SelectedTimeSlotId = timeSlotId;
-
-    //        var tables = _context.Tables
-    //            .Where(t => t.Category == category && t.IsActive)
-    //            .ToList();
-
-    //        return View(tables);
-    //    }
+        //        return View(tables);
+        //    }
     }
 }

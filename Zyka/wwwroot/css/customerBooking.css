@@ -141,12 +141,16 @@
     letter-spacing: 1px;
     box-shadow: 0 10px 20px rgba(27, 67, 50, 0.3);
 }
-
-    .zyka-btn-submit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 25px rgba(27, 67, 50, 0.4);
-        color: white;
-    }
+.customer-numbers{
+    padding-top:1.5rem;
+    justify-content:center;
+    align-items:end;
+}
+.zyka-btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(27, 67, 50, 0.4);
+    color: white;
+}
 
 /* --- 5. Responsive --- */
 @media (max-width: 768px) {
@@ -251,7 +255,11 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         color: white;
     }
-
+.support-body{
+    max-width:100%;
+    background-image:url('../images/shared image (3).jpg')
+    
+}
 /* --- 10. Custom Scrollbar --- */
 ::-webkit-scrollbar {
     width: 8px;

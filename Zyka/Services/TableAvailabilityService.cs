@@ -30,7 +30,7 @@ namespace Zyka.Services
             return _context.Tables
 
             .Where(t =>
-            t.IsActive && t.Category == category &&
+            t.IsActive && t.Category == category && t.Status== TableStatus.Available &&
             !reservedTableIds.Contains(t.TableId)).ToList();
 
         }

@@ -2,7 +2,7 @@
 
 {
 
-    public class CustomerDto
+    public class CustomerListDto
 
     {
 
@@ -13,6 +13,8 @@
         public string Email { get; set; }
 
         public bool IsActive { get; set; }
+
+        public string? MobileNumber { get; set; }
 
     }
 

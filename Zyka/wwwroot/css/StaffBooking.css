@@ -16,6 +16,26 @@
 }
 
 /* ---------- 2. GLOBAL RESET & LAYOUT ---------- */
+/* STAFF PORTAL CONSOLIDATED STYLES */
+
+/* ---------- 1. DESIGN TOKENS (GLOBAL VARIABLES) ---------- */
+
+:root {
+    --gold: #D4AF37;
+    --dark-green: #2C5F2D;
+    --light-green: #97BC62;
+    --beige: #F5F5DC;
+    --cream: #FAF8F3;
+    --white: #FFFFFF;
+    --gray-light: #F8F9FA;
+    --gray-medium: #6C757D;
+    --gray-dark: #495057;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- 2. GLOBAL RESET & LAYOUT ---------- */
+
 * {
     margin: 0;
     padding: 0;
@@ -37,19 +57,23 @@ body {
 main[role="main"] {
     margin-left: 260px; /* Space for fixed sidebar */
     min-height: 100vh;
+    background-image: url("/images/shared image (5).jpg");
+    background-size: cover; /* scale to fill */
+    min-height: 100vh;
     padding: 2rem;
     background: transparent;
     transition: margin-left 0.25s ease;
 }
 
 /* ---------- 3. SIDEBAR & NAVIGATION ---------- */
+
 .sidebar {
     position: fixed;
     left: 0;
     top: 0;
     height: 100vh;
     width: 260px;
-    background: linear-gradient(180deg, var(--dark-green) 0%, #234a24 100%);
+    background: #370d08;
     padding: 2rem 0;
     z-index: 1000;
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
@@ -58,10 +82,9 @@ main[role="main"] {
 }
 
 .sidebar-brand {
-    padding: 0px 24px 32px 24px;
+    padding: 0px 0px 32px 34px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 2rem;
-    text-align: center;
 }
 
 .brand-logo {
@@ -98,8 +121,9 @@ main[role="main"] {
 }
 
     .nav-link-custom:hover {
-        color: var(--white);
-        background-color: rgba(255, 255, 255, 0.12);
+        background-color: #FFFFFF;
+        color: black;
+        padding-left: 15px;
     }
 
     .nav-link-custom i {
@@ -107,20 +131,22 @@ main[role="main"] {
     }
 
 /* ---------- 4. TOP BAR & DASHBOARD ---------- */
+
 .top-bar {
     background: var(--white);
     padding: 1.25rem 2rem;
     box-shadow: var(--shadow);
+    border-radius: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
     top: 0;
     z-index: 999;
 }
 
 /* KPI Cards */
-.kpi-card {
+
+.table-card {
     background: var(--white);
     border-radius: 16px;
     padding: 1.5rem;
@@ -130,7 +156,9 @@ main[role="main"] {
     height: 100%;
 }
 
+
 /* ---------- 5. TABLES ---------- */
+
 .bookings-table-wrapper {
     background: var(--white);
     border-radius: 16px;
@@ -154,13 +182,22 @@ main[role="main"] {
 
 .status-badge {
     padding: 0.375rem 0.875rem;
+    color: white;
     border-radius: 20px;
+    background: Green;
     font-size: 0.75rem;
     font-weight: 600;
 }
 
+.support-header {
+    padding-bottom: 32px;
+}
+
+
 /* ---------- 8. RESPONSIVE ---------- */
+
 @media (max-width: 768px) {
+
     .sidebar {
         transform: translateX(-100%);
         width: 220px;
@@ -171,3 +208,5 @@ main[role="main"] {
         padding: 1rem;
     }
 }
+
+ 

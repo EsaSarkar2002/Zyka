@@ -1,57 +1,155 @@
-﻿
+﻿@model Zyka.ViewModels.ConfirmationViewModel
+ 
 @{
+
     ViewData["Title"] = "Confirmation";
-    // Layout = "_Layout"; // Agar header/footer chahiye to ise rakhein
+
+    var hasServerData = Model != null && Model.ReservationId > 0;
+
 }
 <style>
+
     body {
-    background: linear-gradient(135deg, #1a4d2e 0%, #8000 50%, #1a4d2e 100%);
-    background-attachment: fixed; /* Keeps gradient still while scrolling */
-    min-height: 100vh;
-    margin: 0;
-}
+
+        background: linear-gradient(135deg, #1a4d2e 0%, #8000 50%, #1a4d2e 100%);
+
+        background-attachment: fixed; /* Keeps gradient still while scrolling */
+
+        min-height: 100vh;
+
+        margin: 0;
+
+    }
 </style>
 <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg border-0 text-center">
-                <div class="card-body p-5">
-                    <div class="mb-4">
-                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                            <i class="bi bi-check-lg text-success" style="font-size: 3rem;"></i>
-                        </div>
-                    </div>
-
-                    <h2 class="fw-bold mb-3" style="color: #1a4731;">Booking Confirmed!</h2>
-                    <p class="text-muted mb-4">Your table has been reserved. A confirmation message is on its way to your WhatsApp.</p>
-
-                    <div class="rounded-3 p-4 mb-4 text-start" style="background-color: #f8f9fa; border: 1px solid #eee;">
-                        <h6 class="fw-bold mb-3" style="color: #1a4731; border-bottom: 1px solid #dee2e6; pb-2">Reservation Summary</h6>
-
-                        <div class="row g-2">
-                            <div class="col-6 text-muted small">Booking ID</div>
-                            <div class="col-6 fw-bold small text-end" id="bookingId">--</div>
-
-                            <div class="col-6 text-muted small">Date & Time</div>
-                            <div class="col-6 fw-bold small text-end"><span id="bookingDate">--</span> | <span id="bookingTime">--</span></div>
-
-                            <div class="col-6 text-muted small">Guests</div>
-                            <div class="col-6 fw-bold small text-end" id="bookingGuests">--</div>
-
-                            <div class="col-6 text-muted small">Type</div>
-                            <div class="col-6 fw-bold small text-end text-capitalize" id="bookingType">--</div>
-                        </div>
-                    </div>
-
-                    <a href="/" class="btn btn-lg w-100 text-white shadow-sm" style="background: #1a4731; border-radius: 10px; font-size: 1rem;">
-                        Back to Home
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="row justify-content-center">
+<div class="col-md-6">
+<div class="card shadow-lg border-0 text-center">
+<div class="card-body p-5">
+<div class="mb-4">
+<div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+<i class="bi bi-check-lg text-success" style="font-size: 3rem;"></i>
 </div>
+</div>
+ 
+                    <h2 class="fw-bold mb-3" style="color: #1a4731;">Booking Confirmed!</h2>
+<p class="text-muted mb-4">Your table has been reserved. A confirmation message is on its way to your WhatsApp.</p>
+ 
+                    <div class="rounded-3 p-4 mb-4 text-start" style="background-color: #f8f9fa; border: 1px solid #eee;">
+<h6 class="fw-bold mb-3" style="color: #1a4731; border-bottom: 1px solid #dee2e6; pb-2">Reservation Summary</h6>
+ 
+                        <div class="row g-2">
+<div class="col-6 text-muted small">Booking ID</div>
+<div class="col-6 fw-bold small text-end" id="bookingId">
 
+                                @(hasServerData ? Model.ReservationId.ToString("D2") : "--")
+</div>
+ 
+                            <div class="col-6 text-muted small">Date & Time</div>
+<div class="col-6 fw-bold small text-end"><span id="bookingDate">@((hasServerData) ? Model.ReservationDate.ToString("D") : "--")</span> | <span id="bookingTime">@((hasServerData) ? Model.TimeSlotText : "--")</span></div>
+ 
+                            <div class="col-6 text-muted small">Guests</div>
+<div class="col-6 fw-bold small text-end" id="bookingGuests">
+
+                                @((hasServerData) ? $"{Model.Guests} people" : "--")
+</div>
+ 
+                            <div class="col-6 text-muted small">Type</div>
+<div class="col-6 fw-bold small text-end text-capitalize" id="bookingType">
+
+                                @((hasServerData) ? Model.TableCategory : "--")
+</div>
+</div>
+</div>
+ 
+                    <a href="/" class="btn btn-lg w-100 text-white shadow-sm" style="background: #1a4731; border-radius: 10px; font-size: 1rem;">
+
+                        Back to Home
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+ 
 @section Scripts {
-    <script src="~/js/Confirmation.js"></script>
+<script src="~/js/Confirmation.js"></script>
+ 
+    <script>
+
+        // Inline fallback: populate from localStorage.lastBooking only when server didn't provide data
+
+        (function () {
+
+            try {
+
+                var bookingIdEl = document.getElementById('bookingId');
+
+                if (bookingIdEl && bookingIdEl.textContent.trim() !== '--') return;
+ 
+                var raw = localStorage.getItem('lastBooking');
+
+                if (!raw) return;
+
+                var booking = JSON.parse(raw);
+
+                if (!booking) return;
+ 
+                function setIfEmpty(id, value) {
+
+                    var el = document.getElementById(id);
+
+                    if (!el) return;
+
+                    if (el.textContent.trim() === '--' || el.textContent.trim() === '') {
+
+                        el.textContent = value;
+
+                    }
+
+                }
+ 
+                // booking.reservationId expected as number or numeric string; pad to 2 digits
+
+                var bookingIdValue = '';
+
+                if (booking.bookingId) {
+
+                    // old data might include BK prefix, strip if present
+
+                    bookingIdValue = booking.bookingId.toString().replace(/^BK/i, '');
+
+                } else if (booking.reservationId) {
+
+                    bookingIdValue = booking.reservationId.toString().padStart(2, '0');
+
+                }
+
+                if (bookingIdValue) setIfEmpty('bookingId', bookingIdValue);
+ 
+                if (booking.date) {
+
+                    var d = new Date(booking.date);
+
+                    setIfEmpty('bookingDate', d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }));
+
+                }
+
+                setIfEmpty('bookingTime', booking.timeSlot || booking.timeText || '');
+
+                var guests = booking.guests || booking.seatingCapacity || booking.numberOfGuests || 0;
+
+                setIfEmpty('bookingGuests', guests + ' people');
+
+                setIfEmpty('bookingType', booking.bookingType || booking.categoryText || '');
+
+            } catch (e) {
+
+                console && console.warn && console.warn('Confirmation populate failed', e);
+
+            }
+
+        })();
+</script>
+
 }

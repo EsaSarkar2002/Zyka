@@ -1,13 +1,10 @@
 ﻿
 
+$(document).ready(function () {
+    const today = new Date().toISOString().split('T')[0];
 let selectedTime = '';
 let selectedCategory = null;
-let selectedDate = '';
-
-$(document).ready(function () {
-
-    const today = new Date().toISOString().split('T')[0];
-    $('#bookingDate').attr('min', today);
+let selectedDate = today;
 
     $('.zyka-type-card').on('click', function () {
 
@@ -24,13 +21,34 @@ $(document).ready(function () {
         $('#seatingCapacity').val(seats).attr('min', min).attr('max', max);
         $('#seatingSection').fadeIn();
 
+        $('#seatingCapacity').on('input', function () {
+            const value = parseInt($(this).val());
+            const min = parseInt($(this).attr('min'));
+            const max = parseInt($(this).attr('max'));
+
+            if (value > max) {
+                $(this).val(max);
+            } else if (value < min && $(this).val() !== "") {
+                $(this).val(min);
+            }
+        });
+
         tryFetchAvailability();
     });
 
-    $('#bookingDate').on('change', function () {
-        selectedDate = $(this).val();
-        tryFetchAvailability();
-    });
+    $('#bookingDate').attr('min', today).val(today)
+        .on('click', function () {
+            if (typeof this.showPicker === 'function') {
+                this.showPicker();
+            }
+        })
+        .on('keydown paste', function (e) {
+            e.preventDefault();
+        })
+        .on('change', function () {
+            selectedDate = $(this).val();
+            tryFetchAvailability();
+        });
 
     function tryFetchAvailability() {
         if (!selectedDate || selectedCategory === null) return;
@@ -99,6 +117,28 @@ $(document).ready(function () {
         selectedTime = $(this).data('timeslotid');
     });
 
+        const $mobile = $('#mobileNumber');
+        const $whatsapp = $('#whatsappNumber');
+        const $checkbox = $('#sameAsMobile');
+
+        // 1. Handle the Checkbox click
+        $checkbox.on('change', function () {
+            if (this.checked) {
+                $whatsapp.val($mobile.val());
+                $whatsapp.prop('readonly', true); // Optional: prevent editing while synced
+            } else {
+                $whatsapp.prop('readonly', false);
+            }
+        });
+
+        // 2. Sync in real-time if checkbox is checked
+        $mobile.on('input', function () {
+            if ($checkbox.is(':checked')) {
+                $whatsapp.val($(this).val());
+            }
+        });
+
+
     $('#bookingForm').on('submit', function (e) {
         e.preventDefault();
 
@@ -116,7 +156,6 @@ $(document).ready(function () {
                 whatsappNumber: $('#whatsappNumber').val()
             }),
             success: function (res) {
-                console.log(res);
                 // 🔐 Save data for Payment page
                 sessionStorage.setItem('currentReservation', JSON.stringify({
                     reservationId: res.reservationId,

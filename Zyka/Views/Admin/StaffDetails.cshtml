@@ -1,32 +1,111 @@
 ﻿@{
-
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-
     var staffList = ViewBag.Staff;
-
 }
+ 
 <div class="admin-content">
-    <h1 class="top-bar mb-4">Staff Details</h1>
-    <div class="row g-4">
-
-        @foreach (var staff in staffList)
-
-        {
-            <div class="col-md-4">
-                <div class="card shadow-lg p-3 rounded-4">
-                    <h5 class="fw-bold">@staff.Name</h5>
-                    <p class="text-muted mb-3">Staff ID: @staff.StaffId</p>
-                    <form asp-action="ToggleUserStatus" method="post">
-                        <input type="hidden" name="userId" value="@staff.StaffId" />
-                        <button type="submit"
-                                class="btn @(staff.IsActive ? "btn-success" : "btn-danger") w-100">
-
-                            @(staff.IsActive ? "Enabled" : "Disabled")
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-        }
+    <div class="mb-4 top-bar d-flex justify-content-between align-items-center">
+        <div class="category-header">
+            <h1 class="text-dark-green">Staff Details</h1>
+            <p class="text-muted">View all staffs, change access, or add new staff</p>
+            <p class="time fw-bold" id="currentTime">@DateTime.Now.ToString("HH:mm:ss")</p>
+        <p class="date text-muted" id="currentDate">@DateTime.Now.ToString("dddd, MMMM d, yyyy")</p>
+        </div>
+ 
+        <!-- Add Staff Button -->
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+            + Add Staff
+        </button>
+    </div>
+ 
+    <!-- Search Bar -->
+    <input type="text" class="form-control mb-3"
+           placeholder="Search by name or ID"
+           onkeyup="filterTable(this.value)" />
+ 
+    <!-- Staff Table -->
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Staff Name</th>
+                    <th>Staff Email</th>
+                    <th>Staff ID</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
+                @foreach (var s in staffList)
+                {
+                    <tr>
+                        <td>@s.Name</td>
+                        <td>@s.Email</td>
+                        <td>@s.StaffId</td>
+                        <td class="status-cell">
+                            <form asp-action="ToggleUserStatus" method="post">
+                                <input type="hidden" name="userId" value="@s.StaffId" />
+                                <label class="switch">
+                                    <input type="checkbox"
+                                           onchange="this.form.submit()"
+                                           @(s.IsActive ? "checked" : "") />
+                                    <span class="slider"></span>
+                                </label>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
+ 
+<!-- Add Staff Modal -->
+<div class="modal fade" id="addStaffModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+ 
+            <form asp-action="AddStaff" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Staff</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+ 
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Staff Name</label>
+                        <input type="text" name="Name" class="form-control" required />
+                    </div>
+ 
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="Email" class="form-control" required />
+                    </div>
+ 
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="Password" class="form-control" required />
+                    </div>
+                </div>
+ 
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Add Staff</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+ 
+        </div>
+    </div>
+</div>
+ 
+@section Scripts {
+<script>
+    function filterTable(value) {
+        value = value.toLowerCase();
+        document.querySelectorAll("#dataTable tr").forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+        });
+    }
+</script>
+}
+
+ 

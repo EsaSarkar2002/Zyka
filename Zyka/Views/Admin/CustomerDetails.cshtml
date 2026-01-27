@@ -1,34 +1,83 @@
 ﻿@{
 
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
-    var customers = ViewBag.Customers;
+var customers = ViewBag.Customers;
 
 }
 <div class="admin-content">
-    <h1 class="top-bar mb-4">Customer Details</h1>
-    <div class="row g-4">
+    
+    <div class="top-bar d-flex">
+<div class="top-bar-left">
+<h1 class="mb-4">Customer Details</h1>
+<p class="text-muted">View all customers and change their access</p>
+</div>
+<div class="top-bar-right">
+<div class="datetime-display text-end">
+<p class="time fw-bold" id="currentTime">@DateTime.Now.ToString("HH:mm:ss")</p>
+<p class="date text-muted" id="currentDate">@DateTime.Now.ToString("dddd, MMMM d, yyyy")</p>
+</div>
+</div>
+</div>
+ 
+    <!-- Search Bar -->
+    <input type="text" class="form-control mb-3" placeholder="Search by name or email"
+        onkeyup="filterTable(this.value)" />
+    <!-- Customer Table -->
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
 
-        @foreach (var user in customers)
+                @foreach (var c in customers)
 
-        {
-            <div class="col-md-4">
-                <div class="card shadow-lg p-3 rounded-4">
-                    <h5 class="fw-bold">@user.Name</h5>
-                    <p class="mb-1 text-muted">User ID: @user.UserId</p>
-                    <p class="mb-3 text-muted">Contact: @user.Email</p>
-                    <form asp-action="ToggleUserStatus" method="post">
-                        <input type="hidden" name="userId" value="@user.UserId" />
-                        <button type="submit"
-                                class="btn @(user.IsActive ? "btn-success" : "btn-danger") w-100">
+                {
+                <tr>
+                    <td>@c.Name</td>
+                    <td>@c.Email</td>
+                    <td>@(c.MobileNumber ?? "N/A")</td>
+                    <td class="status-cell">
+                        <form asp-action="ToggleUserStatus" method="post">
+                            <input type="hidden" name="userId" value="@c.UserId" />
+                            <label class="switch">
+                                <input type="checkbox" onchange="this.form.submit()" @(c.IsActive ? "checked" : "" ) />
+                                <span class="slider"></span>
+                            </label>
+                        </form>
+                    </td>
+                </tr>
 
-                            @(user.IsActive ? "Enabled" : "Disabled")
-                        </button>
-                    </form>
-
-                </div>
-            </div>
-
-        }
+                }
+            </tbody>
+        </table>
     </div>
 </div>
+
+@section Scripts {
+<script>
+
+    function filterTable(value) {
+
+        value = value.toLowerCase();
+
+        document.querySelectorAll("#dataTable tr").forEach(row => {
+
+            row.style.display = row.innerText.toLowerCase().includes(value)
+
+                ? ""
+
+                : "none";
+
+        });
+
+    }
+</script>
+
+}

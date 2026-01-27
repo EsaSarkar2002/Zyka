@@ -40,19 +40,19 @@
             </a>
             <a class="nav-link @(currentController=="Admin"&&currentAction=="Bookings" ?"active":"")" asp-controller="Admin"
                 asp-action="Bookings">
-                <i class="bi bi-calendar-check"></i> Bookings
+                <i class="bi bi-bell"></i> Bookings
             </a>
             <a class="nav-link @(currentController=="Admin"&&currentAction=="History" ?"active":"")" asp-controller="Admin"
                 asp-action="History">
-                <i class="bi bi-clock-history"></i> History
+                <i class="bi bi-calendar-month"></i> History
             </a>
             <a class="nav-link @(currentController=="Admin"&&currentAction=="CustomerDetails" ?"active":"")" asp-controller="Admin"
                 asp-action="CustomerDetails">
-                <i class="bi bi-calendar-check"></i> CustomerDetails
+                <i class="bi bi-people"></i> Customer Details
             </a>
             <a class="nav-link @(currentController=="Admin"&&currentAction=="StaffDetails" ?"active":"")" asp-controller="Admin"
                 asp-action="StaffDetails">
-                <i class="bi bi-clock-history"></i> StaffDetails
+                <i class="bi bi-person-gear"></i> Staff Details
             </a>
 
         </nav>
@@ -78,6 +78,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/site-clock.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

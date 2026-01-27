@@ -13,10 +13,13 @@
 
     <!-- HEADER -->
     <div class="d-flex align-items-center top-bar justify-content-between mb-4">
+        <div class="category-header">
         <h1 class="text-dark-green">
             @ViewBag.Category Tables
         </h1>
-
+        <p class="time fw-bold" id="currentTime">@DateTime.Now.ToString("HH:mm:ss")</p>
+        <p class="date text-muted" id="currentDate">@DateTime.Now.ToString("dddd, MMMM d, yyyy")</p>
+        </div>
         <div>
             <button class="btn btn-primary me-2"
                     data-bs-toggle="modal"
@@ -151,57 +154,44 @@
 <div class="modal fade" id="addTableModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
- 
+
             <div class="modal-header">
                 <h5 class="modal-title">Add Table</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
- 
+
             <form asp-action="AddTable" asp-controller="Admin" method="post">
                 <div class="modal-body">
- 
+
                     <div class="mb-3">
                         <label class="form-label">Table Number</label>
-                        <input type="text"
-                               id="tableNumberInput"
-                               name="TableNumber"
-                               class="form-control"
-                               required />
-                        <small id="tableNumberError"
-                               class="text-danger d-none">
+                        <input type="text" id="tableNumberInput" name="TableNumber" class="form-control" required />
+                        <small id="tableNumberError" class="text-danger d-none">
                             Table number already exists
                         </small>
                     </div>
- <label class="form-label">Table Category</label>
-                    <input type="text" name="Category" value="@ViewBag.Category" disabled/>
+                    <label class="form-label">Table Category</label>
+                    <input type="text" name="Category" value="@ViewBag.Category" disabled />
                 </div>
- 
+
                 <div class="modal-footer">
-                    <button type="submit"
-                            id="saveTableBtn"
-                            class="btn btn-success"
-                            disabled>
+                    <button type="submit" id="saveTableBtn" class="btn btn-success" disabled>
                         Save
                     </button>
-                    <button type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Cancel
                     </button>
                 </div>
             </form>
- 
+
         </div>
     </div>
 </div>
  
 @section Scripts{
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // if(document.querySelector('.modal.show'))
-    // {
-    //     return;
-    // }
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    
     const input = document.getElementById("tableNumberInput");
     const error = document.getElementById("tableNumberError");
     const saveBtn = document.getElementById("saveTableBtn");
