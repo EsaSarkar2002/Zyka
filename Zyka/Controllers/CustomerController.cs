@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zyka.Data;
-using Zyka.Models;
+using Zyka.Models.Entities;
 using Zyka.Models.DTOs;
 using Zyka.Models.Enums;
 using Zyka.Services;
 using Zyka.ViewModels;
+using Reservation = Zyka.Models.Entities.Reservation;
 
 namespace Zyka.Controllers
 {

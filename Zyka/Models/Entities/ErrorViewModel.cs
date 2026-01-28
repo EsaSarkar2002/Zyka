@@ -1,4 +1,4 @@
-namespace Zyka.Models
+namespace Zyka.Models.Entities
 {
     public class ErrorViewModel
     {

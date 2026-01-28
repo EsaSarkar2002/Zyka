@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Zyka.Models.Enums;
 
-namespace Zyka.Models
+namespace Zyka.Models.Entities
 {
     [Index(nameof(EmailAddress), IsUnique = true)]
     public class User

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zyka.Data;
-using Zyka.Models;
+using Zyka.Models.Entities;
 using Zyka.Models.Enums;
 
 namespace Zyka.Controllers

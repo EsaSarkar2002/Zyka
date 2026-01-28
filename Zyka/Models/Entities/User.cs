@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using Zyka.Models.Enums;
 
-namespace Zyka_Api.Models
+namespace Zyka.Models.Entities
 {
+    [Index(nameof(EmailAddress), IsUnique = true)]
     public class User
     {
         [Key]
@@ -21,8 +24,8 @@ namespace Zyka_Api.Models
         [StringLength(150)]
         public string EmailAddress { get; set; }
 
-        //[Required]
-        //public UserRole Role { get; set; } = UserRole.Customer;
+        [Required]
+        public UserRole Role { get; set; } = UserRole.Customer;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? LastUpdatedAt { get; set; }

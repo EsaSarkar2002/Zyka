@@ -8,7 +8,7 @@
 
 /* --- 1. Layout & Background --- */
 .zyka-booking-page {
-    background:url('../images/image background.jpg') no-repeat center center fixed;
+    background: url('../images/image background.jpg') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
 }
@@ -18,7 +18,7 @@
     backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 30px;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     max-width: 900px;
     margin: 40px auto;
 }
@@ -58,7 +58,7 @@
 /* --- 3. Booking Type Selection --- */
 .zyka-type-card {
     background: #361509;
-    color:white;
+    color: white;
     border: 2px solid transparent;
     border-radius: 12px;
     padding: 10px;
@@ -68,16 +68,16 @@
     height: 100%;
 }
 
-.zyka-type-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--zyka-gold);
-}
+    .zyka-type-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--zyka-gold);
+    }
 
     .zyka-type-card.active {
         background: white;
         color: #361509 !important;
         border-color: var(--zyka-dark-green);
-        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     }
 
 .zyka-type-img img {
@@ -110,7 +110,7 @@
 }
 
 .zyka-time-btn {
-/*    background: white;*/
+    /*    background: white;*/
     border: 1px solid var(--zyka-border);
     padding: 10px 15px;
     border-radius: 8px;
@@ -119,17 +119,19 @@
     flex-grow: 1;
 }
 
-    .zyka-time-btn:hover, .zyka-time-btn.active {
+    .zyka-time-btn:hover,
+    .zyka-time-btn.active {
         background: var(--zyka-dark-green);
-/*        color: white;*/
+        /*        color: white;*/
         border-color: var(--zyka-dark-green);
     }
-.zyka-time-btn.disabled{
-    pointer-events:none;
-    opacity:0.4;
-/*    background-color:#ccc;
+
+    .zyka-time-btn.disabled {
+        pointer-events: none;
+        opacity: 0.4;
+        /*    background-color:#ccc;
     color:darkslategrey;*/
-}
+    }
 
 .zyka-btn-submit {
     background: linear-gradient(45deg, var(--zyka-dark-green), #2d6a4f);
@@ -141,11 +143,13 @@
     letter-spacing: 1px;
     box-shadow: 0 10px 20px rgba(27, 67, 50, 0.3);
 }
-.customer-numbers{
-    padding-top:1.5rem;
-    justify-content:center;
-    align-items:end;
+
+.customer-numbers {
+    padding-top: 1.5rem;
+    justify-content: center;
+    align-items: end;
 }
+
 .zyka-btn-submit:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 25px rgba(27, 67, 50, 0.4);
@@ -163,6 +167,7 @@
         padding: 20px;
     }
 }
+
 /* --- 7. Confirmation & History Page Specifics --- */
 .bg-beige {
     background-color: var(--beige) !important;
@@ -203,7 +208,7 @@
     background: white;
     border-radius: 1rem;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
     .table-history thead {
@@ -250,16 +255,18 @@
     transition: 0.3s;
 }
 
-    .btn-gradient:hover, .btn-gradient-green:hover {
+    .btn-gradient:hover,
+    .btn-gradient-green:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         color: white;
     }
-.support-body{
-    max-width:100%;
-    background-image:url('../images/shared image (3).jpg')
-    
+
+.support-body {
+    max-width: 100%;
+    background-image: url('../images/shared image (3).jpg')
 }
+
 /* --- 10. Custom Scrollbar --- */
 ::-webkit-scrollbar {
     width: 8px;
@@ -269,5 +276,3 @@
     background: var(--gold);
     border-radius: 4px;
 }
-
-

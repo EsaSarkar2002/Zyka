@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Zyka.Models;
+using Zyka.Models.Entities;
 
 namespace Zyka.Controllers
 {

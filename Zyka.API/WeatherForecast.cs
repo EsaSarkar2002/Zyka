@@ -1,4 +1,4 @@
-namespace Zyka_Api
+namespace Zyka.API
 {
     public class WeatherForecast
     {

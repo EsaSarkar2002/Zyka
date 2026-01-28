@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Zyka_Api.Controllers
+namespace Zyka.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

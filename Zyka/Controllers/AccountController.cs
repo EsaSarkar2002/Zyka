@@ -1,119 +1,151 @@
 ﻿using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authentication;
+
 using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
-using Zyka.Data;
-using Zyka.Models;
+
+using Zyka.Models.Entities;
+
 using Zyka.Models.Enums;
-using Zyka.Security;
+
 using Zyka.ViewModels;
 
+using Newtonsoft.Json;
+
+using System.Net.Http.Json;
+
 namespace Zyka.Controllers
+
 {
+
     public class AccountController : Controller
+
     {
-        private readonly ZykaDbContext _context;
-        public AccountController(ZykaDbContext context)
+
+        private readonly HttpClient _httpClient;
+
+        // This URL must match your API's actual running address
+
+        private readonly string ApiUrl = "https://localhost:7154/api/AccountApi/Authenticate";
+
+        public AccountController()
+
         {
-            _context = context;
+
+            _httpClient = new HttpClient();
+
         }
+
         [HttpGet]
 
         public IActionResult Login()
+
         {
+
             return View();
+
         }
+
         [HttpPost]
+
         public async Task<IActionResult> Login(LoginViewModel model)
+
         {
+
             if (!ModelState.IsValid)
+
                 return View(model);
 
-            var user = _context.Users
-                .FirstOrDefault(u => u.EmailAddress == model.Email && u.IsActive);
+            // 1. SERIALIZATION: PostAsJsonAsync converts the 'model' to JSON and sends it
 
-            if (user == null || !PasswordHasher.Verify(model.Password, user.HashedPassword))
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync(ApiUrl, model);
+
+            if (response.IsSuccessStatusCode)
+
             {
-                return BadRequest("Invalid email or password");
+
+                // 2. DESERIALIZATION: Read the JSON response and convert it back to a User object
+
+                var data = await response.Content.ReadAsStringAsync();
+
+                var user = JsonConvert.DeserializeObject<User>(data);
+
+                if (user != null)
+
+                {
+
+                    // 3. AUTHENTICATION: Create claims from the deserialized user object
+
+                    var claims = new List<Claim>
+
+                    {
+
+                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+
+                        new Claim(ClaimTypes.Name, user.UserName),
+
+                        new Claim(ClaimTypes.Email, user.EmailAddress),
+
+                        new Claim(ClaimTypes.Role, user.Role.ToString())
+
+                    };
+
+                    var identity = new ClaimsIdentity(claims, "ZykaCookie");
+
+                    var principal = new ClaimsPrincipal(identity);
+
+                    // Create the session cookie
+
+                    await HttpContext.SignInAsync("ZykaCookie", principal);
+
+                    // 4. ROLE-BASED REDIRECTION: Restored your original logic
+
+                    if (user.Role == UserRole.Admin)
+
+                        return RedirectToAction("Dashboard", "Admin");
+
+                    if (user.Role == UserRole.Customer)
+
+                        return RedirectToAction("Index", "Home");
+
+                    if (user.Role == UserRole.Staff)
+
+                        return RedirectToAction("Dashboard", "Staff");
+
+                    return RedirectToAction("Index", "Home");
+
+                }
+
             }
 
-            // AUTHENTICATION
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.EmailAddress),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            };
+            // If API returns an error or user is null
 
-            var identity = new ClaimsIdentity(claims, "ZykaCookie");
-            var principal = new ClaimsPrincipal(identity);
+            ModelState.AddModelError("", "Invalid email or password");
 
-            await HttpContext.SignInAsync("ZykaCookie", principal);
+            return View(model);
 
-            if (user.Role == UserRole.Admin)
-                return RedirectToAction("Dashboard", "Admin");
-
-            if (user.Role == UserRole.Customer)
-                return RedirectToAction("Index", "Home");
-
-            if (user.Role == UserRole.Staff)
-                return RedirectToAction("Dashboard", "Staff");
-
-            // Fallback: if role is not recognized, redirect to home
-            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
+
         [HttpPost]
+
         public async Task<IActionResult> Logout()
+
         {
+
             await HttpContext.SignOutAsync("ZykaCookie");
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            bool emailExists = _context.Users.Any(u => u.EmailAddress == model.Email);
-            if (emailExists)
-            {
-                ModelState.AddModelError("EmailAddress", "Email already registered");
-                return View(model);
-            }
-
-            var user = new User
-            {
-                UserName = model.UserName,
-                EmailAddress = model.Email,
-                HashedPassword = PasswordHasher.Hash(model.Password),
-                Role = UserRole.Customer,
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            // AUTHENTICATION
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.EmailAddress),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            };
-
-            var identity = new ClaimsIdentity(claims, "ZykaCookie");
-            var principal = new ClaimsPrincipal(identity);
-
-            //Create the Cookie
-            await HttpContext.SignInAsync("ZykaCookie", principal);
 
             return RedirectToAction("Index", "Home");
+
         }
+
+        // Note: For a full API integration, the Register method 
+
+        // should also be updated to call an API endpoint similarly to Login.
+
     }
+
 }

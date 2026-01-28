@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Zyka.Models.Enums;
 
-namespace Zyka.Models
+namespace Zyka.Models.Entities
 
 {
 

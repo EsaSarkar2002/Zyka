@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Zyka.Models.Enums;
 
-namespace Zyka.Models
+namespace Zyka.Models.Entities
 {
     public class Payment
     {

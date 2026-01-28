@@ -1,4 +1,4 @@
-﻿using Zyka.Models;
+﻿using Zyka.Models.Entities;
 
 namespace Zyka.ViewModels
 {

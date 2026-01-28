@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Zyka.Models.Enums;
 
-namespace Zyka.Models
+namespace Zyka.Models.Entities
+
 {
     [Index(nameof(TableId), nameof(ReservationDate), nameof(TimeSlotId), IsUnique = true)]
     public class Reservation
@@ -14,7 +15,7 @@ namespace Zyka.Models
         //User/Customer table foreign key
         [Required]
         public int CustomerId { get; set; }
-        [Required,ForeignKey(nameof(CustomerId))]
+        [Required, ForeignKey(nameof(CustomerId))]
         public User Customer { get; set; }
 
         //TableInfo table foreign key
@@ -38,7 +39,7 @@ namespace Zyka.Models
 
         public Payment Payment { get; set; }
 
-        [Required,Range(1,20)]
+        [Required, Range(1, 20)]
         public int NumberOfGuests { get; set; }
 
         //Customer contacts

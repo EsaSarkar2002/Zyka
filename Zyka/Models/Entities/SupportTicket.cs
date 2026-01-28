@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Zyka.Models.Enums;
 
-namespace Zyka.Models
+namespace Zyka.Models.Entities
 {
     public class SupportTicket
     {

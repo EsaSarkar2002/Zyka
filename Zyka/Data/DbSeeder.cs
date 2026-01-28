@@ -1,6 +1,6 @@
 ﻿using System.Runtime.ConstrainedExecution;
 using Microsoft.AspNetCore.Identity;
-using Zyka.Models;
+using Zyka.Models.Entities;
 using Zyka.Models.Enums;
 using Zyka.Security;
 
