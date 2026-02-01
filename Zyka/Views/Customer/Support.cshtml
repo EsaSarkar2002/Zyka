@@ -1,150 +1,163 @@
 ﻿@model List<SupportTicket>
 @using Zyka.Models.Entities
 @using Zyka.Models.Enums
- 
+
 @{
     ViewData["Title"] = "Customer Support";
     Layout = "_Layout";
 }
- 
-<div class="support-body">
- 
-    <!-- HEADER -->
-    <div class="text-center zyka-booking-header mb-5">
-        <h2 class="fw-bold text-black ">Customer Support</h2>
-        <p class="text-muted">
-            Need help? Contact us directly or raise a support request.
-        </p>
-    </div>
- 
-    <!-- CONTACT INFO -->
-    <div class="row mb-4">
-        <div class="col-md-6 mb-3">
-            <div class="card p-4 shadow-sm h-100">
-                <h5 class="fw-semibold">📞 Call Us</h5>
-                <p class="mb-1">+91 98765 43210</p>
-                <small class="text-muted">Available 10 AM – 10 PM</small>
-            </div>
-        </div>
- 
-        <div class="col-md-6 mb-3">
-            <div class="card p-4 shadow-sm h-100">
-                <h5 class="fw-semibold">📧 Email Us</h5>
-                <p class="mb-1">support@zyka.com</p>
-                <small class="text-muted">We usually reply within 24 hours</small>
-            </div>
-        </div>
-    </div>
- 
-    <!-- MAIN CONTENT -->
-    <div class="row">
- 
-        <!-- LEFT: PREVIOUS QUERIES -->
-        <div class="col-md-5 mb-4" style="height: fit-content;">
-            <div class="card shadow-sm h-100">
-                <div class="card-header bg-dark text-white">
-                    <h6 class="mb-0">Your Previous Queries</h6>
-                </div>
- 
-                <div class="card-body p-0">
-                    @if (!Model.Any())
-                    {
-                        <div class="p-4 text-muted text-center">
-                            No support queries raised yet.
-                        </div>
-                    }
-                    else
-                    {
-                        <ul class="list-group list-group-flush">
-@foreach (var ticket in Model)
-{
-    <li class="list-group-item">
- 
-        <!-- Ticket header -->
-        <div class="d-flex justify-content-between align-items-center mb-1">
-            <strong>#@ticket.TicketId</strong>
- 
-            <span class="badge
-                @(ticket.Status == SupportTicketStatus.Open ? "bg-warning text-dark" : "bg-success")">
-                @ticket.Status
-            </span>
-        </div>
- 
-        <!-- Customer Query -->
-        <div class="mb-2">
-            <small class="fw-semibold">Your Query:</small>
-            <div class="text-muted">
-                @ticket.Query
-            </div>
-        </div>
- 
-        <!-- Staff Reply (only if exists) -->
-        @if (!string.IsNullOrWhiteSpace(ticket.StafReply))
-        {
-            <div class="mt-2 p-2 bg-light rounded">
-                <small class="fw-semibold text-success">Staff Reply:</small>
-                <div>
-                    @ticket.StafReply
-                </div>
-            </div>
-        }
 
-        <!-- Date + Time -->
-        <small class="text-muted d-block mb-2">
-            @ticket.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
-        </small>
-    </li>
-}
-</ul>
-                    }
-                </div>
-            </div>
+
+<div class="support-page-wrapper">
+
+    <div class="support-header-section text-center">
+        <div class="container">
+            <h1 class="display-5 fw-bold support-header-title mb-3">How can we help you?</h1>
+            <p class="lead support-header-desc mx-auto" style="max-width: 600px;">
+                Have a question about your booking or dining experience? 
+                Raise a ticket below or reach out to us directly.
+            </p>
         </div>
- 
-        <!-- RIGHT: SUPPORT FORM -->
-        <div class="col-md-7">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h6 class="mb-0">Raise a Support Query</h6>
-                </div>
- 
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input id="custName" class="form-control" maxlength="100" value="@(ViewBag.UserName ?? "")"/>
-                    </div>
- 
-                    <div class="mb-3">
-                        <label class="form-label">Phone</label>
-                        <input id="phone" class="form-control" maxlength="15" />
-                    </div>
- 
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input id="email" class="form-control" maxlength="100" value="@(ViewBag.UserEmail ?? "")" readonly />
-                    </div>
- 
-                    <div class="mb-3">
-                        <label class="form-label">Booking ID (optional)</label>
-                        <input id="reservationId" class="form-control" />
-                    </div>
- 
-                    <div class="mb-3">
-                        <label class="form-label">Your Query</label>
-                        <textarea id="query" class="form-control" rows="4" maxlength="1000"></textarea>
-                    </div>
- 
-                    <button id="submitTicket" class="btn btn-dark w-100">
-                        Submit Query
-                    </button>
-                </div>
-            </div>
-        </div>
- 
     </div>
-</div>
- 
+
+    <div class="container">
+        
+        <div class="row g-4 mb-5 justify-content-center">
+            <div class="col-md-5 col-lg-4">
+                <div class="card contact-card shadow-sm h-100 p-4 text-center">
+                    <div class="d-flex justify-content-center">
+                        <div class="icon-box text-primary">📞</div>
+                    </div>
+                    <h5 class="fw-bold">Call Support</h5>
+                    <p class="text-muted mb-2">Speak directly with our team.</p>
+                    <a href="tel:+919876543210" class="fs-5 text-decoration-none fw-bold text-dark">+91 98765 43210</a>
+                    <small class="text-muted mt-2 d-block">10:00 AM – 10:00 PM</small>
+                </div>
+            </div>
+
+            <div class="col-md-5 col-lg-4">
+                <div class="card contact-card shadow-sm h-100 p-4 text-center">
+                    <div class="d-flex justify-content-center">
+                        <div class="icon-box text-danger">📧</div>
+                    </div>
+                    <h5 class="fw-bold">Email Support</h5>
+                    <p class="text-muted mb-2">Send us detailed queries.</p>
+                    <a href="mailto:support@zyka.com" class="fs-5 text-decoration-none fw-bold text-dark">support@zyka.com</a>
+                    <small class="text-muted mt-2 d-block">Response within 24 hours</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-5">
+                <h5 class="fw-bold mb-3 d-flex align-items-center text-white" style="text-shadow: 0 1px 3px rgba(0,0,0,0.6);">
+                    <span class="me-2">🕒</span> Your History
+                </h5>
+                
+                <div class="card query-list-card shadow-sm h-100">
+                    <div class="card-body p-0">
+                        @if (!Model.Any())
+                        {
+                            <div class="text-center py-5 px-3">
+                                <div class="mb-3 text-muted" style="font-size: 3rem; opacity: 0.3;">📂</div>
+                                <h6 class="fw-semibold text-muted">No tickets found</h6>
+                                <p class="small text-muted">You haven't raised any support requests yet.</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="list-group list-group-flush">
+                                @foreach (var ticket in Model)
+                                {
+                                    var statusClass = ticket.Status == SupportTicketStatus.Open ? "status-open" : "status-closed";
+                                    var badgeClass = ticket.Status == SupportTicketStatus.Open ? "bg-warning text-dark" : "bg-success text-white";
+
+                                    <div class="list-group-item query-item p-3 @statusClass">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div>
+                                                <span class="small text-muted fw-bold">#@ticket.TicketId</span>
+                                                <span class="small text-muted ms-2">@ticket.CreatedAt.ToLocalTime().ToString("dd MMM, hh:mm tt")</span>
+                                            </div>
+                                            <span class="badge rounded-pill @badgeClass" style="font-size: 0.75rem;">
+                                                @ticket.Status
+                                            </span>
+                                        </div>
+
+                                        <p class="mb-2 text-dark" style="font-size: 0.95rem;">
+                                            @ticket.Query
+                                        </p>
+
+                                        @if (!string.IsNullOrWhiteSpace(ticket.StafReply))
+                                        {
+                                            <div class="staff-reply-box p-2 rounded mt-2">
+                                                <div class="d-flex align-items-center mb-1">
+                                                    <small class="fw-bold text-success me-2">Zyka Staff</small>
+                                                    <small class="text-muted" style="font-size: 0.7rem;">Replied</small>
+                                                </div>
+                                                <div class="text-dark small">
+                                                    @ticket.StafReply
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <h5 class="fw-bold mb-3 d-flex align-items-center text-white" style="text-shadow: 0 1px 3px rgba(0,0,0,0.6);">
+                    <span class="me-2">✏️</span> New Request
+                </h5>
+
+                <div class="card form-card h-100">
+                    <div class="card-body p-4">
+                        <form id="supportForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small text-muted fw-bold text-uppercase">Your Name</label>
+                                    <input id="custName" class="form-control bg-light" value="@(ViewBag.UserName ?? "")" placeholder="Enter full name" />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small text-muted fw-bold text-uppercase">Phone Number</label>
+                                    <input id="phone" class="form-control bg-light" placeholder="+91..." />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small text-muted fw-bold text-uppercase">Email Address</label>
+                                <input id="email" class="form-control bg-light" value="@(ViewBag.UserEmail ?? "")" readonly />
+                                <small class="text-muted" style="font-size: 0.75rem;">Login email used for tracking.</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small text-muted fw-bold text-uppercase">Booking ID (Optional)</label>
+                                <input id="reservationId" class="form-control bg-light" placeholder="e.g. #RES-1234" />
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label small text-muted fw-bold text-uppercase">How can we help?</label>
+                                <textarea id="query" class="form-control bg-light" rows="5" placeholder="Please describe your issue or question in detail..." style="resize: none;"></textarea>
+                            </div>
+
+                            <div class="d-grid">
+                                <button id="submitTicket" type="button" class="btn btn-dark py-2 fw-bold">
+                                    Submit Support Request
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div> 
 @section Scripts {
     <script src="~/js/support.js"></script>
 }
- 
